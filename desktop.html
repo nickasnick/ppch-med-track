@@ -481,7 +481,7 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
       margin-bottom: 20px;
       overflow: hidden;
-      page-break-inside: avoid;
+      page-break-inside: auto;
       transition: all 0.2s ease;
     }
 
@@ -691,6 +691,10 @@
     }
 
     @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm 10mm 12mm 10mm;
+      }
       body {
         background: #ffffff !important;
         color: #000000 !important;
@@ -708,29 +712,79 @@
       .workstation-main {
         max-width: 100% !important;
         padding: 0 !important;
+        margin: 0 !important;
       }
       .category-card {
         box-shadow: none !important;
-        border: 1px solid #94a3b8 !important;
-        margin-bottom: 16px !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px !important;
+        margin-bottom: 12px !important;
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+      }
+      .category-header {
+        background: #f8fafc !important;
+        border-bottom: 1px solid #cbd5e1 !important;
+        padding: 6px 12px !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      .device-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        page-break-inside: auto !important;
+      }
+      .device-table thead {
+        display: table-header-group !important;
+      }
+      .device-table tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .device-table th,
+      .device-table td {
+        padding: 5px 6px !important;
+        font-size: 10px !important;
+        line-height: 1.3 !important;
+      }
+      .device-table th {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        border-bottom: 1.5px solid #64748b !important;
+      }
+      .device-table td {
+        border-bottom: 1px solid #e2e8f0 !important;
+      }
+      .asset-code-clean {
+        background: transparent !important;
+        border: 1px solid #cbd5e1 !important;
+        padding: 1px 4px !important;
+        font-size: 9.5px !important;
+        white-space: nowrap !important;
+      }
+      .badge-status {
+        padding: 2px 6px !important;
+        font-size: 9px !important;
+        white-space: nowrap !important;
       }
       .print-only {
         display: block !important;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #0f172a;
-        padding-bottom: 14px;
+        margin-bottom: 10px !important;
+        border-bottom: 2px solid #0f172a !important;
+        padding-bottom: 8px !important;
       }
       .print-signatures {
         display: grid !important;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 20px;
-        margin-top: 36px;
+        gap: 16px;
+        margin-top: 20px;
         text-align: center;
-        page-break-inside: avoid;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
       .sig-line {
         border-bottom: 1px dotted #64748b;
-        margin: 36px 15px 8px;
+        margin: 24px 12px 6px;
       }
     }
   </style>
@@ -1117,14 +1171,14 @@
             <table class="device-table">
               <thead>
                 <tr>
-                  <th>รหัสครุภัณฑ์</th>
-                  <th>ชื่อเครื่องมือแพทย์</th>
-                  <th>ประเภท</th>
-                  <th>แผนก</th>
-                  <th style="text-align: center;">ตรวจในเดือนนี้</th>
-                  <th style="text-align: center;">สถานะล่าสุด</th>
-                  <th>ประเมินล่าสุด</th>
-                  <th>ผู้ประเมิน</th>
+                  <th style="width: 125px; white-space: nowrap;">รหัสครุภัณฑ์</th>
+                  <th>ชื่อเครื่องมือแพทย์ & รุ่น</th>
+                  <th style="width: 110px; white-space: nowrap;">ประเภท</th>
+                  <th style="width: 130px; white-space: nowrap;">แผนก</th>
+                  <th style="width: 95px; text-align: center; white-space: nowrap;">ตรวจเดือนนี้</th>
+                  <th style="width: 110px; text-align: center; white-space: nowrap;">สถานะล่าสุด</th>
+                  <th style="width: 130px; white-space: nowrap;">ประเมินล่าสุด</th>
+                  <th style="width: 85px; white-space: nowrap;">ผู้ประเมิน</th>
                 </tr>
               </thead>
               <tbody id="monthlyTableBody">
@@ -2057,6 +2111,11 @@
 
       document.getElementById('mainHeadingDate').innerText = 'บันทึกประวัติการตรวจเช็คย้อนหลัง (' + dateSubtitle + ')';
 
+      var pTitle = document.getElementById('printReportTitle');
+      if (pTitle) pTitle.innerText = 'รายงานประวัติการตรวจเช็คความพร้อมเครื่องมือแพทย์ (Historical Records)';
+      var pSub = document.getElementById('printDateSubtitle');
+      if (pSub) pSub.innerText = 'บันทึกประวัติย้อนหลัง (' + dateSubtitle + ') • โรงพยาบาลพิษณุเวช';
+
       var filtered = allEvaluations.filter(function (item) {
         var evDate = parseEvalDateStr(item.evaluatedAt);
 
@@ -2121,19 +2180,19 @@
 
         var deptName = window.PPCH_STORE.getDepartmentName(ev.department);
         var findings = isNormal
-          ? '<span style="color: #059669;">ผ่านเกณฑ์ปกติ 100%</span>'
-          : '<span style="color: #dc2626; font-weight: 600;">' + (ev.abnormalNote || 'พบข้อบกพร่อง') + '</span>';
+          ? '<span style="color: #059669; font-weight: 500;">✓ ผ่านเกณฑ์ปกติ 100%</span>'
+          : '<span style="color: #dc2626; font-weight: 600;">⚠️ ' + (ev.abnormalNote || 'พบข้อบกพร่อง') + '</span>';
 
         html += '<tr>' +
-          '<td><strong>' + formatFullDateTime(ev.evaluatedAt) + '</strong></td>' +
-          '<td><span style="font-family: monospace; font-size: 11.5px; font-weight: 700; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">' + (ev.deviceAsset || ev.deviceId) + '</span></td>' +
-          '<td><strong>' + (ev.deviceName || '-') + '</strong></td>' +
-          '<td>' + deptName + '</td>' +
-          '<td style="text-align: center;">' + statusBadge + '</td>' +
+          '<td style="white-space: nowrap; font-size: 11.5px;">' + formatFullDateTime(ev.evaluatedAt) + '</td>' +
+          '<td><span class="asset-code-clean">' + (ev.deviceAsset || ev.deviceId) + '</span></td>' +
+          '<td><strong style="color: #0f172a; font-size: 12.5px;">' + (ev.deviceName || '-') + '</strong></td>' +
+          '<td style="white-space: nowrap; color: #334155;">' + deptName + '</td>' +
+          '<td style="text-align: center; white-space: nowrap;">' + statusBadge + '</td>' +
           '<td>' + findings + '</td>' +
-          '<td>' + (ev.evaluatedBy || '-') + '</td>' +
-          '<td class="btn-action-col no-print" style="text-align: center;">' +
-            '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + (ev.deviceId || '') + '\')" class="btn-ppch btn-ppch-outline" style="padding: 4px 8px; font-size: 11px;">ดูสลิป</button>' +
+          '<td style="white-space: nowrap; font-size: 11.5px; color: #475569;">' + (ev.evaluatedBy || '-') + '</td>' +
+          '<td class="btn-action-col no-print" style="text-align: center; white-space: nowrap;">' +
+            '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + (ev.deviceId || '') + '\')" class="btn-table-slip"><span class="material-icons-round" style="font-size: 14px; color: #1e40af;">receipt_long</span><span>สลิป</span></button>' +
           '</td>' +
         '</tr>';
       });
@@ -2152,6 +2211,11 @@
       document.getElementById('mainHeadingTitle').innerText = 'รายงานสรุปผลการประเมินประจำเดือน';
       document.getElementById('mainHeadingDate').innerText = 'ประจำเดือน' + monthYearThai;
       document.getElementById('monthlySubtitle').innerText = 'รอบประจำเดือน: ' + monthYearThai;
+
+      var pTitle = document.getElementById('printReportTitle');
+      if (pTitle) pTitle.innerText = 'รายงานสรุปผลการประเมินความพร้อมเครื่องมือแพทย์ประจำเดือน (Monthly Compliance)';
+      var pSub = document.getElementById('printDateSubtitle');
+      if (pSub) pSub.innerText = 'รอบประจำเดือน: ' + monthYearThai + ' • โรงพยาบาลพิษณุเวช';
 
       var deptFilter = document.getElementById('sidebarDeptSelect').value;
       var catFilter = document.getElementById('sidebarCategorySelect').value;
@@ -2182,8 +2246,9 @@
         var lastEv = evalsInMonth[0] || null;
 
         var statusBadge = '';
+        var hasAbnormal = false;
         if (count > 0) {
-          var hasAbnormal = evalsInMonth.some(function (e) { return e.result === 'abnormal'; });
+          hasAbnormal = evalsInMonth.some(function (e) { return e.result === 'abnormal'; });
           statusBadge = hasAbnormal
             ? '<span class="badge-status badge-status-abnormal">พบข้อบกพร่อง</span>'
             : '<span class="badge-status badge-status-ready">พร้อมใช้งาน</span>';
@@ -2194,14 +2259,14 @@
         var form = window.PPCH_STORE.getFormById(eq.formId);
 
         html += '<tr>' +
-          '<td><strong style="font-family: monospace;">' + eq.assetCode + '</strong></td>' +
-          '<td><strong>' + eq.name + '</strong></td>' +
-          '<td>' + (form ? form.shortName : eq.formId) + '</td>' +
-          '<td>' + window.PPCH_STORE.getDepartmentName(eq.currentDept) + '</td>' +
-          '<td style="text-align: center;"><strong>' + count + ' ครั้ง</strong></td>' +
-          '<td style="text-align: center;">' + statusBadge + '</td>' +
-          '<td>' + (lastEv ? formatFullDateTime(lastEv.evaluatedAt) : '-') + '</td>' +
-          '<td>' + (lastEv ? lastEv.evaluatedBy : '-') + '</td>' +
+          '<td><span class="asset-code-clean">' + eq.assetCode + '</span></td>' +
+          '<td><div style="font-weight: 700; color: #0f172a; font-size: 12.5px; line-height: 1.3;">' + eq.name + '</div><div style="font-size: 11px; color: #64748b;">รุ่น ' + (eq.model || '-') + '</div></td>' +
+          '<td style="white-space: nowrap; color: #475569;">' + (form ? form.shortName : eq.formId) + '</td>' +
+          '<td style="white-space: nowrap; font-weight: 500; color: #334155;">' + window.PPCH_STORE.getDepartmentName(eq.currentDept) + '</td>' +
+          '<td style="text-align: center; white-space: nowrap;"><strong>' + count + ' ครั้ง</strong></td>' +
+          '<td style="text-align: center; white-space: nowrap;">' + statusBadge + '</td>' +
+          '<td style="white-space: nowrap; font-size: 11.5px; color: #334155;">' + (lastEv ? formatFullDateTime(lastEv.evaluatedAt) : '-') + '</td>' +
+          '<td style="white-space: nowrap; font-size: 11.5px; color: #475569;">' + (lastEv ? lastEv.evaluatedBy : '-') + '</td>' +
         '</tr>';
       });
 
