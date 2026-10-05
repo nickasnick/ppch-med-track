@@ -13,49 +13,52 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css?v=20261005_1315">
   <style>
-    /* ==================== STITCH & HEALTHCARE EXECUTIVE DESIGN SYSTEM ==================== */
+    /* ==================== PPCH MODERN TACTILE GLASSMORHPISM DESIGN SYSTEM ==================== */
     :root {
-      --bg-slate: #f8fafc;
-      --surface-white: #ffffff;
-      --border-subtle: rgba(226, 232, 240, 0.85);
-      --border-card: rgba(203, 213, 225, 0.65);
+      --bg-slate: var(--glass-canvas);
+      --surface-white: var(--glass-surface-base);
+      --border-subtle: var(--glass-border-subtle);
+      --border-card: var(--glass-border-frosted);
       --navy-950: #090d16;
       --navy-900: #0f172a;
       --navy-800: #1e293b;
       --blue-600: #2563eb;
       --blue-700: #1d4ed8;
-      --blue-800: #1e40af;
-      --teal-600: #0d9488;
-      --emerald-600: #059669;
-      --crimson-600: #dc2626;
-      --amber-600: #d97706;
-      --shadow-ambient: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 14px -2px rgba(15, 23, 42, 0.03);
-      --shadow-card: 0 4px 16px -2px rgba(15, 23, 42, 0.05), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
-      --shadow-hover: 0 14px 28px -4px rgba(15, 23, 42, 0.09), 0 4px 8px -2px rgba(15, 23, 42, 0.03);
+      --blue-800: var(--glass-primary);
+      --teal-600: var(--glass-teal);
+      --emerald-600: var(--glass-success);
+      --crimson-600: var(--glass-danger);
+      --amber-600: var(--glass-warning);
+      --shadow-ambient: var(--glass-shadow-ambient);
+      --shadow-card: var(--glass-shadow-card);
+      --shadow-hover: var(--glass-shadow-hover);
     }
 
     /* Layout & Canvas */
     body {
-      background-color: #f1f5f9;
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(30, 64, 175, 0.04) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(13, 148, 136, 0.04) 0px, transparent 50%);
+      background-color: var(--glass-canvas);
+      background-image: var(--glass-canvas-mesh);
       background-attachment: fixed;
-      color: #0f172a;
-      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--glass-text-main);
+      font-family: var(--font-sans);
     }
 
     .workstation-layout {
       display: flex;
       min-height: 100vh;
+      background-color: var(--glass-canvas);
+      background-image: var(--glass-canvas-mesh);
+      background-attachment: fixed;
     }
 
-    /* Left Sidebar */
+    /* Left Sidebar (Frosted Glass Workstation Control Panel) */
     .app-sidebar {
       width: 320px;
       min-width: 320px;
-      background: #ffffff;
-      border-right: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: var(--glass-blur-md);
+      -webkit-backdrop-filter: var(--glass-blur-md);
+      border-right: 1px solid var(--glass-border-light);
       display: flex;
       flex-direction: column;
       position: sticky;
@@ -63,13 +66,16 @@
       height: 100vh;
       overflow-y: auto;
       z-index: 50;
-      box-shadow: 2px 0 20px rgba(15, 23, 42, 0.03);
+      box-shadow: 4px 0 24px rgba(15, 23, 42, 0.04);
+      transition: width 0.25s var(--ease-tactile);
     }
 
     .sidebar-header {
       padding: 18px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(135deg, #090d16 0%, #0f172a 45%, #1e3a8a 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(135deg, rgba(9, 13, 22, 0.95) 0%, rgba(15, 23, 42, 0.90) 45%, rgba(30, 58, 138, 0.92) 100%);
+      backdrop-filter: var(--glass-blur-md);
+      -webkit-backdrop-filter: var(--glass-blur-md);
       color: #ffffff;
       box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
     }
@@ -82,11 +88,31 @@
       color: #ffffff;
     }
 
+    .brand-logo-squircle {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 1);
+      backdrop-filter: var(--glass-blur-sm);
+      flex-shrink: 0;
+      transition: transform 0.2s var(--ease-tactile);
+    }
+
+    .sidebar-brand:hover .brand-logo-squircle {
+      transform: scale(1.04);
+    }
+
     .sidebar-body {
-      padding: 16px;
+      padding: 18px 16px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
       flex: 1;
     }
 
@@ -94,15 +120,15 @@
       font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: #64748b;
+      letter-spacing: 0.08em;
+      color: var(--glass-text-dim);
       margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    /* Nav View Buttons (High Contrast & Tactile) */
+    /* Nav View Buttons (Tactile Glass Pills) */
     .view-nav-group {
       display: flex;
       flex-direction: column;
@@ -114,30 +140,32 @@
       align-items: center;
       gap: 12px;
       padding: 11px 16px;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       border: 1px solid transparent;
       background: transparent;
-      color: #475569;
+      color: var(--glass-text-muted);
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.22s var(--ease-tactile);
       width: 100%;
+      position: relative;
     }
 
     .view-nav-btn:hover {
-      background: #f1f5f9;
-      color: #0f172a;
+      background: rgba(241, 245, 249, 0.75);
+      color: var(--glass-text-main);
       transform: translateX(3px);
+      border-color: rgba(203, 213, 225, 0.45);
     }
 
     .view-nav-btn.active {
-      background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
-      border-color: transparent !important;
+      background: var(--glass-primary-gradient) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
       color: #ffffff !important;
       font-weight: 700;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
       transform: translateX(4px);
     }
 
@@ -147,10 +175,11 @@
 
     .view-nav-btn .material-icons-round {
       font-size: 20px;
-      color: #64748b;
+      color: var(--glass-text-dim);
+      transition: color 0.2s ease;
     }
 
-    /* Filter Controls in Sidebar */
+    /* Filter Controls in Sidebar (Frosted Glass Surfaces) */
     .filter-item {
       margin-bottom: 12px;
     }
@@ -159,28 +188,39 @@
       display: block;
       font-size: 11px;
       font-weight: 700;
-      color: #475569;
+      color: var(--glass-text-muted);
       margin-bottom: 5px;
     }
 
     .filter-item input,
     .filter-item select {
       width: 100%;
-      padding: 8.5px 12px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 12px;
-      color: #1e293b;
-      background: #f8fafc;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 9px 12px;
+      border: 1.5px solid var(--glass-border-frosted);
+      border-radius: var(--radius-md);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--glass-text-main);
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: var(--glass-blur-sm);
+      -webkit-backdrop-filter: var(--glass-blur-sm);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+      outline: none;
+      transition: all 0.2s var(--ease-tactile);
+      font-family: inherit;
+    }
+
+    .filter-item input:hover,
+    .filter-item select:hover {
+      border-color: #94a3b8;
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .filter-item input:focus,
     .filter-item select:focus {
-      outline: none;
-      border-color: #1e40af;
       background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+      border-color: var(--glass-primary);
+      box-shadow: 0 0 0 3px var(--glass-primary-glow), inset 0 1px 2px rgba(15, 23, 42, 0.03);
     }
 
     .quick-date-group {
@@ -191,28 +231,31 @@
 
     .quick-date-btn {
       flex: 1;
-      padding: 6px 8px;
+      padding: 6.5px 8px;
       font-size: 11px;
       font-weight: 600;
-      border: 1px solid #cbd5e1;
-      background: #ffffff;
-      border-radius: 8px;
+      border: 1px solid var(--glass-border-frosted);
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      color: #475569;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--glass-text-muted);
+      backdrop-filter: var(--glass-blur-sm);
+      transition: all 0.18s var(--ease-tactile);
       text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 
     .quick-date-btn:hover {
       background: #f1f5f9;
       border-color: #94a3b8;
+      color: var(--glass-text-main);
     }
 
     .quick-date-btn.active {
-      background: #1e40af;
-      border-color: #1e40af;
+      background: var(--glass-primary-gradient);
+      border-color: transparent;
       color: #ffffff;
-      box-shadow: 0 2px 6px rgba(30, 64, 175, 0.2);
+      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
       font-weight: 700;
     }
 
@@ -222,7 +265,7 @@
       flex-direction: column;
       gap: 8px;
       padding-top: 14px;
-      border-top: 1px solid var(--border-subtle);
+      border-top: 1px solid var(--glass-border-subtle);
     }
 
     .sidebar-btn {
@@ -231,18 +274,17 @@
       justify-content: center;
       gap: 8px;
       padding: 9.5px 12px;
-      border-radius: 10px;
+      border-radius: var(--radius-md);
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
       border: 1px solid transparent;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s var(--ease-tactile);
     }
 
     .sidebar-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .sidebar-btn:active {
@@ -250,34 +292,56 @@
     }
 
     .sidebar-btn-primary {
-      background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+      background: var(--glass-primary-gradient);
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
     .sidebar-btn-primary:hover {
-      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.35);
+      background: linear-gradient(135deg, #172554 0%, #1d4ed8 100%);
+      box-shadow: 0 6px 18px rgba(30, 64, 175, 0.35);
+      color: #ffffff;
     }
 
     .sidebar-btn-teal {
-      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      background: var(--glass-teal-gradient);
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
     .sidebar-btn-teal:hover {
-      background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
-      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+      background: linear-gradient(135deg, #115e59 0%, #0f766e 100%);
+      box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+      color: #ffffff;
     }
 
     .sidebar-btn-outline {
-      background: #ffffff;
-      border-color: #cbd5e1;
-      color: #334155;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: var(--glass-blur-sm);
+      border: 1px solid var(--glass-border-frosted);
+      color: var(--glass-text-main);
+      box-shadow: var(--glass-shadow-ambient);
     }
     .sidebar-btn-outline:hover {
-      background: #f8fafc;
+      background: #ffffff;
       border-color: #94a3b8;
-      color: #1e40af;
+      color: var(--glass-primary);
+      box-shadow: var(--glass-shadow-card);
+    }
+
+    .sidebar-status-pill {
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: var(--glass-blur-sm);
+      -webkit-backdrop-filter: var(--glass-blur-sm);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--glass-border-light);
+      font-size: 11.5px;
+      color: var(--glass-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--glass-shadow-ambient);
     }
 
     /* Main Workstation View */
@@ -304,19 +368,22 @@
       }
     }
 
-    /* ==================== CLEAN EXECUTIVE HEADER ==================== */
+    /* ==================== MODERN TACTILE HERO HEADER ==================== */
     .command-hero-clean {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin-bottom: 18px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(248, 250, 252, 0.80) 100%);
+      backdrop-filter: var(--glass-blur-md);
+      -webkit-backdrop-filter: var(--glass-blur-md);
+      border: 1px solid var(--glass-border-light);
+      border-radius: var(--radius-xl);
+      padding: 18px 24px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      box-shadow: var(--glass-shadow-card);
       flex-wrap: wrap;
+      transition: var(--transition-tactile);
     }
 
     .command-hero-left {
@@ -326,33 +393,40 @@
     }
 
     .command-meta-bar {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
       font-size: 11.5px;
-      color: #64748b;
+      font-weight: 700;
+      color: #047857;
+      background: rgba(236, 253, 245, 0.88);
+      border: 1px solid rgba(167, 243, 208, 0.85);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 1px 3px rgba(5, 150, 105, 0.08);
+      align-self: flex-start;
     }
 
     .live-pulse-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #10b981;
       box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      animation: pulseDot 2s infinite;
+      animation: pulseDotLive 2s infinite;
       display: inline-block;
     }
 
-    @keyframes pulseDot {
+    @keyframes pulseDotLive {
       0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
       100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
     .command-title-clean {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 800;
-      color: #0f172a;
+      color: var(--glass-text-main);
       line-height: 1.25;
       letter-spacing: -0.015em;
       margin: 0;
@@ -360,7 +434,7 @@
 
     .command-subtitle-clean {
       font-size: 12.5px;
-      color: #64748b;
+      color: var(--glass-text-muted);
       margin: 0;
     }
 
@@ -374,121 +448,131 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      padding: 7px 14px;
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: var(--glass-blur-sm);
+      border: 1px solid var(--glass-border-light);
+      border-radius: var(--radius-full);
       font-size: 12px;
-      font-weight: 600;
-      color: #334155;
+      font-weight: 700;
+      color: var(--glass-primary);
+      box-shadow: var(--glass-shadow-ambient);
     }
 
     .btn-print-clean {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 6px 14px;
-      border-radius: 8px;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: var(--radius-full);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      background: #ffffff;
-      color: #1e40af;
-      border: 1px solid #cbd5e1;
-      transition: all 0.15s ease;
+      background: rgba(255, 255, 255, 0.90);
+      color: var(--glass-primary);
+      border: 1px solid rgba(30, 64, 175, 0.35);
+      backdrop-filter: var(--glass-blur-sm);
+      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
+      transition: var(--transition-tactile);
       white-space: nowrap;
     }
 
     .btn-print-clean:hover {
-      background: #eff6ff;
-      border-color: #93c5fd;
+      background: var(--glass-primary);
+      color: #ffffff;
+      border-color: var(--glass-primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
     }
 
-    /* ==================== CLEAN MINIMAL KPI ROW ==================== */
+    /* ==================== TACTILE GLASS KPI STRIP & SQUIRCLE ICONS ==================== */
     .kpi-strip {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
+      gap: 14px;
       margin-bottom: 20px;
     }
 
-    @media (max-width: 1280px) {
-      .kpi-strip {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .kpi-strip {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .kpi-mini-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.82) 100%);
+      backdrop-filter: var(--glass-blur-md);
+      -webkit-backdrop-filter: var(--glass-blur-md);
+      border: 1px solid var(--glass-border-light);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-      transition: all 0.18s ease;
+      gap: 14px;
+      box-shadow: var(--glass-shadow-card);
+      transition: transform 0.25s var(--ease-tactile),
+                  box-shadow 0.25s var(--ease-tactile),
+                  border-color 0.25s var(--ease-tactile);
     }
 
     .kpi-mini-card:hover {
-      border-color: #cbd5e1;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transform: translateY(-3px);
+      box-shadow: var(--glass-shadow-hover);
+      border-color: rgba(147, 197, 253, 0.85);
     }
 
     .kpi-mini-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 9px;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
       flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      transition: transform 0.2s var(--ease-tactile);
     }
 
-    .icon-blue { background: #eff6ff; color: #1d4ed8; }
-    .icon-teal { background: #f0fdfa; color: #0f766e; }
-    .icon-green { background: #ecfdf5; color: #059669; }
-    .icon-red { background: #fef2f2; color: #dc2626; }
-    .icon-amber { background: #fffbeb; color: #d97706; }
+    .icon-blue { background: rgba(239, 246, 255, 0.90); color: #1d4ed8; border: 1px solid rgba(191, 219, 254, 0.75); }
+    .icon-teal { background: rgba(240, 253, 250, 0.90); color: #0f766e; border: 1px solid rgba(153, 246, 228, 0.75); }
+    .icon-green { background: rgba(236, 253, 245, 0.90); color: #059669; border: 1px solid rgba(167, 243, 208, 0.75); }
+    .icon-red { background: rgba(254, 242, 242, 0.90); color: #dc2626; border: 1px solid rgba(254, 202, 202, 0.75); }
+    .icon-amber { background: rgba(255, 251, 235, 0.90); color: #d97706; border: 1px solid rgba(253, 230, 138, 0.75); }
 
     .kpi-mini-num {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
       line-height: 1.15;
-      color: #0f172a;
+      color: var(--glass-text-main);
       letter-spacing: -0.02em;
     }
 
     .kpi-mini-lbl {
       font-size: 11px;
       font-weight: 600;
-      color: #64748b;
-      margin-top: 1px;
+      color: var(--glass-text-dim);
+      margin-top: 2px;
     }
 
     /* ==================== CATEGORY CARDS & DATA TABLES ==================== */
     .category-card {
-      background: #ffffff;
-      border-radius: 14px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-      margin-bottom: 20px;
+      background: var(--glass-surface-base);
+      backdrop-filter: var(--glass-blur-md);
+      -webkit-backdrop-filter: var(--glass-blur-md);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--glass-border-light);
+      box-shadow: var(--glass-shadow-card);
+      margin-bottom: 22px;
       overflow: hidden;
       page-break-inside: auto;
-      transition: all 0.2s ease;
+      transition: var(--transition-tactile);
+    }
+
+    .category-card:hover {
+      box-shadow: var(--glass-shadow-hover);
+      border-color: rgba(147, 197, 253, 0.85);
     }
 
     .category-header {
-      padding: 12px 18px;
-      background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 14px 20px;
+      background: rgba(248, 250, 252, 0.82);
+      backdrop-filter: var(--glass-blur-sm);
+      -webkit-backdrop-filter: var(--glass-blur-sm);
+      border-bottom: 1px solid var(--glass-border-frosted);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -499,32 +583,33 @@
     .category-title-wrap {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .category-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 20px;
       flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
     }
 
     .category-name {
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--glass-text-main);
       line-height: 1.25;
       letter-spacing: -0.01em;
     }
 
     .category-desc {
       font-size: 11.5px;
-      color: #64748b;
-      margin-top: 1px;
+      color: var(--glass-text-dim);
+      margin-top: 2px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -538,35 +623,35 @@
     }
 
     .device-table th {
-      background: #f8fafc;
-      color: #64748b;
+      background: rgba(248, 250, 252, 0.85);
+      color: var(--glass-text-muted);
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 10px 16px;
-      border-bottom: 1px solid #e2e8f0;
+      letter-spacing: 0.05em;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--glass-border-frosted);
       white-space: nowrap;
     }
 
     .device-table td {
-      padding: 12px 16px;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 12.5px;
+      padding: 13px 18px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.65);
+      font-size: 13px;
       vertical-align: middle;
       transition: background 0.15s ease;
     }
 
     .device-table tbody tr:hover td {
-      background: #f8fafc;
+      background: rgba(241, 245, 249, 0.70);
     }
 
     .device-table tbody tr.row-abnormal td {
-      background: #fff8f8;
+      background: rgba(254, 242, 242, 0.65);
     }
 
     .device-table tbody tr.row-abnormal:hover td {
-      background: #fee2e2;
+      background: rgba(254, 226, 226, 0.85);
     }
 
     .device-table tbody tr:last-child td {
@@ -576,46 +661,54 @@
     /* Clean Monospace Asset Code */
     .asset-code-clean {
       display: inline-block;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-family: var(--font-mono);
       font-size: 12px;
-      font-weight: 600;
-      color: #334155;
-      background: #f1f5f9;
-      border: 1px solid #e2e8f0;
-      padding: 2.5px 7px;
-      border-radius: 6px;
+      font-weight: 700;
+      color: #1e293b;
+      background: rgba(241, 245, 249, 0.85);
+      border: 1px solid rgba(203, 213, 225, 0.8);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
       letter-spacing: 0.02em;
       white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
-    /* Status Badges - The Only Focal Pill */
+    /* Status Badges - The Single Focal Pill */
     .badge-status {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 11px;
+      padding: 4px 11px;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
       font-weight: 700;
       white-space: nowrap;
+      backdrop-filter: var(--glass-blur-sm);
+      -webkit-backdrop-filter: var(--glass-blur-sm);
+      transition: var(--transition-tactile);
     }
 
     .badge-status-ready {
-      background: #ecfdf5;
+      background: rgba(236, 253, 245, 0.92);
       color: #047857;
-      border: 1px solid #a7f3d0;
+      border: 1px solid rgba(167, 243, 208, 0.85);
+      box-shadow: 0 1px 4px rgba(5, 150, 105, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     }
 
     .badge-status-abnormal {
-      background: #fef2f2;
+      background: rgba(254, 242, 242, 0.95);
       color: #b91c1c;
-      border: 1px solid #fca5a5;
+      border: 1px solid rgba(254, 202, 202, 0.90);
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      animation: pulseBadgeAlert 1.6s infinite ease-in-out;
     }
 
     .badge-status-pending {
-      background: #fffbeb;
+      background: rgba(255, 251, 235, 0.92);
       color: #b45309;
-      border: 1px solid #fde68a;
+      border: 1px solid rgba(253, 230, 138, 0.85);
+      box-shadow: 0 1px 4px rgba(217, 119, 6, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     }
 
     .pulse-dot-red {
@@ -638,51 +731,57 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 5px 10px;
-      border-radius: 7px;
-      font-size: 11.5px;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
       font-weight: 600;
-      color: #334155;
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
+      color: var(--glass-text-main);
+      background: rgba(255, 255, 255, 0.90);
+      border: 1px solid var(--glass-border-frosted);
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.15s ease;
+      transition: all 0.18s var(--ease-tactile);
+      box-shadow: var(--glass-shadow-ambient);
     }
 
     .btn-table-slip:hover {
-      background: #f1f5f9;
+      background: #ffffff;
       border-color: #94a3b8;
-      color: #0f172a;
+      color: var(--glass-primary);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
     }
 
     .btn-table-check {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 5px 12px;
-      border-radius: 7px;
-      font-size: 11.5px;
-      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
       color: #ffffff;
-      background: #1e40af;
-      border: 1px solid #1e40af;
+      background: var(--glass-primary-gradient);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       cursor: pointer;
       text-decoration: none;
       white-space: nowrap;
-      transition: all 0.15s ease;
+      transition: all 0.18s var(--ease-tactile);
+      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
 
     .btn-table-check:hover {
-      background: #1d4ed8;
-      border-color: #1d4ed8;
+      background: linear-gradient(135deg, #172554 0%, #1d4ed8 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);
+      color: #ffffff;
     }
 
     /* Forms 8 Cards Grid (For View 2) */
     .forms-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 18px;
+      gap: 20px;
     }
 
     /* Print Only */
@@ -776,7 +875,7 @@
     }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800">
+<body class="min-h-screen">
 
   <!-- Preloader -->
   <div id="pageLoader" class="css-loader-overlay">
@@ -791,11 +890,11 @@
   <div class="workstation-layout">
 
     <!-- ==================== LEFT SIDEBAR ==================== -->
-    <aside class="app-sidebar no-print" id="appSidebar">
+    <aside class="app-sidebar glass-panel no-print" id="appSidebar">
       <!-- Sidebar Header -->
       <div class="sidebar-header">
         <a href="desktop.html" class="sidebar-brand">
-          <div style="width: 44px; height: 44px; background: #ffffff; border-radius: 10px; padding: 4px; display: flex; align-items: center; justify-content: center;">
+          <div class="brand-logo-squircle">
             <img src="logo.png" alt="PPCH" style="max-height: 100%; max-width: 100%; object-fit: contain;" onerror="this.src='https://placehold.co/80x40/ffffff/1e40af?text=PPCH'">
           </div>
           <div>
@@ -815,23 +914,23 @@
             <span>รูปแบบการแสดงผล</span>
           </div>
           <div class="view-nav-group">
-            <button onclick="setViewMode('daily')" id="navView_daily" class="view-nav-btn active">
+            <button onclick="setViewMode('daily')" id="navView_daily" class="view-nav-btn glass-pill active">
               <span class="material-icons-round">calendar_today</span>
               <span>รายงานประจำวัน (Daily)</span>
             </button>
-            <button onclick="setViewMode('battery')" id="navView_battery" class="view-nav-btn">
+            <button onclick="setViewMode('battery')" id="navView_battery" class="view-nav-btn glass-pill">
               <span class="material-icons-round">battery_charging_full</span>
               <span>สรุปตรวจแบตเตอรี่ UPS (1 & 16)</span>
             </button>
-            <button onclick="setViewMode('forms')" id="navView_forms" class="view-nav-btn">
+            <button onclick="setViewMode('forms')" id="navView_forms" class="view-nav-btn glass-pill">
               <span class="material-icons-round">apps</span>
               <span>แบบตรวจเช็ค (8 หมวด)</span>
             </button>
-            <button onclick="setViewMode('history')" id="navView_history" class="view-nav-btn">
+            <button onclick="setViewMode('history')" id="navView_history" class="view-nav-btn glass-pill">
               <span class="material-icons-round">history</span>
               <span>ประวัติการตรวจเช็คทั้งหมด</span>
             </button>
-            <button onclick="setViewMode('monthly')" id="navView_monthly" class="view-nav-btn">
+            <button onclick="setViewMode('monthly')" id="navView_monthly" class="view-nav-btn glass-pill">
               <span class="material-icons-round">date_range</span>
               <span>รายงานประจำเดือน (Monthly)</span>
             </button>
@@ -851,7 +950,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">event</span>
               วันที่ตรวจเช็ค (Date)
             </label>
-            <input type="date" id="sidebarDateInput" onchange="onDateChanged()">
+            <input type="date" id="sidebarDateInput" class="frosted-input" onchange="onDateChanged()">
             <div class="quick-date-group">
               <button onclick="setQuickDate('today')" id="btnDateToday" class="quick-date-btn active">วันนี้</button>
               <button onclick="setQuickDate('yesterday')" id="btnDateYesterday" class="quick-date-btn">เมื่อวาน</button>
@@ -872,15 +971,15 @@
 
             <!-- Month Picker -->
             <div id="histMonthSubBlock">
-              <input type="month" id="historyMonthInput" onchange="onHistoryFilterChanged()" style="width: 100%;">
+              <input type="month" id="historyMonthInput" class="frosted-input" onchange="onHistoryFilterChanged()" style="width: 100%;">
             </div>
 
             <!-- Custom Date Range -->
             <div id="histRangeSubBlock" style="display: none; flex-direction: column; gap: 6px;">
               <div style="font-size: 11px; color: #64748b;">จากวันที่:</div>
-              <input type="date" id="historyStartDate" onchange="onHistoryFilterChanged()">
+              <input type="date" id="historyStartDate" class="frosted-input" onchange="onHistoryFilterChanged()">
               <div style="font-size: 11px; color: #64748b;">ถึงวันที่:</div>
-              <input type="date" id="historyEndDate" onchange="onHistoryFilterChanged()">
+              <input type="date" id="historyEndDate" class="frosted-input" onchange="onHistoryFilterChanged()">
             </div>
           </div>
 
@@ -890,7 +989,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">calendar_month</span>
               เลือกรอบประจำเดือน
             </label>
-            <input type="month" id="monthlyMonthInput" onchange="onMonthlyMonthChanged()">
+            <input type="month" id="monthlyMonthInput" class="frosted-input" onchange="onMonthlyMonthChanged()">
           </div>
 
           <!-- 4. Battery Cycle Selector (Visible only in Battery view) -->
@@ -899,7 +998,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">event_repeat</span>
               เลือกรอบตรวจแบตเตอรี่ UPS (1 & 16)
             </label>
-            <select id="sidebarBatteryCycleSelect" onchange="onBatteryFilterChanged()">
+            <select id="sidebarBatteryCycleSelect" class="frosted-select" onchange="onBatteryFilterChanged()">
               <option value="latest">รอบล่าสุด (วันที่ 1 ต.ค. 2569)</option>
               <option value="2026-10-01">รอบวันที่ 1 ต.ค. 2569</option>
               <option value="2026-09-16">รอบวันที่ 16 ก.ย. 2569</option>
@@ -913,7 +1012,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">apartment</span>
               แผนกที่ใช้งาน / ผู้ถือครอง
             </label>
-            <select id="sidebarDeptSelect" onchange="applyFilters()">
+            <select id="sidebarDeptSelect" class="frosted-select" onchange="applyFilters()">
               <option value="all">ทุกแผนก (All Departments)</option>
             </select>
           </div>
@@ -924,7 +1023,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">medical_services</span>
               ประเภทเครื่องมือแพทย์
             </label>
-            <select id="sidebarCategorySelect" onchange="applyFilters()">
+            <select id="sidebarCategorySelect" class="frosted-select" onchange="applyFilters()">
               <option value="all">ทุกประเภท (8 หมวด)</option>
             </select>
           </div>
@@ -935,7 +1034,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">flag</span>
               สถานะความพร้อมวันนี้
             </label>
-            <select id="sidebarStatusSelect" onchange="applyFilters()">
+            <select id="sidebarStatusSelect" class="frosted-select" onchange="applyFilters()">
               <option value="all">ทั้งหมด (All Status)</option>
               <option value="ready">✅ ตรวจแล้ว - พร้อมใช้งาน</option>
               <option value="abnormal">⚠️ ตรวจแล้ว - พบข้อบกพร่อง</option>
@@ -949,7 +1048,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">fact_check</span>
               ผลการตรวจเช็ค
             </label>
-            <select id="historyResultSelect" onchange="onHistoryFilterChanged()">
+            <select id="historyResultSelect" class="frosted-select" onchange="onHistoryFilterChanged()">
               <option value="all">ผลการตรวจทั้งหมด</option>
               <option value="ready">✅ พร้อมใช้งาน (ปกติ)</option>
               <option value="abnormal">⚠️ พบข้อบกพร่อง / ชำรุด</option>
@@ -962,7 +1061,7 @@
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">search</span>
               ค้นหาด่วน (รหัสครุภัณฑ์ / ชื่อเครื่อง)
             </label>
-            <input type="text" id="sidebarSearchInput" oninput="applyFilters()" placeholder="พิมพ์ค้นหา...">
+            <input type="text" id="sidebarSearchInput" class="frosted-input" oninput="applyFilters()" placeholder="พิมพ์ค้นหา...">
           </div>
 
           <button onclick="resetFilters()" class="quick-date-btn" style="width: 100%; padding: 7px; margin-top: 4px;">
@@ -1010,7 +1109,7 @@
         </div>
 
         <!-- Live Status Pill in Sidebar -->
-        <div style="padding: 10px 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 8px;">
+        <div class="sidebar-status-pill glass-card">
           <span id="syncDot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; flex-shrink: 0;"></span>
           <span id="syncStatusText">เชื่อมต่อ Google Sheet เรียบร้อย</span>
         </div>
@@ -1037,7 +1136,7 @@
       </div>
 
       <!-- Executive Minimal Header -->
-      <div class="command-hero-clean no-print">
+      <div class="command-hero-clean glass-card no-print">
         <div class="command-hero-left">
           <div class="command-meta-bar">
             <span class="live-pulse-dot"></span>
@@ -1054,11 +1153,11 @@
         </div>
 
         <div class="command-hero-right">
-          <div class="stat-badge-clean">
+          <div class="stat-badge-clean glass-pill">
             <span class="material-icons-round" style="color: #1e40af; font-size: 18px;">inventory_2</span>
             <span id="filteredCountBadge">กำลังประมวลผล...</span>
           </div>
-          <button onclick="window.print()" class="btn-print-clean" title="พิมพ์รายงาน A4">
+          <button onclick="window.print()" class="btn-print-clean btn-glass-secondary" title="พิมพ์รายงาน A4">
             <span class="material-icons-round" style="font-size: 16px;">print</span>
             <span>พิมพ์ A4</span>
           </button>
@@ -1066,10 +1165,10 @@
       </div>
 
       <!-- Minimalist KPI Strip -->
-      <div id="kpiStripContainer" class="kpi-strip no-print">
+      <div id="kpiStripContainer" class="kpi-strip kpi-grid-5 no-print">
         <!-- 1: Total Devices -->
-        <div class="kpi-mini-card">
-          <div class="kpi-mini-icon icon-blue">
+        <div class="kpi-mini-card glass-card">
+          <div class="kpi-mini-icon squircle-icon icon-blue">
             <span class="material-icons-round">medical_services</span>
           </div>
           <div>
@@ -1079,8 +1178,8 @@
         </div>
 
         <!-- 2: Checked Today -->
-        <div class="kpi-mini-card">
-          <div class="kpi-mini-icon icon-teal">
+        <div class="kpi-mini-card glass-card">
+          <div class="kpi-mini-icon squircle-icon icon-teal">
             <span class="material-icons-round">fact_check</span>
           </div>
           <div>
@@ -1090,8 +1189,8 @@
         </div>
 
         <!-- 3: Ready Devices -->
-        <div class="kpi-mini-card">
-          <div class="kpi-mini-icon icon-green">
+        <div class="kpi-mini-card glass-card">
+          <div class="kpi-mini-icon squircle-icon icon-green">
             <span class="material-icons-round">check_circle</span>
           </div>
           <div>
@@ -1101,8 +1200,8 @@
         </div>
 
         <!-- 4: Abnormal Devices -->
-        <div class="kpi-mini-card" id="kpiCardAbnormal">
-          <div class="kpi-mini-icon icon-red">
+        <div class="kpi-mini-card glass-card" id="kpiCardAbnormal">
+          <div class="kpi-mini-icon squircle-icon icon-red">
             <span class="material-icons-round">error</span>
           </div>
           <div>
@@ -1112,8 +1211,8 @@
         </div>
 
         <!-- 5: Pending Devices -->
-        <div class="kpi-mini-card">
-          <div class="kpi-mini-icon icon-amber">
+        <div class="kpi-mini-card glass-card">
+          <div class="kpi-mini-icon squircle-icon icon-amber">
             <span class="material-icons-round">schedule</span>
           </div>
           <div>
@@ -1138,10 +1237,10 @@
 
       <!-- ==================== VIEW 3: ALL HISTORY LOGS ==================== -->
       <div id="viewHistoryContainer" style="display: none;">
-        <div class="category-card">
-          <div class="category-header">
+        <div class="category-card glass-panel">
+          <div class="category-header glass-card">
             <div style="font-weight: 700; font-size: 15px; color: #0f172a;">ประวัติการบันทึกผลการตรวจเช็คทั้งหมด (Historical Records)</div>
-            <span id="historyLogCount" style="font-size: 12px; color: #64748b;">-</span>
+            <span id="historyLogCount" class="badge-status glass-pill" style="font-size: 12px; color: #64748b;">-</span>
           </div>
           <div style="overflow-x: auto;">
             <table class="device-table">
@@ -1167,10 +1266,10 @@
 
       <!-- ==================== VIEW 4: MONTHLY REPORT ==================== -->
       <div id="viewMonthlyContainer" style="display: none;">
-        <div class="category-card">
-          <div class="category-header">
+        <div class="category-card glass-panel">
+          <div class="category-header glass-card">
             <div style="font-weight: 700; font-size: 15px; color: #0f172a;">รายงานสรุปผลการประเมินประจำเดือน (Monthly Compliance)</div>
-            <span id="monthlySubtitle" style="font-size: 12px; color: #64748b;">-</span>
+            <span id="monthlySubtitle" class="badge-status glass-pill" style="font-size: 12px; color: #64748b;">-</span>
           </div>
           <div style="overflow-x: auto;">
             <table class="device-table">
@@ -1197,23 +1296,23 @@
       <!-- ==================== VIEW 5: UPS BATTERY INSPECTION REPORT (DEDICATED) ==================== -->
       <div id="viewBatteryContainer" style="display: none;">
         <!-- Banner Info Card -->
-        <div style="background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); color: #ffffff; border-radius: 14px; padding: 18px 24px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(30, 64, 175, 0.15); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;" class="no-print">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-              <span class="material-icons-round" style="font-size: 28px; color: #60a5fa;">battery_charging_full</span>
+        <div class="glass-panel no-print" style="background: linear-gradient(135deg, rgba(30, 64, 175, 0.92) 0%, rgba(30, 58, 138, 0.96) 100%); color: #ffffff; border-radius: 16px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 8px 32px 0 rgba(30, 64, 175, 0.25); border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div class="squircle-icon" style="width: 48px; height: 48px; border-radius: 14px; background: rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+              <span class="material-icons-round" style="font-size: 28px; color: #93c5fd;">battery_charging_full</span>
             </div>
             <div>
-              <div style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+              <div style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                 <span>การตรวจสอบแบตเตอรี่สำรอง / UPS เครื่องมือแพทย์</span>
-                <span style="font-size: 11px; background: #fbbf24; color: #78350f; padding: 2px 8px; border-radius: 9999px; font-weight: 800;">รอบวันที่ 1 & 16 ของเดือน</span>
+                <span class="glass-pill" style="font-size: 11px; background: #fbbf24; color: #78350f; padding: 3px 10px; border-radius: 9999px; font-weight: 800; border: 1px solid rgba(245, 158, 11, 0.3);">รอบวันที่ 1 & 16 ของเดือน</span>
               </div>
-              <div style="font-size: 12.5px; opacity: 0.9; margin-top: 3px;">
+              <div style="font-size: 12.5px; opacity: 0.92; margin-top: 4px;">
                 บังคับตรวจสอบทุกๆ วันที่ 1 และ 16 ของเดือน ทุกเครื่อง (วันอื่นๆ ไม่ต้องตรวจ) • บันทึกระยะเวลาใช้งานจริง (ชั่วโมง : นาที)
               </div>
             </div>
           </div>
           <div style="display: flex; gap: 8px;">
-            <a href="eval.html?batteryCheck=1" class="btn-ppch" style="background: #ffffff; color: #1e40af; font-size: 12.5px; font-weight: 700; padding: 9px 18px; text-decoration: none; border-radius: 9px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <a href="eval.html?batteryCheck=1" class="btn-ppch btn-glass-secondary" style="background: rgba(255, 255, 255, 0.95); color: #1e40af; font-size: 12.5px; font-weight: 800; padding: 9px 18px; text-decoration: none; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.12); border: 1px solid rgba(255, 255, 255, 0.8);">
               <span class="material-icons-round" style="font-size: 16px;">add_circle</span>
               <span>ประเมินรอบตรวจแบตเตอรี่</span>
             </a>
@@ -1221,9 +1320,9 @@
         </div>
 
         <!-- Dedicated Battery KPIs Strip -->
-        <div class="kpi-strip no-print" style="margin-bottom: 20px;">
-          <div class="kpi-mini-card">
-            <div class="kpi-mini-icon icon-blue">
+        <div class="kpi-strip kpi-grid-4 no-print" style="margin-bottom: 20px;">
+          <div class="kpi-mini-card glass-card">
+            <div class="kpi-mini-icon squircle-icon icon-blue">
               <span class="material-icons-round">medical_services</span>
             </div>
             <div>
@@ -1232,8 +1331,8 @@
             </div>
           </div>
 
-          <div class="kpi-mini-card">
-            <div class="kpi-mini-icon icon-green">
+          <div class="kpi-mini-card glass-card">
+            <div class="kpi-mini-icon squircle-icon icon-green">
               <span class="material-icons-round">battery_charging_full</span>
             </div>
             <div>
@@ -1242,8 +1341,8 @@
             </div>
           </div>
 
-          <div class="kpi-mini-card">
-            <div class="kpi-mini-icon icon-amber">
+          <div class="kpi-mini-card glass-card">
+            <div class="kpi-mini-icon squircle-icon icon-amber">
               <span class="material-icons-round">hourglass_empty</span>
             </div>
             <div>
@@ -1252,8 +1351,8 @@
             </div>
           </div>
 
-          <div class="kpi-mini-card">
-            <div class="kpi-mini-icon icon-teal">
+          <div class="kpi-mini-card glass-card">
+            <div class="kpi-mini-icon squircle-icon icon-teal">
               <span class="material-icons-round">timer</span>
             </div>
             <div>
@@ -1264,13 +1363,13 @@
         </div>
 
         <!-- Battery Data Table -->
-        <div class="category-card">
-          <div class="category-header">
+        <div class="category-card glass-panel">
+          <div class="category-header glass-card">
             <div>
               <div style="font-weight: 700; font-size: 15px; color: #0f172a;">ตารางสรุปผลการตรวจสอบระยะเวลาใช้งานจริงแบตเตอรี่ UPS (รอบวันที่ 1 & 16)</div>
               <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;" id="batteryTableSubtitle">รอบการประเมิน: ล่าสุด • โรงพยาบาลพิษณุเวช</div>
             </div>
-            <span id="batteryRowCountBadge" style="font-size: 12px; color: #64748b;">-</span>
+            <span id="batteryRowCountBadge" class="badge-status glass-pill" style="font-size: 12px; color: #64748b;">-</span>
           </div>
           <div style="overflow-x: auto;">
             <table class="device-table">
@@ -1297,7 +1396,7 @@
       </div>
 
       <!-- Empty State -->
-      <div id="emptyState" style="display: none; padding: 60px 20px; text-align: center; color: #94a3b8; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0;">
+      <div id="emptyState" class="glass-panel" style="display: none; padding: 60px 20px; text-align: center; color: #94a3b8; border-radius: 16px;">
         <span class="material-icons-round" style="font-size: 54px; opacity: 0.35;">inventory_2</span>
         <div style="font-size: 15px; font-weight: 600; margin-top: 10px; color: #475569;">ไม่พบข้อมูลเครื่องมือแพทย์ที่ตรงกับตัวกรอง</div>
         <div style="font-size: 12px; margin-top: 4px;">ลองเปลี่ยนตัวกรองแผนก หรือกดปุ่มรีเซ็ตตัวกรองที่แถบซ้ายมือ</div>
@@ -1307,11 +1406,11 @@
   </div>
 
   <!-- ==================== RELOCATION MODAL ==================== -->
-  <div id="relocationModal" class="modal-overlay hidden no-print">
-    <div class="modal-card" style="max-width: 500px;">
+  <div id="relocationModal" class="modal-overlay glass-modal-overlay hidden no-print">
+    <div class="modal-card glass-modal-card" style="max-width: 500px;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 40px; height: 40px; border-radius: 10px; background: #ccfbf1; color: #0d9488; display: flex; align-items: center; justify-content: center;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="squircle-icon" style="width: 40px; height: 40px; border-radius: 12px; background: rgba(204, 251, 241, 0.85); color: #0d9488; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(153, 246, 228, 0.8);">
             <span class="material-icons-round" style="font-size: 22px;">swap_horiz</span>
           </div>
           <div>
@@ -1319,7 +1418,7 @@
             <p style="font-size: 11px; color: #64748b;">โอนย้ายสิทธิ์การครอบครองและการตรวจเช็คประจำวัน</p>
           </div>
         </div>
-        <button onclick="closeRelocationModal()" style="border: none; background: none; color: #94a3b8; cursor: pointer;">
+        <button onclick="closeRelocationModal()" style="border: none; background: none; color: #94a3b8; cursor: pointer; padding: 4px;">
           <span class="material-icons-round">close</span>
         </button>
       </div>
@@ -1327,40 +1426,40 @@
       <form id="relocationForm" onsubmit="handleRelocationSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
         <div>
           <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">เลือกเครื่องมือแพทย์ที่ต้องการย้าย *</label>
-          <select id="transferDeviceId" onchange="updateTransferCurrentDeptDisplay()" required 
-            style="width: 100%; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; background: #ffffff;">
+          <select id="transferDeviceId" onchange="updateTransferCurrentDeptDisplay()" required class="frosted-select"
+            style="width: 100%; padding: 10px 14px; font-size: 12px;">
             <option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>
           </select>
         </div>
 
-        <div style="padding: 10px 14px; background: #eff6ff; border-radius: 8px; font-size: 12px; display: flex; justify-content: space-between; align-items: center;">
+        <div class="glass-card" style="padding: 10px 14px; background: rgba(239, 246, 255, 0.75); border-radius: 10px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(191, 219, 254, 0.6);">
           <span style="color: #64748b;">แผนกผู้ถือครองปัจจุบัน:</span>
           <span id="currentDeptLabel" style="font-weight: 800; color: #1e40af;">กรุณาเลือกเครื่องก่อน</span>
         </div>
 
         <div>
           <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">แผนกปลายทางที่รับเครื่องไปใช้งาน *</label>
-          <select id="transferTargetDept" required 
-            style="width: 100%; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; background: #ffffff;">
+          <select id="transferTargetDept" required class="frosted-select"
+            style="width: 100%; padding: 10px 14px; font-size: 12px;">
             <option value="">-- เลือกแผนกปลายทาง --</option>
           </select>
         </div>
 
         <div>
           <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">ชื่อผู้ทำรายการ / พยาบาลผู้รับมอบ *</label>
-          <input type="text" id="transferByName" required placeholder="เช่น พว.สมศรี สดใส (Ward 2-3)" 
-            style="width: 100%; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px;">
+          <input type="text" id="transferByName" required placeholder="เช่น พว.สมศรี สดใส (Ward 2-3)" class="frosted-input"
+            style="width: 100%; padding: 10px 14px; font-size: 12px;">
         </div>
 
         <div>
           <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">เหตุผลการขอยืม / โอนย้าย</label>
-          <input type="text" id="transferReason" placeholder="เช่น ใช้งานกรณีฉุกเฉินผู้ป่วยเตียง 302" 
-            style="width: 100%; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px;">
+          <input type="text" id="transferReason" placeholder="เช่น ใช้งานกรณีฉุกเฉินผู้ป่วยเตียง 302" class="frosted-input"
+            style="width: 100%; padding: 10px 14px; font-size: 12px;">
         </div>
 
         <div style="display: flex; gap: 10px; margin-top: 6px;">
-          <button type="button" onclick="closeRelocationModal()" class="btn-ppch btn-ppch-outline" style="flex: 1; font-size: 12px;">ยกเลิก</button>
-          <button type="submit" class="btn-ppch btn-ppch-teal" style="flex: 1.5; font-size: 12px;">
+          <button type="button" onclick="closeRelocationModal()" class="btn-ppch btn-glass-secondary" style="flex: 1; font-size: 12px;">ยกเลิก</button>
+          <button type="submit" class="btn-ppch btn-ppch-teal" style="flex: 1.5; font-size: 12px; box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25);">
             <span class="material-icons-round" style="font-size: 16px;">check</span>
             <span>บันทึกการย้ายเครื่อง</span>
           </button>
@@ -1370,54 +1469,54 @@
   </div>
 
   <!-- ==================== QR CODE MODAL ==================== -->
-  <div id="qrModal" class="modal-overlay hidden no-print">
-    <div class="modal-card" style="max-width: 380px; text-align: center;">
+  <div id="qrModal" class="modal-overlay glass-modal-overlay hidden no-print">
+    <div class="modal-card glass-modal-card" style="max-width: 380px; text-align: center;">
       <h3 id="qrModalTitle" style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">QR Code แบบประเมิน</h3>
       <p id="qrModalSubtitle" style="font-size: 12px; color: #64748b; margin-bottom: 16px;">สแกนเพื่อเปิดแบบประเมินบนมือถือ</p>
 
-      <div style="background: #ffffff; padding: 16px; border-radius: 16px; display: inline-block; border: 1.5px solid #e2e8f0; margin-bottom: 16px;">
+      <div class="glass-card" style="background: rgba(255, 255, 255, 0.95); padding: 16px; border-radius: 16px; display: inline-block; border: 1px solid rgba(226, 232, 240, 0.8); margin-bottom: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
         <div id="qrcodeCanvas"></div>
       </div>
 
       <div style="display: flex; gap: 6px; margin-bottom: 16px;">
-        <input type="text" id="qrModalUrl" readonly style="flex: 1; padding: 8px 10px; font-size: 11px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace;">
-        <button onclick="copyFormLink()" class="btn-ppch btn-ppch-outline" style="padding: 8px 12px; font-size: 11px;">คัดลอก</button>
+        <input type="text" id="qrModalUrl" readonly class="frosted-input" style="flex: 1; padding: 8px 10px; font-size: 11px; background: rgba(248, 250, 252, 0.85); font-family: monospace;">
+        <button onclick="copyFormLink()" class="btn-ppch btn-glass-secondary" style="padding: 8px 12px; font-size: 11px;">คัดลอก</button>
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button onclick="closeQrModal()" class="btn-ppch btn-ppch-outline" style="flex: 1; font-size: 12px;">ปิด</button>
-        <a id="qrOpenLink" href="#" target="_blank" class="btn-ppch btn-ppch-primary" style="flex: 1; font-size: 12px; text-decoration: none;">เปิดหน้าฟอร์ม</a>
+        <button onclick="closeQrModal()" class="btn-ppch btn-glass-secondary" style="flex: 1; font-size: 12px;">ปิด</button>
+        <a id="qrOpenLink" href="#" target="_blank" class="btn-ppch btn-ppch-primary" style="flex: 1; font-size: 12px; text-decoration: none; box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);">เปิดหน้าฟอร์ม</a>
       </div>
     </div>
   </div>
 
   <!-- ==================== ADMIN PIN MODAL ==================== -->
-  <div id="adminPinModal" class="modal-overlay hidden no-print">
-    <div class="modal-card" style="max-width: 360px; text-align: center;">
-      <div style="width: 48px; height: 48px; border-radius: 12px; background: #eff6ff; color: #1e40af; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+  <div id="adminPinModal" class="modal-overlay glass-modal-overlay hidden no-print">
+    <div class="modal-card glass-modal-card" style="max-width: 360px; text-align: center;">
+      <div class="squircle-icon" style="width: 48px; height: 48px; border-radius: 14px; background: rgba(239, 246, 255, 0.85); color: #1e40af; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; border: 1px solid rgba(191, 219, 254, 0.6);">
         <span class="material-icons-round" style="font-size: 26px;">lock</span>
       </div>
       <h3 style="font-size: 17px; font-weight: 800; margin-bottom: 4px;">เข้าสู่ระบบ Admin</h3>
       <p style="font-size: 11.5px; color: #64748b; margin-bottom: 16px;">เฉพาะวิศวกรชีวการแพทย์ และผู้ดูแลระบบ</p>
 
       <form onsubmit="handleAdminLogin(event)" style="display: flex; flex-direction: column; gap: 12px;">
-        <input type="password" id="adminPinInput" required placeholder="Admin PIN"
-          style="width: 100%; text-align: center; font-size: 22px; letter-spacing: 6px; font-family: monospace; font-weight: 700; padding: 10px; border: 2px solid #cbd5e1; border-radius: 10px; background: #f8fafc;">
+        <input type="password" id="adminPinInput" required placeholder="Admin PIN" class="frosted-input"
+          style="width: 100%; text-align: center; font-size: 22px; letter-spacing: 6px; font-family: monospace; font-weight: 700; padding: 10px; border: 2px solid rgba(203, 213, 225, 0.8); border-radius: 12px; background: rgba(248, 250, 252, 0.85);">
         <div style="font-size: 10.5px; color: #94a3b8;">รหัสผ่านเริ่มต้น: ppch1234</div>
         <div style="display: flex; gap: 8px; margin-top: 4px;">
-          <button type="button" onclick="closeAdminModal()" class="btn-ppch btn-ppch-outline" style="flex: 1; font-size: 12px;">ยกเลิก</button>
-          <button type="submit" class="btn-ppch btn-ppch-primary" style="flex: 1; font-size: 12px;">เข้าใช้งาน</button>
+          <button type="button" onclick="closeAdminModal()" class="btn-ppch btn-glass-secondary" style="flex: 1; font-size: 12px;">ยกเลิก</button>
+          <button type="submit" class="btn-ppch btn-ppch-primary" style="flex: 1; font-size: 12px; box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);">เข้าใช้งาน</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- ==================== INSPECTION DETAIL SLIP MODAL ==================== -->
-  <div id="detailModal" class="modal-overlay hidden no-print">
-    <div class="modal-card" style="max-width: 600px; width: 95%;">
-      <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+  <div id="detailModal" class="modal-overlay glass-modal-overlay hidden no-print">
+    <div class="modal-card glass-modal-card" style="max-width: 600px; width: 95%;">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(226, 232, 240, 0.8); padding-bottom: 12px;">
         <div>
-          <div style="display: inline-flex; align-items: center; gap: 6px; background: #eff6ff; color: #1e40af; padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; margin-bottom: 4px;">
+          <div class="glass-pill" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(239, 246, 255, 0.85); color: #1e40af; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; margin-bottom: 6px; border: 1px solid rgba(191, 219, 254, 0.7);">
             <span class="material-icons-round" style="font-size: 14px;">verified</span>
             <span>สลิปบันทึกการประเมินทางการ</span>
           </div>
@@ -1430,25 +1529,25 @@
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; font-size: 12px;">
-        <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div class="glass-card" style="background: rgba(248, 250, 252, 0.75); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(226, 232, 240, 0.8);">
           <div style="color: #64748b;">แผนกที่ตรวจเช็ค:</div>
           <div id="modalDeptName" style="font-weight: 700; color: #1e293b; margin-top: 2px;">-</div>
         </div>
-        <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div class="glass-card" style="background: rgba(248, 250, 252, 0.75); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(226, 232, 240, 0.8);">
           <div style="color: #64748b;">ผู้ประเมิน:</div>
           <div id="modalEvaluator" style="font-weight: 700; color: #1e293b; margin-top: 2px;">-</div>
         </div>
-        <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div class="glass-card" style="background: rgba(248, 250, 252, 0.75); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(226, 232, 240, 0.8);">
           <div style="color: #64748b;">วัน-เวลาที่ตรวจ:</div>
           <div id="modalDate" style="font-weight: 700; color: #1e293b; margin-top: 2px;">-</div>
         </div>
-        <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div class="glass-card" style="background: rgba(248, 250, 252, 0.75); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(226, 232, 240, 0.8);">
           <div style="color: #64748b;">ผลการตรวจ:</div>
           <div id="modalStatusBadge" style="margin-top: 3px;">-</div>
         </div>
       </div>
 
-      <div id="modalAbnormalBox" style="display: none; background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+      <div id="modalAbnormalBox" class="glass-card" style="display: none; background: rgba(254, 242, 242, 0.85); border: 1.5px solid rgba(254, 202, 202, 0.8); border-radius: 12px; padding: 14px; margin-bottom: 14px; backdrop-filter: blur(8px);">
         <div style="display: flex; align-items: center; gap: 6px; color: #b91c1c; font-weight: 700; font-size: 12px; margin-bottom: 4px;">
           <span class="material-icons-round" style="font-size: 16px;">error</span>
           <span>ข้อบกพร่อง / อาการที่แจ้งซ่อม</span>
@@ -1457,17 +1556,17 @@
       </div>
 
       <!-- Battery UPS Result Box (Shows if evaluated) -->
-      <div id="modalBatteryBox" style="display: none; background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+      <div id="modalBatteryBox" class="glass-card" style="display: none; background: rgba(239, 246, 255, 0.85); border: 1.5px solid rgba(191, 219, 254, 0.8); border-radius: 12px; padding: 14px; margin-bottom: 14px; backdrop-filter: blur(8px);">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
           <div style="display: flex; align-items: center; gap: 6px; color: #1e40af; font-weight: 700; font-size: 12px;">
             <span class="material-icons-round" style="font-size: 16px;">battery_charging_full</span>
             <span>ผลการตรวจสอบแบตเตอรี่สำรอง / UPS (รอบวันที่ 1 & 16)</span>
           </div>
-          <span id="modalBatteryCycleTag" style="font-size: 11px; font-weight: 700; background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 6px;">รอบวันที่ 1 & 16</span>
+          <span id="modalBatteryCycleTag" class="glass-pill" style="font-size: 11px; font-weight: 700; background: #dbeafe; color: #1e40af; padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(191, 219, 254, 0.8);">รอบวันที่ 1 & 16</span>
         </div>
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
           <span style="font-size: 12px; color: #475569;">ระยะเวลาในการใช้งานได้จริง:</span>
-          <span id="modalBatteryRuntime" style="font-family: monospace; font-size: 14px; font-weight: 800; color: #1e40af; background: #ffffff; padding: 2px 10px; border-radius: 6px; border: 1px solid #bfdbfe;">-- : -- ชม.</span>
+          <span id="modalBatteryRuntime" style="font-family: monospace; font-size: 14px; font-weight: 800; color: #1e40af; background: rgba(255, 255, 255, 0.9); padding: 3px 12px; border-radius: 8px; border: 1px solid #bfdbfe; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">-- : -- ชม.</span>
         </div>
       </div>
 
@@ -1478,9 +1577,9 @@
         </div>
       </div>
 
-      <div style="display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #e2e8f0; padding-top: 12px;">
-        <button type="button" onclick="closeDetailModal()" class="btn-ppch btn-ppch-outline" style="font-size: 12px;">ปิด</button>
-        <button type="button" onclick="window.print()" class="btn-ppch btn-ppch-primary" style="font-size: 12px;">
+      <div style="display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid rgba(226, 232, 240, 0.8); padding-top: 12px;">
+        <button type="button" onclick="closeDetailModal()" class="btn-ppch btn-glass-secondary" style="font-size: 12px;">ปิด</button>
+        <button type="button" onclick="window.print()" class="btn-ppch btn-ppch-primary" style="font-size: 12px; box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);">
           <span class="material-icons-round" style="font-size: 16px;">print</span>
           <span>พิมพ์สลิปนี้</span>
         </button>
@@ -2015,10 +2114,10 @@
         var badgePillText = 'ตรวจแล้ว ' + catChecked + '/' + devicesInCategory.length + ' เครื่อง';
         if (catAbnormal > 0) badgePillText += ' (⚠️ ผิดปกติ ' + catAbnormal + ')';
 
-        html += '<div class="category-card">' +
-          '<div class="category-header">' +
+        html += '<div class="category-card glass-panel">' +
+          '<div class="category-header glass-card">' +
             '<div class="category-title-wrap">' +
-              '<div class="category-avatar" style="background: ' + meta.bg + '; color: ' + meta.color + ';">' +
+              '<div class="category-avatar squircle-icon" style="background: ' + meta.bg + '; color: ' + meta.color + ';">' +
                 '<span class="material-icons-round">' + meta.icon + '</span>' +
               '</div>' +
               '<div>' +
@@ -2031,7 +2130,7 @@
               '</div>' +
             '</div>' +
             '<div>' +
-              '<span class="badge-status" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : '#f8fafc') + '; color: ' + (catAbnormal > 0 ? '#b91c1c' : '#475569') + '; border: 1px solid ' + (catAbnormal > 0 ? '#fca5a5' : '#e2e8f0') + ';">' + badgePillText + '</span>' +
+              '<span class="badge-status glass-pill" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : 'rgba(255, 255, 255, 0.75)') + '; color: ' + (catAbnormal > 0 ? '#b91c1c' : '#475569') + '; border: 1px solid ' + (catAbnormal > 0 ? '#fca5a5' : 'rgba(226, 232, 240, 0.8)') + ';">' + badgePillText + '</span>' +
             '</div>' +
           '</div>' +
           '<div style="overflow-x: auto;">' +
@@ -2061,14 +2160,14 @@
           if (ev) {
             var timeOnly = formatTimeOnly(ev.evaluatedAt);
             if (ev.result === 'abnormal') {
-              statusBadge = '<span class="badge-status badge-status-abnormal"><span class="pulse-dot-red"></span><span class="material-icons-round" style="font-size: 14px;">warning</span> พบข้อบกพร่อง</span>';
+              statusBadge = '<span class="badge-status badge-status-abnormal glass-pill"><span class="pulse-dot-red"></span><span class="material-icons-round" style="font-size: 14px;">warning</span> พบข้อบกพร่อง</span>';
               evalInfo = '<div style="font-weight: 700; color: #dc2626; font-size: 12.5px;">' + timeOnly + ' น.</div>' +
                 '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (ev.evaluatedBy || 'ไม่ระบุ') + '</div>';
               defectNote = '<span style="color: #dc2626; font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">' +
                 '<span class="material-icons-round" style="font-size: 15px;">warning</span> ' + (ev.abnormalNote || 'พบความผิดปกติ') +
               '</span>';
             } else {
-              statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 13px;">check_circle</span> พร้อมใช้งาน</span>';
+              statusBadge = '<span class="badge-status badge-status-ready glass-pill"><span class="material-icons-round" style="font-size: 13px;">check_circle</span> พร้อมใช้งาน</span>';
               evalInfo = '<div style="font-weight: 700; color: #0f172a; font-size: 12.5px;">' + timeOnly + ' น.</div>' +
                 '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (ev.evaluatedBy || 'ไม่ระบุ') + '</div>';
               defectNote = '<span style="color: #059669; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 3px;">' +
@@ -2078,7 +2177,7 @@
             actionBtn = '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + eq.id + '\')" class="btn-table-slip">' +
               '<span class="material-icons-round" style="font-size: 14px; color: #1e40af;">receipt_long</span><span>สลิป</span></button>';
           } else {
-            statusBadge = '<span class="badge-status badge-status-pending"><span class="material-icons-round" style="font-size: 13px;">schedule</span> รอตรวจ</span>';
+            statusBadge = '<span class="badge-status badge-status-pending glass-pill"><span class="material-icons-round" style="font-size: 13px;">schedule</span> รอตรวจ</span>';
             evalInfo = '<span style="color: #94a3b8; font-size: 12px;">-</span>';
             defectNote = '<span style="color: #94a3b8; font-size: 12px;">-</span>';
             actionBtn = '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" class="btn-table-check">' +
@@ -2144,17 +2243,17 @@
         var eqCount = allEquipment.filter(function (eq) { return eq.formId === f.id; }).length;
 
         var freqBadge = f.frequency === 'daily'
-          ? '<span class="badge-pill daily"><span class="material-icons-round" style="font-size: 13px;">schedule</span> ทุกวัน (Daily)</span>'
-          : '<span class="badge-pill monthly"><span class="material-icons-round" style="font-size: 13px;">event</span> ประจำเดือน (Monthly)</span>';
+          ? '<span class="badge-pill glass-pill daily"><span class="material-icons-round" style="font-size: 13px;">schedule</span> ทุกวัน (Daily)</span>'
+          : '<span class="badge-pill glass-pill monthly"><span class="material-icons-round" style="font-size: 13px;">event</span> ประจำเดือน (Monthly)</span>';
 
-        html += '<div class="form-item-card">' +
+        html += '<div class="form-item-card glass-card">' +
           '<div>' +
             '<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">' +
               freqBadge +
-              '<span style="font-size: 11px; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 6px;">' + f.category + '</span>' +
+              '<span class="glass-pill" style="font-size: 11px; font-weight: 700; color: #0284c7; background: rgba(224, 242, 254, 0.8); padding: 3px 10px; border-radius: 9999px; border: 1px solid rgba(186, 230, 253, 0.6);">' + f.category + '</span>' +
             '</div>' +
             '<div class="form-card-top">' +
-              '<div class="form-icon-avatar" style="background: ' + meta.bg + '; color: ' + meta.color + ';">' +
+              '<div class="form-icon-avatar squircle-icon" style="background: ' + meta.bg + '; color: ' + meta.color + ';">' +
                 '<span class="material-icons-round">' + meta.icon + '</span>' +
               '</div>' +
               '<div class="form-card-info">' +
@@ -2162,17 +2261,17 @@
                 '<p>' + f.description + '</p>' +
               '</div>' +
             '</div>' +
-            '<div class="form-meta-box">' +
+            '<div class="form-meta-box glass-card">' +
               '<span style="color: #64748b;">เครื่องประจำการในระบบ:</span>' +
               '<span style="font-weight: 700; color: #1e293b;">' + eqCount + ' เครื่อง</span>' +
             '</div>' +
           '</div>' +
           '<div class="form-actions-bar">' +
-            '<a href="eval.html?formId=' + f.id + '" class="btn-ppch btn-ppch-primary" style="flex: 1; text-decoration: none;">' +
+            '<a href="eval.html?formId=' + f.id + '" class="btn-ppch btn-ppch-primary" style="flex: 1; text-decoration: none; box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);">' +
               '<span class="material-icons-round" style="font-size: 18px;">assignment_turned_in</span>' +
               '<span>เปิดแบบประเมิน</span>' +
             '</a>' +
-            '<button onclick="openQrModal(\'' + f.id + '\')" title="ดู QR Code" class="btn-ppch btn-ppch-outline btn-ppch-icon-only">' +
+            '<button onclick="openQrModal(\'' + f.id + '\')" title="ดู QR Code" class="btn-ppch btn-glass-secondary btn-ppch-icon-only">' +
               '<span class="material-icons-round" style="font-size: 20px;">qr_code_2</span>' +
             '</button>' +
           '</div>' +
@@ -2512,26 +2611,26 @@
         var cycleText = '-';
         var evalTimeText = '-';
         var runtimeText = '<span style="color: #94a3b8; font-size: 11.5px;">- ยังไม่บันทึก -</span>';
-        var statusBadge = '<span class="battery-badge-pending"><span class="material-icons-round" style="font-size: 13px;">schedule</span> ยังไม่ตรวจในรอบ</span>';
+        var statusBadge = '<span class="battery-badge-pending glass-pill"><span class="material-icons-round" style="font-size: 13px;">schedule</span> ยังไม่ตรวจในรอบ</span>';
         var evaluatorText = '-';
-        var actionBtn = '<a href="eval.html?formId=' + eq.formId + '&deviceId=' + eq.id + '&batteryCheck=1" class="btn-ppch btn-ppch-primary" style="padding: 4px 8px; font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;"><span class="material-icons-round" style="font-size: 13px;">bolt</span><span>ตรวจรอบนี้</span></a>';
+        var actionBtn = '<a href="eval.html?formId=' + eq.formId + '&deviceId=' + eq.id + '&batteryCheck=1" class="btn-ppch btn-ppch-primary" style="padding: 4px 10px; font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);"><span class="material-icons-round" style="font-size: 13px;">bolt</span><span>ตรวจรอบนี้</span></a>';
 
         if (ev && ev.upsBattery && ev.upsBattery.tested) {
           var b = ev.upsBattery;
           var cDate = b.cycleDate || (ev.evaluatedAt ? ev.evaluatedAt.slice(0, 10) : '1');
-          cycleText = '<span style="background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; white-space: nowrap;">รอบ ' + (cDate.indexOf('-') !== -1 ? parseThaiDateShort(cDate) : ('วันที่ ' + cDate)) + '</span>';
+          cycleText = '<span class="glass-pill" style="background: rgba(254, 243, 199, 0.85); color: #92400e; padding: 2px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; white-space: nowrap; border: 1px solid rgba(245, 158, 11, 0.3);">รอบ ' + (cDate.indexOf('-') !== -1 ? parseThaiDateShort(cDate) : ('วันที่ ' + cDate)) + '</span>';
           evalTimeText = formatFullDateTime(ev.evaluatedAt);
-          runtimeText = '<span class="runtime-pill"><span class="material-icons-round" style="font-size: 13px; color: #2563eb; vertical-align: text-bottom;">timer</span> ' + b.runtimeFormatted + ' ชม.</span>';
+          runtimeText = '<span class="runtime-pill glass-pill"><span class="material-icons-round" style="font-size: 13px; color: #2563eb; vertical-align: text-bottom;">timer</span> ' + b.runtimeFormatted + ' ชม.</span>';
           
           var h = b.runtimeHours || 0;
           var m = b.runtimeMinutes || 0;
           var totalM = (h * 60) + m;
           if (totalM >= 60) {
-            statusBadge = '<span class="battery-badge-ready"><span class="material-icons-round" style="font-size: 13px;">check_circle</span> พร้อมใช้ (≥1 ชม.)</span>';
+            statusBadge = '<span class="battery-badge-ready glass-pill"><span class="material-icons-round" style="font-size: 13px;">check_circle</span> พร้อมใช้ (≥1 ชม.)</span>';
           } else if (totalM > 0) {
-            statusBadge = '<span class="battery-badge-warning"><span class="material-icons-round" style="font-size: 13px;">warning</span> สำรองไฟต่ำ (<1 ชม.)</span>';
+            statusBadge = '<span class="battery-badge-warning glass-pill"><span class="material-icons-round" style="font-size: 13px;">warning</span> สำรองไฟต่ำ (<1 ชม.)</span>';
           } else {
-            statusBadge = '<span class="battery-badge-warning"><span class="material-icons-round" style="font-size: 13px;">error</span> ผิดปกติ</span>';
+            statusBadge = '<span class="battery-badge-warning glass-pill"><span class="material-icons-round" style="font-size: 13px;">error</span> ผิดปกติ</span>';
           }
 
           evaluatorText = ev.evaluatedBy || '-';
@@ -2599,9 +2698,9 @@
           var icon = passed ? 'check_circle' : 'cancel';
           var color = passed ? '#15803d' : '#dc2626';
           var bg = passed ? '#f0fdf4' : '#fef2f2';
-          clHtml += '<div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: ' + bg + '; border-radius: 6px; font-size: 11.5px;">' +
+          clHtml += '<div class="glass-card" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: ' + bg + '; border-radius: 8px; font-size: 11.5px; border: 1px solid ' + (passed ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)') + ';">' +
             '<span style="color: #1e293b; flex: 1; padding-right: 8px;">' + (i + 1) + '. ' + text + '</span>' +
-            '<span style="display: inline-flex; align-items: center; gap: 4px; color: ' + color + '; font-weight: 700;">' +
+            '<span class="glass-pill" style="display: inline-flex; align-items: center; gap: 4px; color: ' + color + '; font-weight: 700; background: rgba(255, 255, 255, 0.85); padding: 2px 8px; border-radius: 9999px; border: 1px solid ' + (passed ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)') + ';">' +
               '<span class="material-icons-round" style="font-size: 15px;">' + icon + '</span>' +
               (passed ? 'ผ่าน' : 'ไม่ผ่าน') +
             '</span>' +
