@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280, initial-scale=1.0">
+  <title>Admin Workstation | ระบบติดตามและตรวจเช็คเครื่องมือแพทย์ รพ.พิษณุเวช</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <style>.current-user-tag.admin{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;background:#f59e0b;color:#78350f;border-radius:9999px;font-weight:700}</style>
+<style id="stitch-desktop-normalization">html, body { min-width: 1280px !important; width: 1280px !important; min-height: 800px !important; margin: 0 auto !important; overflow-x: hidden !important; }</style></head>
+<body>
+
+  <!-- Admin Auth Gate Check Modal -->
+  <div id="authGateModal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 420px; text-align: center;">
+      <div style="width: 58px; height: 58px; border-radius: 18px; background: #eff6ff; color: #1e40af; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 14px rgba(30, 64, 175, 0.15);">
+        <span class="material-icons-round" style="font-size: 32px;">security</span>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 4px;">พื้นที่ควบคุมเฉพาะผู้ดูแลระบบ</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 20px;">กรุณาระบุรหัสผ่าน Admin PIN เพื่อเข้าสู่หน้าจอจัดการ</p>
+
+      <form onsubmit="handleAuthGateSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <input type="password" id="gatePinInput" required placeholder="ใส่ Admin PIN" style="width: 100%; text-align: center; font-size: 24px; letter-spacing: 6px; font-family: monospace; font-weight: 700; padding: 12px; border: 2px solid #cbd5e1; border-radius: 12px; background: #f8fafc; outline: none;">
+        <div style="font-size: 11px; color: #94a3b8;">รหัสเริ่มต้น: <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-family: monospace;">ppch1234</code></div>
+        <div style="display: flex; gap: 8px;">
+          <a href="index.html" class="btn-ppch btn-ppch-outline" style="flex: 1; text-decoration: none;">กลับหน้าหลัก</a>
+          <button type="submit" class="btn-ppch btn-ppch-primary" style="flex: 1;">ปลดล็อคเข้าใช้งาน</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Medical Cross Preloader -->
+  <div id="pageLoader" class="css-loader-overlay">
+    <div class="medical-cross-container">
+      <div class="cross-v"></div>
+      <div class="cross-h"></div>
+    </div>
+    <div class="loader-title">โรงพยาบาลพิษณุเวช • Admin Command Center</div>
+    <div class="loader-subtitle">กำลังโหลดข้อมูลและประวัติการตรวจเช็คเครื่องมือแพทย์...</div>
+  </div>
+
+  <!-- Executive Header -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="brand-section">
+        <div class="brand-logo-card">
+          <img src="logo.png" alt="PPCH Logo" onerror="this.src='https://placehold.co/120x40/ffffff/1e40af?text=PPCH+LOGO'">
+        </div>
+        <div class="brand-titles">
+          <h1>PPCH Biomedical Equipment Admin</h1>
+          <p>ระบบควบคุมและติดตามเครื่องมือแพทย์ โรงพยาบาลพิษณุเวช</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span class="current-user-tag admin">
+          <span class="material-icons-round">admin_panel_settings</span>
+          <span>PPCH Admin (ช่างชีวการแพทย์)</span>
+        </span>
+        <button onclick="openCloudConfigModal()" class="btn-glass" style="background: rgba(13, 148, 136, 0.25); border-color: rgba(45, 212, 191, 0.4);">
+          <span class="material-icons-round">cloud_sync</span>
+          <span>Google Sheet &amp; LINE Alert</span>
+        </button>
+        <a href="reports.html" class="btn-glass" style="background: rgba(59, 130, 246, 0.25); border-color: rgba(96, 165, 250, 0.4);">
+          <span class="material-icons-round">assessment</span>
+          <span>รายงานผลการตรวจ</span>
+        </a>
+        <a href="desktop.html" class="btn-glass">
+          <span class="material-icons-round">apps</span>
+          <span>หน้ารวมแบบประเมิน</span>
+        </a>
+        <button onclick="adminLogout()" class="btn-glass" style="background: rgba(220, 38, 38, 0.25); border-color: rgba(239, 68, 68, 0.4);">
+          <span class="material-icons-round">logout</span>
+          <span>ออกจากระบบ</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Executive Tab Bar -->
+    <div class="tab-bar-executive">
+      <button onclick="switchTab('monitoring')" id="navTab_monitoring" class="tab-btn-exec active">
+        <span class="material-icons-round">health_and_safety</span>
+        <span>🚨 Live Monitoring &amp; Alerts</span>
+        <span id="badgeAbnormalCount" class="badge-counter" style="display: none;">0</span>
+      </button>
+      <button onclick="switchTab('equipment')" id="navTab_equipment" class="tab-btn-exec">
+        <span class="material-icons-round">inventory_2</span>
+        <span>🏥 ทะเบียนเครื่อง &amp; การย้ายพิกัด (Custody)</span>
+      </button>
+      <button onclick="switchTab('forms')" id="navTab_forms" class="tab-btn-exec">
+        <span class="material-icons-round">qr_code</span>
+        <span>📋 จัดการแบบประเมิน &amp; QR Code</span>
+      </button>
+      <button onclick="switchTab('logs')" id="navTab_logs" class="tab-btn-exec">
+        <span class="material-icons-round">history</span>
+        <span>📊 ประวัติการประเมิน (Logs)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workstation View (Widescreen 100%) -->
+  <main class="main-workstation">
+
+    <!-- ==================== TAB 1: LIVE MONITORING & ALERTS ==================== -->
+    <div id="view_monitoring">
+      
+      <!-- 4 KPI Summary Cards -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-info">
+            <p>เครื่องมือแพทย์ทั้งหมด</p>
+            <h2 id="kpiTotal">--</h2>
+            <div class="stat-desc">ประจำการ 14 แผนก</div>
+          </div>
+          <div class="stat-icon-wrapper">
+            <span class="material-icons-round">medical_services</span>
+          </div>
+        </div>
+
+        <div class="stat-card emerald">
+          <div class="stat-info">
+            <p>พร้อมใช้งานปกติ 100%</p>
+            <h2 id="kpiReady">--</h2>
+            <div class="stat-desc">ผ่านเกณฑ์ความพร้อมใช้</div>
+          </div>
+          <div class="stat-icon-wrapper">
+            <span class="material-icons-round">verified</span>
+          </div>
+        </div>
+
+        <div class="stat-card rose">
+          <div class="stat-info">
+            <p>ตรวจพบผิดปกติ / ชำรุด</p>
+            <h2 id="kpiAbnormal" style="color: #dc2626;">--</h2>
+            <div class="stat-desc">ต้องส่งช่างเข้าซ่อมด่วน</div>
+          </div>
+          <div class="stat-icon-wrapper">
+            <span class="material-icons-round">report_problem</span>
+          </div>
+        </div>
+
+        <div class="stat-card amber">
+          <div class="stat-info">
+            <p>ค้างตรวจเช็ควันนี้ (Daily)</p>
+            <h2 id="kpiOverdue" style="color: #d97706;">--</h2>
+            <div class="stat-desc">ระบบระบุแผนกผู้ถือครองแล้ว</div>
+          </div>
+          <div class="stat-icon-wrapper">
+            <span class="material-icons-round">history_toggle_off</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Urgent Abnormality Feed -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="material-icons-round" style="color: #dc2626;">warning</span>
+            <span>🚨 รายการแจ้งเตือนความผิดปกติ (Urgent Abnormality Feed)</span>
+          </div>
+          <span id="abnormalCountBadge" class="badge-pill abnormal">0 รายการ</span>
+        </div>
+        <p style="font-size: 12px; color: #64748b; margin-top: -12px; margin-bottom: 16px;">
+          เครื่องมือแพทย์ที่ผลตรวจเช็คพบข้อบกพร่อง ต้องได้รับการแก้ไขและทดสอบซ้ำก่อนนำไปใช้กับผู้ป่วย
+        </p>
+
+        <div id="abnormalListContainer" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+      <!-- Overdue Tracker Table -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">
+              <span class="material-icons-round" style="color: #d97706;">pending_actions</span>
+              <span>ตารางติดตามเครื่องมือค้างตรวจเช็ค (Overdue Inspection Tracker)</span>
+            </div>
+            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+              ⭐ ระบบคำนวณและชี้เป้าไปยัง <b>"แผนกที่ถือครองปัจจุบัน (Current Custodian)"</b> อย่างแม่นยำ ไม่แจ้งเตือนผิดแผนก
+            </p>
+          </div>
+
+          <div>
+            <select id="overdueFreqFilter" onchange="renderOverdueTable()" style="padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; font-weight: 600; background: #ffffff;">
+              <option value="daily">รอบรายวัน (Daily Overdue)</option>
+              <option value="monthly">รอบรายเดือน (Monthly Overdue)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container-responsive">
+          <table class="ppch-data-table">
+            <thead>
+              <tr>
+                <th>รหัสครุภัณฑ์</th>
+                <th>ชื่อเครื่องมือแพทย์</th>
+                <th>รอบตรวจเช็ค</th>
+                <th>แผนกตั้งต้น (Home)</th>
+                <th style="background: #fffbeb; color: #92400e; font-weight: 800;">📍 แผนกที่ถือครองปัจจุบัน (Current)</th>
+                <th>ประเมินครั้งล่าสุด</th>
+                <th style="text-align: center;">การติดตาม</th>
+              </tr>
+            </thead>
+            <tbody id="overdueTableBody">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 2: EQUIPMENT MASTER & CUSTODY ==================== -->
+    <div id="view_equipment" style="display: none;">
+      
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">
+              <span class="material-icons-round">medical_information</span>
+              <span>ทะเบียนเครื่องมือแพทย์และสถานที่ประจำการ (Medical Equipment Master)</span>
+            </div>
+            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+              จัดการเบิกจ่ายจากส่วนกลาง และบันทึกการส่งมอบเครื่องระหว่างแผนก
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button onclick="openCentralDispatchModal()" class="btn-ppch btn-ppch-primary" style="font-size: 12px;">
+              <span class="material-icons-round" style="font-size: 16px;">outbox</span>
+              <span>เบิกจ่ายจากส่วนกลาง</span>
+            </button>
+            <button onclick="openAdminRelocateModal()" class="btn-ppch btn-ppch-teal" style="font-size: 12px;">
+              <span class="material-icons-round" style="font-size: 16px;">swap_horiz</span>
+              <span>ย้ายพิกัดเครื่อง</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+          <input type="text" id="eqSearchInput" oninput="renderEquipmentTable()" placeholder="ค้นหารหัสครุภัณฑ์, ชื่อเครื่อง, รุ่น, Serial No..." style="flex: 1; min-width: 260px; padding: 9px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 12px; background: #ffffff;">
+
+          <select id="eqDeptFilter" onchange="renderEquipmentTable()" style="padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 12px; background: #ffffff;">
+            <option value="all">-- แผนกปัจจุบันทั้งหมด --</option>
+          </select>
+
+          <select id="eqStatusFilter" onchange="renderEquipmentTable()" style="padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 12px; background: #ffffff;">
+            <option value="all">-- สถานะทั้งหมด --</option>
+            <option value="ready">พร้อมใช้งาน (Ready)</option>
+            <option value="abnormal">ผิดปกติ / ชำรุด (Abnormal)</option>
+          </select>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container-responsive">
+          <table class="ppch-data-table">
+            <thead>
+              <tr>
+                <th>รหัสครุภัณฑ์</th>
+                <th>ชื่อเครื่องมือแพทย์ &amp; รุ่น</th>
+                <th>รอบเช็ค</th>
+                <th>แผนกตั้งต้น (Home)</th>
+                <th style="color: #1e40af; font-weight: 800; background: #eff6ff;">📍 แผนกที่อยู่ปัจจุบัน</th>
+                <th>สถานะ</th>
+                <th>ประเมินล่าสุด</th>
+                <th style="text-align: center;">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="equipmentTableBody">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Custody Timeline -->
+      <div class="card-panel">
+        <div class="panel-title" style="margin-bottom: 14px;">
+          <span class="material-icons-round" style="color: #0d9488;">timeline</span>
+          <span>ประวัติไทม์ไลน์การย้ายสถานที่และการเบิกใช้ (Custody Transfer Timeline)</span>
+        </div>
+        <div class="table-container-responsive">
+          <table class="ppch-data-table">
+            <thead>
+              <tr>
+                <th>วัน-เวลาที่ย้าย</th>
+                <th>รหัสเครื่อง</th>
+                <th>ชื่อเครื่องมือ</th>
+                <th>แผนกเดิม</th>
+                <th>ย้ายไปแผนกใหม่</th>
+                <th>ผู้ทำรายการ</th>
+                <th>เหตุผลการย้าย</th>
+              </tr>
+            </thead>
+            <tbody id="transferLogTableBody">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 3: FORMS & QR CODES ==================== -->
+    <div id="view_forms" style="display: none;">
+      
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">
+              <span class="material-icons-round">qr_code_2</span>
+              <span>ศูนย์จัดการแบบประเมินและ QR Code (Form Center &amp; Direct URLs)</span>
+            </div>
+            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+              แบบประเมินทั้ง 8 หมวด แต่ละแบบฟอร์มมี QR Code และ Direct URL ประจำตัว สามารถพิมพ์ติดประจำจุดตรวจเช็คได้ทันที
+            </p>
+          </div>
+        </div>
+
+        <div id="adminFormsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px;">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 4: EVALUATION LOGS ==================== -->
+    <div id="view_logs" style="display: none;">
+      
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">
+              <span class="material-icons-round" style="color: #059669;">table_chart</span>
+              <span>ประวัติการตรวจเช็คย้อนหลังทั้งหมด (Inspection History Logs)</span>
+            </div>
+            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+              ตรวจสอบประวัติความพร้อมใช้และ Export ข้อมูลเพื่อทำรายงานคุณภาพโรงพยาบาล
+            </p>
+          </div>
+
+          <button onclick="exportLogsToCsv()" class="btn-ppch btn-ppch-teal" style="font-size: 12px;">
+            <span class="material-icons-round" style="font-size: 16px;">file_download</span>
+            <span>Export เป็น CSV / Excel</span>
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+          <select id="logResultFilter" onchange="renderLogsTable()" style="padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; background: #ffffff;">
+            <option value="all">-- ผลการตรวจเช็คทั้งหมด --</option>
+            <option value="abnormal">เฉพาะที่พบผิดปกติ (Abnormal)</option>
+            <option value="normal">เฉพาะที่ผ่านปกติ (Normal)</option>
+          </select>
+        </div>
+
+        <div class="table-container-responsive">
+          <table class="ppch-data-table">
+            <thead>
+              <tr>
+                <th>วัน-เวลาประเมิน</th>
+                <th>รหัสครุภัณฑ์</th>
+                <th>ชื่อเครื่องมือ</th>
+                <th>แผนกที่ทำ</th>
+                <th>ผู้ตรวจเช็ค</th>
+                <th>ผลการตรวจ</th>
+                <th>หมายเหตุ / อาการผิดปกติ</th>
+              </tr>
+            </thead>
+            <tbody id="evalLogsTableBody">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Central Dispatch Modal -->
+  <div id="centralDispatchModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9; margin-bottom: 18px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; color: #1e40af; display: flex; align-items: center; justify-content: center;">
+            <span class="material-icons-round">outbox</span>
+          </div>
+          <div>
+            <h3 style="font-size: 16px; font-weight: 800; color: #0f172a;">เบิกจ่ายเครื่องมือแพทย์จากส่วนกลาง</h3>
+            <p style="font-size: 11px; color: #64748b;">จ่ายเครื่องสำรองจาก Central Supply ไปยังแผนกที่ขอใช้งาน</p>
+          </div>
+        </div>
+        <button onclick="closeCentralDispatchModal()" style="border: none; background: transparent; cursor: pointer; color: #94a3b8;">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleCentralDispatchSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px;">เลือกเครื่องมือแพทย์ที่อยู่ในคลังส่วนกลาง *</label>
+          <select id="dispatchDeviceId" required style="width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; background: #f8fafc;">
+            <option value="">-- เลือกเครื่องในส่วนกลาง --</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px;">แผนกที่ขอเบิกใช้งาน *</label>
+          <select id="dispatchTargetDept" required style="width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; background: #ffffff;">
+            <option value="">-- เลือกแผนกที่มาเบิก --</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px;">ชื่อเจ้าหน้าที่ผู้เบิก / พยาบาลผู้รับมอบ *</label>
+          <input type="text" id="dispatchReceiverName" required placeholder="เช่น พว.สุนิสา (Ward 2-3)" style="width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px;">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px;">วัตถุประสงค์การเบิก</label>
+          <input type="text" id="dispatchReason" placeholder="เช่น ใช้ดูแลผู้ป่วยติดเชื้อทางเดินหายใจ ห้องแยกโรค" style="width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px;">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; padding-top: 14px; border-top: 1px solid #f1f5f9;">
+          <button type="button" onclick="closeCentralDispatchModal()" class="btn-ppch btn-ppch-outline" style="font-size: 12px;">ยกเลิก</button>
+          <button type="submit" class="btn-ppch btn-ppch-primary" style="font-size: 12px;">ยืนยันจ่ายเครื่อง</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Asset QR Tag Modal (ป้ายสติ๊กเกอร์ติดตัวเครื่อง) -->
+  <div id="assetQrModal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 380px; text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; margin-bottom: 16px;">
+        <div>
+          <h3 id="assetQrTitle" style="font-size: 15px; font-weight: 800; color: #0f172a;">ป้าย Asset QR Code</h3>
+          <p id="assetQrSubtitle" style="font-size: 11px; color: #64748b;">พิมพ์สติ๊กเกอร์ติดประจำตัวเครื่อง</p>
+        </div>
+        <button onclick="closeAssetQrModal()" style="border: none; background: transparent; cursor: pointer; color: #94a3b8;">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+
+      <div style="padding: 16px; background: #ffffff; border: 2px solid #0f172a; border-radius: 14px; margin-bottom: 16px; text-align: center;">
+        <div style="font-size: 12px; font-weight: 800; color: #1e40af; letter-spacing: 0.5px;">🏥 รพ.พิษณุเวช • PPCH</div>
+        <div style="font-size: 10px; color: #64748b; margin-bottom: 8px;">สแกนเพื่อตรวจเช็คหรือย้ายสถานที่</div>
+        <div id="assetQrCanvas" style="display: flex; justify-content: center; padding: 6px;"></div>
+        <div id="assetQrCodeText" style="font-family: monospace; font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 6px;">EQ-XXXX</div>
+        <div id="assetQrDeviceName" style="font-size: 12px; font-weight: 700; color: #334155; margin-top: 2px;">ชื่อเครื่องมือแพทย์</div>
+        <div id="assetQrDeptText" style="font-size: 11px; color: #0d9488; font-weight: 700; margin-top: 2px;">ประจำการ: ER</div>
+      </div>
+
+      <button onclick="window.print()" class="btn-ppch btn-ppch-teal" style="width: 100%; font-size: 12px;">
+        <span class="material-icons-round" style="font-size: 16px;">print</span>
+        <span>สั่งพิมพ์ป้ายสติ๊กเกอร์</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Cloud & LINE Alert Configuration Modal -->
+  <div id="cloudConfigModal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 600px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9; margin-bottom: 18px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 42px; height: 42px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center;">
+            <span class="material-icons-round" style="font-size: 24px;">cloud_sync</span>
+          </div>
+          <div>
+            <h3 style="font-size: 16px; font-weight: 800; color: #0f172a;">ตั้งค่าเชื่อมต่อ Google Sheet &amp; LINE Alert</h3>
+            <p style="font-size: 11px; color: #64748b;">ซิงค์ผลการประเมินและการย้ายพิกัดเครื่องมือแพทย์ พร้อมแจ้งเตือน LINE ทันที</p>
+          </div>
+        </div>
+        <button onclick="closeCloudConfigModal()" style="border: none; background: transparent; cursor: pointer; color: #94a3b8;">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- Status indicator -->
+        <div id="cloudStatusBanner" style="padding: 12px 16px; border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span id="cloudStatusIcon" class="material-icons-round" style="color: #94a3b8;">cloud_off</span>
+            <div>
+              <div id="cloudStatusTitle" style="font-size: 12px; font-weight: 700; color: #334155;">โหมดบันทึกข้อมูลแบบ Local Persistence</div>
+              <div id="cloudStatusDetail" style="font-size: 11px; color: #64748b;">ข้อมูลบันทึกในเบราว์เซอร์ (ยังไม่ได้เชื่อมต่อ Google Sheet)</div>
+            </div>
+          </div>
+          <span id="cloudStatusBadge" class="badge-pill" style="background: #e2e8f0; color: #475569; font-size: 11px;">Offline</span>
+        </div>
+
+        <!-- URL Input -->
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">
+            Google Apps Script Web App URL *
+          </label>
+          <input type="url" id="gasUrlInput" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="width: 100%; padding: 11px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; font-family: monospace; outline: none; background: #f8fafc;">
+          <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
+            ได้จากการนำโค้ดใน <code>gas/Code.gs</code> ไปสร้าง Web App ใน Google Sheet (Access: Anyone)
+          </div>
+        </div>
+
+        <!-- Testing & Action Buttons -->
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button type="button" onclick="saveCloudConfig()" class="btn-ppch btn-ppch-primary" style="font-size: 12px;">
+            <span class="material-icons-round" style="font-size: 16px;">save</span> บันทึก URL
+          </button>
+          <button type="button" onclick="testCloudConnection()" class="btn-ppch btn-ppch-outline" style="font-size: 12px;">
+            <span class="material-icons-round" style="font-size: 16px;">sync</span> ทดสอบเชื่อมต่อ GAS
+          </button>
+          <button type="button" onclick="testLineAlertFromModal()" class="btn-ppch btn-ppch-emerald" style="font-size: 12px;">
+            <span class="material-icons-round" style="font-size: 16px;">notifications_active</span> ทดสอบแจ้งเตือน LINE
+          </button>
+          <button type="button" onclick="clearCloudConfig()" class="btn-ppch btn-ppch-outline" style="font-size: 12px; color: #ef4444; border-color: #fca5a5; margin-left: auto;">
+            <span class="material-icons-round" style="font-size: 16px;">delete</span> ล้างค่า
+          </button>
+        </div>
+
+        <!-- Guide Card -->
+        <div style="padding: 14px 16px; background: #f0fdf4; border-radius: 10px; border: 1px solid #bbf7d0; font-size: 12px; color: #166534; line-height: 1.6;">
+          <div style="font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+            <span class="material-icons-round" style="font-size: 16px;">info</span>
+            ขั้นตอนการเชื่อมต่อ 3 นาที:
+          </div>
+          <ol style="margin: 0; padding-left: 20px;">
+            <li>เปิด Google Sheet แล้วไปที่ <strong>ส่วนขยาย (Extensions) &gt; Apps Script</strong></li>
+            <li>คัดลอกโค้ดจากไฟล์ <code>gas/Code.gs</code> ไปวาง แล้วกด Save</li>
+            <li>กด <strong>ทำให้ใช้งานได้ (Deploy) &gt; รายการปรับใช้ใหม่ (New deployment) &gt; ประเภท: เว็บแอป (Web App)</strong> เลือกสิทธิ์เข้าถึง: <strong>ทุกคน (Anyone)</strong></li>
+            <li>คัดลอก <em>URL ของเว็บแอป</em> มาวางในช่องด้านบน แล้วคลิก <strong>บันทึก URL</strong></li>
+            <li>ใส่ <strong>LINE Notify Token</strong> ในแท็บ <em>"ตั้งค่าระบบ &amp; LINE Token"</em> ใน Google Sheet เพื่อเริ่มรับแจ้งเตือน!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="appToast" class="ppch-toast">
+    <span class="material-icons-round" id="toastIcon" style="font-size: 20px;">info</span>
+    <span id="toastMsg">แจ้งเตือน</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/api.js"></script>
+
+  <script>
+    var currentActiveTab = 'monitoring';
+    var assetQrInstance = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      checkAuth();
+    });
+
+    function checkAuth() {
+      var isAuth = sessionStorage.getItem('ppch_admin_auth');
+      if (isAuth !== 'true') {
+        document.getElementById('authGateModal').classList.remove('hidden');
+        document.getElementById('pageLoader').classList.add('hidden');
+      } else {
+        initAdminWorkstation();
+      }
+    }
+
+    function handleAuthGateSubmit(e) {
+      e.preventDefault();
+      var pin = document.getElementById('gatePinInput').value.trim();
+      if (pin === window.PPCH_CONFIG.adminPin) {
+        sessionStorage.setItem('ppch_admin_auth', 'true');
+        document.getElementById('authGateModal').classList.add('hidden');
+        initAdminWorkstation();
+      } else {
+        showToast('Admin PIN ไม่ถูกต้อง!', 'error');
+        document.getElementById('gatePinInput').select();
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem('ppch_admin_auth');
+      window.location.href = 'index.html';
+    }
+
+    function initAdminWorkstation() {
+      populateDeptFilters();
+      updateDashboardData();
+
+      window.addEventListener('ppch:data-updated', function () {
+        updateDashboardData();
+      });
+
+      setTimeout(function () {
+        var loader = document.getElementById('pageLoader');
+        if (loader) loader.classList.add('hidden');
+      }, 350);
+    }
+
+    function switchTab(tabName) {
+      currentActiveTab = tabName;
+      var tabs = ['monitoring', 'equipment', 'forms', 'logs'];
+      tabs.forEach(function (t) {
+        var view = document.getElementById('view_' + t);
+        var nav = document.getElementById('navTab_' + t);
+        if (t === tabName) {
+          view.style.display = 'block';
+          nav.classList.add('active');
+        } else {
+          view.style.display = 'none';
+          nav.classList.remove('active');
+        }
+      });
+    }
+
+    function updateDashboardData() {
+      var allEq = window.PPCH_STORE.getEquipment();
+      var total = allEq.length;
+      var ready = allEq.filter(function (e) { return e.status === 'ready'; }).length;
+      var abnormalList = window.PPCH_STORE.getAbnormalEquipment();
+      var overdueList = window.PPCH_STORE.getOverdueEquipment('daily');
+
+      document.getElementById('kpiTotal').innerText = total;
+      document.getElementById('kpiReady').innerText = ready;
+      document.getElementById('kpiAbnormal').innerText = abnormalList.length;
+      document.getElementById('kpiOverdue').innerText = overdueList.length;
+
+      var abnormalBadge = document.getElementById('badgeAbnormalCount');
+      if (abnormalList.length > 0) {
+        abnormalBadge.innerText = abnormalList.length;
+        abnormalBadge.style.display = 'inline-block';
+      } else {
+        abnormalBadge.style.display = 'none';
+      }
+
+      renderAbnormalFeed(abnormalList);
+      renderOverdueTable();
+      renderEquipmentTable();
+      renderTransferLogsTable();
+      renderAdminFormsList();
+      renderLogsTable();
+    }
+
+    function renderAbnormalFeed(list) {
+      var container = document.getElementById('abnormalListContainer');
+      var badge = document.getElementById('abnormalCountBadge');
+      badge.innerText = list.length + ' รายการ';
+
+      if (list.length === 0) {
+        container.innerHTML = '<div style="padding: 28px; text-align: center; color: #94a3b8; background: #f8fafc; border-radius: 12px; border: 1.5px dashed #cbd5e1;">' +
+          '<span class="material-icons-round" style="font-size: 36px; color: #10b981; margin-bottom: 6px;">check_circle</span>' +
+          '<div style="font-size: 13px; font-weight: 600; color: #334155;">ยอดเยี่ยม! ขณะนี้ไม่พบเครื่องมือแพทย์ชำรุดหรือผิดปกติในระบบ</div>' +
+          '</div>';
+        return;
+      }
+
+      var html = '';
+      list.forEach(function (eq) {
+        var curDeptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+        html += '<div style="padding: 16px; background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">' +
+          '<div style="flex: 1; min-width: 240px;">' +
+            '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">' +
+              '<span style="font-family: monospace; font-size: 13px; font-weight: 800; color: #9f1239;">' + eq.assetCode + '</span>' +
+              '<span style="font-size: 13px; font-weight: 700; color: #0f172a;">' + eq.name + '</span>' +
+              '<span class="badge-pill abnormal" style="font-size: 10px;">พบผิดปกติ</span>' +
+            '</div>' +
+            '<div style="font-size: 12px; color: #475569;">' +
+              '<b>สถานที่ปัจจุบัน:</b> <span style="font-weight: 700; color: #1e40af;">' + curDeptName + '</span> • ' +
+              '<b>ผู้ตรวจพบ:</b> ' + (eq.lastEvaluatedBy || 'ไม่ระบุ') + ' (' + eq.lastEvaluatedAt + ')' +
+            '</div>' +
+            '<div style="font-size: 12px; color: #9f1239; background: rgba(255,255,255,0.8); padding: 8px 12px; border-radius: 8px; border: 1px solid #fecdd3; margin-top: 6px;">' +
+              '<b>อาการชำรุด:</b> ' + (eq.abnormalReason || 'พบข้อตรวจเช็คผิดปกติ') +
+            '</div>' +
+          '</div>' +
+          '<button onclick="resolveEquipment(\'' + eq.id + '\')" class="btn-ppch btn-ppch-teal" style="font-size: 12px; padding: 8px 16px; white-space: nowrap;">' +
+            '<span class="material-icons-round" style="font-size: 16px;">build</span>' +
+            '<span>ซ่อมเสร็จ / ปลดสถานะเป็นพร้อมใช้</span>' +
+          '</button>' +
+        '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    function resolveEquipment(deviceId) {
+      if (confirm('ยืนยันว่าเครื่องนี้ได้รับการซ่อมแซมและตรวจเช็คจนพร้อมใช้งานแล้วใช่หรือไม่?')) {
+        window.PPCH_STORE.resolveAbnormal(deviceId, 'Admin', 'ผ่านการซ่อมแซมและทดสอบความพร้อมใช้แล้ว');
+        if (window.PPCH_API && window.PPCH_API.isConfigured()) {
+          window.PPCH_API.postToGas({
+            action: 'resolveAbnormal',
+            deviceId: deviceId,
+            resolvedBy: 'Admin (ช่างชีวการแพทย์)',
+            resolveNote: 'ผ่านการซ่อมแซมและทดสอบความพร้อมใช้แล้ว'
+          });
+        }
+        showToast('ปรับสถานะเครื่องเป็น "พร้อมใช้งาน" เรียบร้อยแล้วค่ะ', 'success');
+      }
+    }
+
+    function renderOverdueTable() {
+      var freq = document.getElementById('overdueFreqFilter').value;
+      var overdueList = window.PPCH_STORE.getOverdueEquipment(freq);
+      var tbody = document.getElementById('overdueTableBody');
+
+      if (overdueList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 32px; color: #64748b;">' +
+          '<span class="material-icons-round" style="color: #10b981; font-size: 32px;">verified</span>' +
+          '<div style="margin-top: 6px; font-weight: 600;">ไม่มีเครื่องมือแพทย์ค้างการตรวจเช็คในรอบนี้ ทุกแผนกส่งผลประเมินครบ 100%</div>' +
+          '</td></tr>';
+        return;
+      }
+
+      var html = '';
+      overdueList.forEach(function (item) {
+        var eq = item.equipment;
+        var isCrossDept = (eq.homeDept !== eq.currentDept);
+
+        html += '<tr>' +
+          '<td style="font-family: monospace; font-weight: 800; color: #0f172a; font-size: 12px;">' + eq.assetCode + '</td>' +
+          '<td style="font-weight: 600;">' + eq.name + '</td>' +
+          '<td>' + (eq.frequency === 'daily' ? '<span class="badge-pill daily" style="font-size: 10px;">Daily</span>' : '<span class="badge-pill monthly" style="font-size: 10px;">Monthly</span>') + '</td>' +
+          '<td style="color: #64748b; font-size: 12px;">' + item.homeDeptName + '</td>' +
+          '<td style="background: #fffbeb; font-weight: 800; color: #1e40af;">' +
+            item.currentDeptName +
+            (isCrossDept ? ' <span style="font-size: 10px; font-weight: 700; color: #b45309; background: #fde68a; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">ยืมจาก: ' + item.homeDeptName + '</span>' : '') +
+          '</td>' +
+          '<td style="font-family: monospace; font-size: 11px; color: #64748b;">' + item.lastChecked + '</td>' +
+          '<td style="text-align: center;">' +
+            '<button onclick="notifyDepartment(\'' + item.currentDept + '\', \'' + eq.name + '\')" class="btn-ppch btn-ppch-outline" style="padding: 5px 10px; font-size: 11px; color: #d97706; border-color: #fde68a;">' +
+              '<span class="material-icons-round" style="font-size: 14px;">notifications_active</span> ทวงถามที่ ' + item.currentDept +
+            '</button>' +
+          '</td>' +
+        '</tr>';
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function notifyDepartment(deptId, deviceName) {
+      var deptName = window.PPCH_STORE.getDepartmentName(deptId);
+      showToast('ส่งแจ้งเตือนติดตาม ' + deviceName + ' ไปยัง [' + deptName + '] สำเร็จแล้วค่ะ', 'success');
+    }
+
+    function renderEquipmentTable() {
+      var allEq = window.PPCH_STORE.getEquipment();
+      var search = (document.getElementById('eqSearchInput').value || '').trim().toLowerCase();
+      var deptFilter = document.getElementById('eqDeptFilter').value;
+      var statusFilter = document.getElementById('eqStatusFilter').value;
+      var tbody = document.getElementById('equipmentTableBody');
+
+      var filtered = allEq.filter(function (eq) {
+        if (deptFilter !== 'all' && eq.currentDept !== deptFilter) return false;
+        if (statusFilter !== 'all' && eq.status !== statusFilter) return false;
+        if (search) {
+          var matchCode = eq.assetCode.toLowerCase().indexOf(search) !== -1;
+          var matchName = eq.name.toLowerCase().indexOf(search) !== -1;
+          var matchModel = (eq.model || '').toLowerCase().indexOf(search) !== -1;
+          var matchSerial = (eq.serialNo || '').toLowerCase().indexOf(search) !== -1;
+          if (!matchCode && !matchName && !matchModel && !matchSerial) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 24px; color: #94a3b8;">ไม่พบรายการเครื่องมือที่ค้นหา</td></tr>';
+        return;
+      }
+
+      var html = '';
+      filtered.forEach(function (eq) {
+        var curDeptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+        var homeDeptName = window.PPCH_STORE.getDepartmentName(eq.homeDept);
+        var isCrossDept = (eq.homeDept !== eq.currentDept);
+
+        var statusBadge = eq.status === 'abnormal'
+          ? '<span class="badge-pill abnormal" style="font-size: 10px;">ผิดปกติ / ชำรุด</span>'
+          : '<span class="badge-pill ready" style="font-size: 10px;">พร้อมใช้</span>';
+
+        html += '<tr>' +
+          '<td style="font-family: monospace; font-weight: 800; font-size: 12px; color: #0f172a;">' + eq.assetCode + '</td>' +
+          '<td>' +
+            '<div style="font-weight: 700; color: #1e293b;">' + eq.name + '</div>' +
+            '<div style="font-size: 11px; color: #64748b; font-family: monospace;">' + (eq.model || '-') + ' | SN: ' + (eq.serialNo || '-') + '</div>' +
+          '</td>' +
+          '<td>' + (eq.frequency === 'daily' ? '<span class="badge-pill daily" style="font-size: 10px;">Daily</span>' : '<span class="badge-pill monthly" style="font-size: 10px;">Monthly</span>') + '</td>' +
+          '<td style="color: #64748b; font-size: 12px;">' + homeDeptName + '</td>' +
+          '<td style="background: #eff6ff; font-weight: 800; color: #1e40af;">' +
+            curDeptName +
+            (isCrossDept ? '<div style="font-size: 10px; font-weight: normal; color: #d97706;">ยืมจาก: ' + homeDeptName + '</div>' : '') +
+          '</td>' +
+          '<td>' + statusBadge + '</td>' +
+          '<td style="font-family: monospace; font-size: 11px; color: #64748b;">' + (eq.lastEvaluatedAt || 'ยังไม่เคยเช็ค') + '</td>' +
+          '<td style="text-align: center; white-space: nowrap;">' +
+            '<button onclick="showAssetQrModal(\'' + eq.id + '\')" title="ดู QR Tag ประจำเครื่อง" class="btn-ppch btn-ppch-outline" style="padding: 4px 8px; font-size: 11px; margin-right: 4px;">' +
+              '<span class="material-icons-round" style="font-size: 16px;">qr_code_2</span>' +
+            '</button>' +
+            '<a href="eval.html?formId=' + eq.formId + '&deviceId=' + eq.id + '" target="_blank" title="เปิดประเมินเครื่องนี้" class="btn-ppch btn-ppch-primary" style="padding: 4px 8px; font-size: 11px; text-decoration: none;">' +
+              '<span class="material-icons-round" style="font-size: 16px;">assignment_turned_in</span>' +
+            '</a>' +
+          '</td>' +
+        '</tr>';
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function renderTransferLogsTable() {
+      var transfers = window.PPCH_STORE.getAll().transfers || [];
+      var tbody = document.getElementById('transferLogTableBody');
+
+      if (transfers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #94a3b8;">ยังไม่มีประวัติการย้ายสถานที่</td></tr>';
+        return;
+      }
+
+      var html = '';
+      transfers.forEach(function (tr) {
+        var fromName = window.PPCH_STORE.getDepartmentName(tr.fromDept);
+        var toName = window.PPCH_STORE.getDepartmentName(tr.toDept);
+
+        html += '<tr>' +
+          '<td style="font-family: monospace; font-size: 11px; color: #64748b;">' + tr.transferredAt + '</td>' +
+          '<td style="font-family: monospace; font-weight: 800; font-size: 12px; color: #0f172a;">' + tr.deviceAsset + '</td>' +
+          '<td style="font-weight: 600;">' + tr.deviceName + '</td>' +
+          '<td style="color: #64748b; font-size: 12px;">' + fromName + '</td>' +
+          '<td style="font-weight: 800; color: #1e40af; background: #eff6ff;">' + toName + '</td>' +
+          '<td style="color: #334155; font-size: 12px;">' + tr.transferredBy + '</td>' +
+          '<td style="color: #64748b; font-size: 12px; font-style: italic;">' + tr.reason + '</td>' +
+        '</tr>';
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function renderAdminFormsList() {
+      var container = document.getElementById('adminFormsList');
+      var forms = window.PPCH_CONFIG.forms;
+      var html = '';
+
+      forms.forEach(function (f) {
+        var fullUrl = window.location.origin + window.location.pathname.replace('admin.html', '') + 'eval.html?formId=' + f.id;
+
+        html += '<div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">' +
+          '<div style="flex: 1; min-width: 0;">' +
+            '<div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">' +
+              '<span style="font-weight: 800; font-size: 14px; color: #0f172a;">' + f.name + '</span>' +
+              '<span class="badge-pill ' + (f.frequency === 'daily' ? 'daily' : 'monthly') + '" style="font-size: 10px;">' + f.frequencyLabel + '</span>' +
+            '</div>' +
+            '<div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">' + f.description + '</div>' +
+            '<div style="font-size: 11px; font-family: monospace; color: #0284c7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' + fullUrl + '</div>' +
+          '</div>' +
+          '<a href="' + fullUrl + '" target="_blank" class="btn-ppch btn-ppch-primary" style="padding: 7px 12px; font-size: 12px; text-decoration: none;">' +
+            '<span class="material-icons-round" style="font-size: 16px;">open_in_new</span>' +
+          '</a>' +
+        '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    function renderLogsTable() {
+      var logs = window.PPCH_STORE.getAll().evaluations || [];
+      var resFilter = document.getElementById('logResultFilter').value;
+      var tbody = document.getElementById('evalLogsTableBody');
+
+      var filtered = logs.filter(function (l) {
+        if (resFilter !== 'all' && l.result !== resFilter) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 24px; color: #94a3b8;">ยังไม่มีบันทึกการประเมินในหมวดนี้</td></tr>';
+        return;
+      }
+
+      var html = '';
+      filtered.forEach(function (l) {
+        var statusBadge = l.result === 'abnormal'
+          ? '<span class="badge-pill abnormal" style="font-size: 10px;">ผิดปกติ</span>'
+          : '<span class="badge-pill ready" style="font-size: 10px;">ปกติ</span>';
+
+        html += '<tr>' +
+          '<td style="font-family: monospace; font-size: 11px; color: #64748b;">' + l.evaluatedAt + '</td>' +
+          '<td style="font-family: monospace; font-weight: 800; font-size: 12px; color: #0f172a;">' + l.deviceAsset + '</td>' +
+          '<td style="font-weight: 600;">' + l.deviceName + '</td>' +
+          '<td style="font-weight: 700; color: #1e40af;">' + window.PPCH_STORE.getDepartmentName(l.department) + '</td>' +
+          '<td style="color: #334155; font-size: 12px;">' + l.evaluatedBy + '</td>' +
+          '<td>' + statusBadge + '</td>' +
+          '<td style="font-size: 12px; ' + (l.result === 'abnormal' ? 'color: #be123c; font-weight: 700;' : 'color: #94a3b8;') + '">' + (l.abnormalNote || '-') + '</td>' +
+        '</tr>';
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function openCentralDispatchModal() {
+      var allEq = window.PPCH_STORE.getEquipment();
+      var centralEq = allEq.filter(function (e) { return e.currentDept === 'CENTRAL'; });
+      var select = document.getElementById('dispatchDeviceId');
+
+      select.innerHTML = '<option value="">-- เลือกเครื่องในส่วนกลาง --</option>';
+      centralEq.forEach(function (e) {
+        select.innerHTML += '<option value="' + e.id + '">' + e.assetCode + ' - ' + e.name + '</option>';
+      });
+
+      document.getElementById('centralDispatchModal').classList.remove('hidden');
+    }
+
+    function closeCentralDispatchModal() {
+      document.getElementById('centralDispatchModal').classList.add('hidden');
+    }
+
+    function handleCentralDispatchSubmit(e) {
+      e.preventDefault();
+      var deviceId = document.getElementById('dispatchDeviceId').value;
+      var targetDept = document.getElementById('dispatchTargetDept').value;
+      var receiver = document.getElementById('dispatchReceiverName').value.trim();
+      var reason = document.getElementById('dispatchReason').value.trim();
+
+      if (!deviceId || !targetDept || !receiver) {
+        showToast('กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+        return;
+      }
+
+      window.PPCH_STORE.transferEquipment(deviceId, targetDept, receiver, 'เบิกจากส่วนกลาง: ' + (reason || 'ใช้งานหน้างาน'));
+      closeCentralDispatchModal();
+      showToast('จ่ายเครื่องไปยัง [' + window.PPCH_STORE.getDepartmentName(targetDept) + '] เรียบร้อยแล้วค่ะ', 'success');
+    }
+
+    function showAssetQrModal(deviceId) {
+      var eq = window.PPCH_STORE.getEquipmentById(deviceId);
+      if (!eq) return;
+
+      document.getElementById('assetQrCodeText').innerText = eq.assetCode;
+      document.getElementById('assetQrDeviceName').innerText = eq.name;
+      document.getElementById('assetQrDeptText').innerText = 'ประจำการ: ' + window.PPCH_STORE.getDepartmentName(eq.currentDept);
+
+      var directUrl = window.location.origin + window.location.pathname.replace('admin.html', '') + 'eval.html?formId=' + eq.formId + '&deviceId=' + eq.id;
+
+      var canvas = document.getElementById('assetQrCanvas');
+      canvas.innerHTML = '';
+      assetQrInstance = new QRCode(canvas, {
+        text: directUrl,
+        width: 150,
+        height: 150,
+        colorDark: '#0f172a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      document.getElementById('assetQrModal').classList.remove('hidden');
+    }
+
+    function closeAssetQrModal() {
+      document.getElementById('assetQrModal').classList.add('hidden');
+    }
+
+    function populateDeptFilters() {
+      var depts = window.PPCH_CONFIG.departments;
+      var filterSel = document.getElementById('eqDeptFilter');
+      var dispatchSel = document.getElementById('dispatchTargetDept');
+
+      depts.forEach(function (d) {
+        filterSel.innerHTML += '<option value="' + d.id + '">' + d.name + '</option>';
+        dispatchSel.innerHTML += '<option value="' + d.id + '">' + d.name + '</option>';
+      });
+    }
+
+    function exportLogsToCsv() {
+      var logs = window.PPCH_STORE.getAll().evaluations || [];
+      if (logs.length === 0) {
+        showToast('ไม่มีข้อมูลประเมินให้ Export', 'error');
+        return;
+      }
+
+      var csvContent = '\uFEFFวันและเวลา,รหัสครุภัณฑ์,ชื่อเครื่องมือแพทย์,แผนก,ผู้ตรวจเช็ค,ผลการตรวจ,รายละเอียดข้อบกพร่อง\n';
+      logs.forEach(function (l) {
+        var row = [
+          '"' + l.evaluatedAt + '"',
+          '"' + l.deviceAsset + '"',
+          '"' + l.deviceName + '"',
+          '"' + window.PPCH_STORE.getDepartmentName(l.department) + '"',
+          '"' + l.evaluatedBy + '"',
+          '"' + (l.result === 'abnormal' ? 'ผิดปกติ' : 'ปกติ') + '"',
+          '"' + (l.abnormalNote || '').replace(/"/g, '""') + '"'
+        ];
+        csvContent += row.join(',') + '\n';
+      });
+
+      var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'PPCH_Med_Evaluation_Logs_' + new Date().toISOString().slice(0, 10) + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Export ไฟล์ CSV สำเร็จแล้วค่ะ', 'success');
+    }
+
+    function openCloudConfigModal() {
+      var url = window.PPCH_API ? window.PPCH_API.getEndpoint() : '';
+      document.getElementById('gasUrlInput').value = url;
+      updateCloudStatusUI();
+      document.getElementById('cloudConfigModal').classList.remove('hidden');
+    }
+
+    function closeCloudConfigModal() {
+      document.getElementById('cloudConfigModal').classList.add('hidden');
+    }
+
+    function updateCloudStatusUI() {
+      var isConf = window.PPCH_API && window.PPCH_API.isConfigured();
+      var icon = document.getElementById('cloudStatusIcon');
+      var title = document.getElementById('cloudStatusTitle');
+      var detail = document.getElementById('cloudStatusDetail');
+      var badge = document.getElementById('cloudStatusBadge');
+
+      if (!icon || !title) return;
+
+      if (isConf) {
+        icon.innerText = 'cloud_done';
+        icon.style.color = '#059669';
+        title.innerText = 'เชื่อมต่อ Google Apps Script เรียบร้อย';
+        detail.innerText = 'ระบบพร้อมซิงค์ข้อมูลไปยัง Google Sheet & LINE Alert แบบ Real-time';
+        badge.innerText = 'Connected';
+        badge.style.background = '#d1fae5';
+        badge.style.color = '#065f46';
+      } else {
+        icon.innerText = 'cloud_off';
+        icon.style.color = '#94a3b8';
+        title.innerText = 'โหมดบันทึกข้อมูลแบบ Local Persistence';
+        detail.innerText = 'ข้อมูลถูกบันทึกในอุปกรณ์นี้ (ยังไม่ได้เชื่อมต่อ Google Sheet)';
+        badge.innerText = 'Local Only';
+        badge.style.background = '#e2e8f0';
+        badge.style.color = '#475569';
+      }
+    }
+
+    function saveCloudConfig() {
+      var url = document.getElementById('gasUrlInput').value.trim();
+      if (!url) {
+        showToast('กรุณาระบุ Web App URL', 'error');
+        return;
+      }
+      if (url.indexOf('script.google.com') === -1) {
+        showToast('URL ไม่ถูกต้อง ต้องเป็น script.google.com/...', 'error');
+        return;
+      }
+      window.PPCH_API.setEndpoint(url);
+      updateCloudStatusUI();
+      showToast('บันทึกการตั้งค่า Google Apps Script เรียบร้อยค่ะ', 'success');
+    }
+
+    function clearCloudConfig() {
+      if (confirm('คุณต้องการลบการเชื่อมต่อ Google Apps Script หรือไม่? (ระบบจะกลับไปใช้ Local Persistence)')) {
+        window.PPCH_API.setEndpoint('');
+        document.getElementById('gasUrlInput').value = '';
+        updateCloudStatusUI();
+        showToast('ล้างการตั้งค่าเรียบร้อยแล้วค่ะ', 'success');
+      }
+    }
+
+    function testCloudConnection() {
+      var url = document.getElementById('gasUrlInput').value.trim();
+      if (!url) {
+        showToast('กรุณาระบุ Web App URL ก่อนทดสอบ', 'error');
+        return;
+      }
+      window.PPCH_API.setEndpoint(url);
+      showToast('กำลังเชื่อมต่อเพื่อทดสอบ GAS...', 'success');
+
+      window.PPCH_API.testConnection(function (res) {
+        if (res.success) {
+          updateCloudStatusUI();
+          showToast('เชื่อมต่อ Google Sheet สำเร็จ! ' + res.message, 'success');
+        } else {
+          showToast('ไม่สามารถเชื่อมต่อได้: ' + res.message, 'error');
+        }
+      });
+    }
+
+    function testLineAlertFromModal() {
+      var url = document.getElementById('gasUrlInput').value.trim();
+      if (!url) {
+        showToast('กรุณาระบุ Web App URL ก่อนทดสอบ LINE Alert', 'error');
+        return;
+      }
+      window.PPCH_API.setEndpoint(url);
+      showToast('กำลังส่งสัญญาณแจ้งเตือนไปยัง LINE Notify...', 'success');
+
+      window.PPCH_API.testLineAlert(function (res) {
+        if (res.success) {
+          showToast('ส่งสัญญาณแจ้งเตือน LINE เรียบร้อย! กรุณาเช็คในกลุ่ม LINE', 'success');
+        } else {
+          showToast('ส่งไม่สำเร็จ: ' + res.message, 'error');
+        }
+      });
+    }
+
+    function showToast(msg, type) {
+      var toast = document.getElementById('appToast');
+      var toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.className = 'ppch-toast active ' + (type === 'error' ? 'error' : 'success');
+      setTimeout(function () {
+        toast.classList.remove('active');
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
