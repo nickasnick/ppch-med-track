@@ -290,8 +290,14 @@
 
     function initEvaluationPage() {
       var urlParams = new URLSearchParams(window.location.search);
-      var formId = urlParams.get('formId') || 'defibrillator';
+      var formId = urlParams.get('formId');
       var deviceId = urlParams.get('deviceId');
+
+      if (!formId && deviceId) {
+        var eq = window.PPCH_STORE.getEquipmentById(deviceId);
+        if (eq && eq.formId) formId = eq.formId;
+      }
+      if (!formId) formId = 'defibrillator';
 
       currentForm = window.PPCH_STORE.getFormById(formId);
       if (!currentForm) currentForm = window.PPCH_CONFIG.forms[0];

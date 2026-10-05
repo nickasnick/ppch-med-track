@@ -193,10 +193,11 @@ window.PPCH_CONFIG = {
       frequency: 'daily',
       homeDept: 'ER',
       currentDept: 'ER',
-      status: 'ready', // ready | abnormal | loaned | maintenance
-      lastEvaluatedAt: '2026-09-30 07:45',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'พว.สุดารัตน์ พงษ์ศิริ (ER)'
+      status: 'ready',
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-DEF-002',
@@ -209,9 +210,10 @@ window.PPCH_CONFIG = {
       homeDept: 'ICU',
       currentDept: 'ICU',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-30 08:10',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'พว.เกวลิน ชาญชัย (ICU)'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-VENT-001',
@@ -224,9 +226,10 @@ window.PPCH_CONFIG = {
       homeDept: 'ICU',
       currentDept: 'ICU',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-30 08:30',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'พว.เกวลิน ชาญชัย (ICU)'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-VENT-002',
@@ -236,12 +239,13 @@ window.PPCH_CONFIG = {
       model: 'Maquet Servo-i',
       serialNo: 'MQ-SV-7714',
       frequency: 'daily',
-      homeDept: 'CENTRAL', // เบิกจากส่วนกลาง
-      currentDept: 'WARD23', // ปัจจุบัน Ward 2-3 ยืมมาใช้งาน!
+      homeDept: 'CENTRAL',
+      currentDept: 'CENTRAL',
       status: 'ready',
-      lastEvaluatedAt: '', // ค้างประเมินวันนี้! เพื่อจำลองการเตือนไปที่ Ward 2-3
+      lastEvaluatedAt: '',
       lastEvaluatedStatus: 'pending',
-      lastEvaluatedBy: ''
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-HF-001',
@@ -254,9 +258,10 @@ window.PPCH_CONFIG = {
       homeDept: 'ER',
       currentDept: 'ER',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-30 08:00',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'พว.กมลทิพย์ ก้องเสียง (ER)'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-HF-002',
@@ -267,11 +272,12 @@ window.PPCH_CONFIG = {
       serialNo: 'FP-AV2-1921',
       frequency: 'daily',
       homeDept: 'CENTRAL',
-      currentDept: 'WARD45', // ย้ายไป Ward 4-5
+      currentDept: 'CENTRAL',
       status: 'ready',
-      lastEvaluatedAt: '', // ค้างประเมิน!
+      lastEvaluatedAt: '',
       lastEvaluatedStatus: 'pending',
-      lastEvaluatedBy: ''
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-INF-001',
@@ -284,9 +290,10 @@ window.PPCH_CONFIG = {
       homeDept: 'WARD23',
       currentDept: 'WARD23',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-30 07:15',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'พว.นุชจรี พรหมมา (Ward 2-3)'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-INF-002',
@@ -297,11 +304,12 @@ window.PPCH_CONFIG = {
       serialNo: 'TR-LM-6622',
       frequency: 'daily',
       homeDept: 'CENTRAL',
-      currentDept: 'CENTRAL', // อยู่ที่คลังส่วนกลาง
+      currentDept: 'CENTRAL',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-29 16:00',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'เจ้าหน้าที่คลังกลาง'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-VS-001',
@@ -314,9 +322,10 @@ window.PPCH_CONFIG = {
       homeDept: 'OPD',
       currentDept: 'OPD',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-30 08:20',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'พว.ศิรินภา วงศ์ษา (OPD)'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-VS-002',
@@ -328,11 +337,11 @@ window.PPCH_CONFIG = {
       frequency: 'daily',
       homeDept: 'ER',
       currentDept: 'ER',
-      status: 'abnormal', // จำลองเครื่องมีปัญหา (แจ้งเตือนความผิดปกติ)
-      lastEvaluatedAt: '2026-09-30 08:45',
-      lastEvaluatedStatus: 'abnormal',
-      lastEvaluatedBy: 'พว.สุดารัตน์ พงษ์ศิริ (ER)',
-      abnormalReason: 'Cuff NIBP สายลมรั่วซึม บีบลมไม่ขึ้น Error 03 แจ้งช่างเปลี่ยนด่วน'
+      status: 'ready',
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-ANES-001',
@@ -345,9 +354,10 @@ window.PPCH_CONFIG = {
       homeDept: 'OR',
       currentDept: 'OR',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-30 07:30',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'วิสัญญีพยาบาล อารยา สุขเกษม (OR)'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-EKG-001',
@@ -360,9 +370,10 @@ window.PPCH_CONFIG = {
       homeDept: 'ER',
       currentDept: 'ER',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-30 08:15',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'พว.สุดารัตน์ พงษ์ศิริ (ER)'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-US-001',
@@ -375,9 +386,10 @@ window.PPCH_CONFIG = {
       homeDept: 'XRAY',
       currentDept: 'XRAY',
       status: 'ready',
-      lastEvaluatedAt: '2026-09-02 09:30',
-      lastEvaluatedStatus: 'normal',
-      lastEvaluatedBy: 'นพ. รังสีแพทย์ ประจำศูนย์'
+      lastEvaluatedAt: '',
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     },
     {
       id: 'PPCH-EQ-US-002',
@@ -390,9 +402,10 @@ window.PPCH_CONFIG = {
       homeDept: 'ICU',
       currentDept: 'ICU',
       status: 'ready',
-      lastEvaluatedAt: '', // ค้างประเมินรอบเดือน 9
+      lastEvaluatedAt: '',
       lastEvaluatedStatus: 'pending',
-      lastEvaluatedBy: ''
+      lastEvaluatedBy: '',
+      abnormalReason: ''
     }
   ]
 };

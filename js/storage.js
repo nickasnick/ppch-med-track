@@ -13,6 +13,17 @@
       if (raw) {
         var parsed = JSON.parse(raw);
         if (parsed && parsed.equipment && parsed.equipment.length > 0) {
+          // Sanitize out old mock/dummy evaluations & transfers
+          if (Array.isArray(parsed.evaluations)) {
+            parsed.evaluations = parsed.evaluations.filter(function (ev) {
+              return ev.id && ev.id.indexOf('EV-20260930') === -1 && ev.id.indexOf('EV-1791167475297') === -1;
+            });
+          }
+          if (Array.isArray(parsed.transfers)) {
+            parsed.transfers = parsed.transfers.filter(function (tr) {
+              return tr.id && tr.id.indexOf('TR-20260929') === -1;
+            });
+          }
           return parsed;
         }
       }
@@ -20,42 +31,11 @@
       console.warn('Storage read error, using fallback seed:', e);
     }
 
-    // Default Seed
+    // Default Seed (100% Clean - No dummy evaluations or transfers)
     var initial = {
       equipment: window.PPCH_CONFIG.initialEquipment,
-      evaluations: [
-        {
-          id: 'EV-20260930-001',
-          deviceId: 'PPCH-EQ-VS-002',
-          formId: 'vital_signs',
-          department: 'ER',
-          evaluatedBy: 'พว.สุดารัตน์ พงษ์ศิริ (ER)',
-          evaluatedAt: '2026-09-30 08:45',
-          result: 'abnormal',
-          abnormalNote: 'Cuff NIBP สายลมรั่วซึม บีบลมไม่ขึ้น Error 03 แจ้งช่างเปลี่ยนด่วน',
-          checklist: { 0: true, 1: false, 2: true, 3: true, 4: true }
-        }
-      ],
-      transfers: [
-        {
-          id: 'TR-20260929-01',
-          deviceId: 'PPCH-EQ-VENT-002',
-          fromDept: 'CENTRAL',
-          toDept: 'WARD23',
-          transferredBy: 'พว.นุชจรี พรหมมา (Ward 2-3)',
-          transferredAt: '2026-09-29 14:30',
-          reason: 'เบิกใช้ฉุกเฉินผู้ป่วยวิกฤตทางเดินหายใจเตียง 204'
-        },
-        {
-          id: 'TR-20260929-02',
-          deviceId: 'PPCH-EQ-HF-002',
-          fromDept: 'CENTRAL',
-          toDept: 'WARD45',
-          transferredBy: 'พว.พัชราภรณ์ สุขใจ (Ward 4-5)',
-          transferredAt: '2026-09-29 16:15',
-          reason: 'เบิกสำรองผู้ป่วยกึ่งวิกฤต หอผู้ป่วยพิเศษ'
-        }
-      ]
+      evaluations: [],
+      transfers: []
     };
     saveData(initial);
     return initial;
