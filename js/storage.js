@@ -103,7 +103,15 @@
         throw new Error('ไม่พบข้อมูลเครื่องมือรหัส: ' + evalPayload.deviceId);
       }
 
-      var nowStr = evalPayload.evaluatedAt || new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
+      var nowStr = evalPayload.evaluatedAt;
+      if (!nowStr) {
+        try {
+          nowStr = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
+        } catch (e) {
+          var now = new Date();
+          nowStr = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2) + ' ' + ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+        }
+      }
       
       // Update Equipment status
       eq.lastEvaluatedAt = nowStr;

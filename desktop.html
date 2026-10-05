@@ -1061,6 +1061,42 @@
       return y + '-' + m + '-' + day;
     }
 
+    function parseEvalDateStr(str) {
+      if (!str) return '';
+      if (typeof str === 'string' && str.indexOf('T') !== -1) {
+        var d = new Date(str);
+        if (!isNaN(d.getTime())) return getLocalDateString(d);
+      }
+      var m = String(str).match(/(\d{4}-\d{2}-\d{2})/);
+      if (m) return m[1];
+      return String(str).slice(0, 10);
+    }
+
+    function formatTimeOnly(str) {
+      if (!str) return '-';
+      if (typeof str === 'string' && str.indexOf('T') !== -1) {
+        var d = new Date(str);
+        if (!isNaN(d.getTime())) {
+          var h = String(d.getHours()).padStart(2, '0');
+          var min = String(d.getMinutes()).padStart(2, '0');
+          return h + ':' + min;
+        }
+      }
+      var match = String(str).match(/(\d{1,2}):(\d{2})/);
+      if (match) {
+        return match[1].padStart(2, '0') + ':' + match[2];
+      }
+      return String(str).slice(11, 16) || '-';
+    }
+
+    function formatFullDateTime(str) {
+      if (!str) return '-';
+      var d = parseEvalDateStr(str);
+      var t = formatTimeOnly(str);
+      if (d && t && t !== '-') return d + ' ' + t + ' น.';
+      return str;
+    }
+
     function populateSidebarFilters() {
       var depts = window.PPCH_CONFIG.departments;
       var deptSel = document.getElementById('sidebarDeptSelect');
@@ -1221,7 +1257,7 @@
       document.getElementById('printDateSubtitle').innerText = 'ประจำ' + thaiDateFormatted + ' • โรงพยาบาลพิษณุเวช';
 
       var evalsOnDate = allEvaluations.filter(function (ev) {
-        return ev.evaluatedAt && ev.evaluatedAt.indexOf(selectedDateStr) !== -1;
+        return ev.evaluatedAt && parseEvalDateStr(ev.evaluatedAt) === selectedDateStr;
       });
 
       var evalMapByDevice = {};
@@ -1344,7 +1380,7 @@
           var actionBtn = '';
 
           if (ev) {
-            var timeOnly = ev.evaluatedAt ? ev.evaluatedAt.slice(11, 16) : '-';
+            var timeOnly = formatTimeOnly(ev.evaluatedAt);
             if (ev.result === 'abnormal') {
               statusBadge = '<span class="badge-status badge-status-abnormal"><span class="material-icons-round" style="font-size: 14px;">warning</span> พบข้อบกพร่อง</span>';
               evalInfo = '<div style="font-weight: 700; color: #b91c1c;">' + timeOnly + ' น.</div><div style="font-size: 11px; color: #64748b;">โดย ' + (ev.evaluatedBy || 'ไม่ระบุ') + '</div>';
@@ -1499,7 +1535,7 @@
           : '<span style="color: #dc2626; font-weight: 600;">' + (ev.abnormalNote || 'พบข้อบกพร่อง') + '</span>';
 
         html += '<tr>' +
-          '<td><strong>' + (ev.evaluatedAt || '-') + '</strong></td>' +
+          '<td><strong>' + formatFullDateTime(ev.evaluatedAt) + '</strong></td>' +
           '<td><span style="font-family: monospace; font-size: 11.5px; font-weight: 700; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">' + (ev.deviceAsset || ev.deviceId) + '</span></td>' +
           '<td><strong>' + (ev.deviceName || '-') + '</strong></td>' +
           '<td>' + deptName + '</td>' +
@@ -1530,7 +1566,7 @@
 
       allEquipment.forEach(function (eq) {
         var evalsInMonth = allEvaluations.filter(function (ev) {
-          return (ev.deviceId === eq.id || ev.deviceAsset === eq.assetCode) && ev.evaluatedAt && ev.evaluatedAt.indexOf(monthPrefix) === 0;
+          return (ev.deviceId === eq.id || ev.deviceAsset === eq.assetCode) && ev.evaluatedAt && parseEvalDateStr(ev.evaluatedAt).indexOf(monthPrefix) === 0;
         });
 
         var count = evalsInMonth.length;
@@ -1555,7 +1591,7 @@
           '<td>' + window.PPCH_STORE.getDepartmentName(eq.currentDept) + '</td>' +
           '<td style="text-align: center;"><strong>' + count + ' ครั้ง</strong></td>' +
           '<td style="text-align: center;">' + statusBadge + '</td>' +
-          '<td>' + (lastEv ? lastEv.evaluatedAt : '-') + '</td>' +
+          '<td>' + (lastEv ? formatFullDateTime(lastEv.evaluatedAt) : '-') + '</td>' +
           '<td>' + (lastEv ? lastEv.evaluatedBy : '-') + '</td>' +
         '</tr>';
       });
@@ -1572,7 +1608,7 @@
       document.getElementById('modalAssetCode').innerText = 'รหัสครุภัณฑ์: ' + (eq ? eq.assetCode : (ev ? ev.deviceAsset : deviceId));
       document.getElementById('modalDeptName').innerText = window.PPCH_STORE.getDepartmentName(ev ? ev.department : (eq ? eq.currentDept : '-'));
       document.getElementById('modalEvaluator').innerText = (ev ? ev.evaluatedBy : 'ไม่ระบุ');
-      document.getElementById('modalDate').innerText = (ev ? ev.evaluatedAt : '-');
+      document.getElementById('modalDate').innerText = formatFullDateTime(ev ? ev.evaluatedAt : '-');
 
       var isNormal = ev ? (ev.result === 'normal') : true;
       document.getElementById('modalStatusBadge').innerHTML = isNormal
@@ -1743,7 +1779,7 @@
 
       allEquipment.forEach(function (eq, idx) {
         var ev = allEvaluations.find(function (e) {
-          return (e.deviceId === eq.id || e.deviceAsset === eq.assetCode) && e.evaluatedAt && e.evaluatedAt.indexOf(selectedDateStr) !== -1;
+          return (e.deviceId === eq.id || e.deviceAsset === eq.assetCode) && e.evaluatedAt && parseEvalDateStr(e.evaluatedAt) === selectedDateStr;
         });
 
         rows.push([
@@ -1753,7 +1789,7 @@
           '"' + eq.formId + '"',
           '"' + window.PPCH_STORE.getDepartmentName(eq.currentDept).replace(/"/g, '""') + '"',
           '"' + (ev ? (ev.result === 'abnormal' ? 'พบข้อบกพร่อง' : 'พร้อมใช้งาน') : 'ยังไม่ตรวจเช็ค') + '"',
-          '"' + (ev ? ev.evaluatedAt : '-') + '"',
+          '"' + (ev ? formatFullDateTime(ev.evaluatedAt) : '-') + '"',
           '"' + (ev ? (ev.evaluatedBy || '').replace(/"/g, '""') : '-') + '"',
           '"' + (ev ? (ev.abnormalNote || '').replace(/"/g, '""') : '') + '"'
         ]);

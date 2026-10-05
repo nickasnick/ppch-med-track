@@ -160,6 +160,9 @@
       var record = e.detail.record;
       var payload = {
         action: 'submitEvaluation',
+        id: record.id,
+        evaluatedAt: record.evaluatedAt,
+        formId: record.formId,
         deviceId: record.deviceId,
         deviceAsset: record.deviceAsset,
         deviceName: record.deviceName,
