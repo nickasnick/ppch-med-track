@@ -773,3 +773,71 @@ table.ppch-data-table tr:last-child td {
 
 .ppch-toast.success { background: #065f46; border-left: 4px solid #34d399; }
 .ppch-toast.error { background: #881337; border-left: 4px solid #f43f5e; }
+
+/* ==================== UPS BATTERY INSPECTION STYLES ==================== */
+.quick-preset-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+  background: #ffffff;
+  color: #1e40af;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.quick-preset-btn:hover {
+  background: #1e40af;
+  color: #ffffff;
+  border-color: #1e40af;
+}
+.battery-badge-ready {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.battery-badge-warning {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.battery-badge-pending {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.runtime-pill {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 2.5px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}

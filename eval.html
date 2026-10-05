@@ -157,8 +157,106 @@
     <!-- Evaluation Form (Widescreen 100%) -->
     <form id="evaluationForm" onsubmit="handleEvaluationSubmit(event)" style="display: flex; flex-direction: column; gap: 20px;">
       
+      <!-- ==================== UPS BATTERY INSPECTION CARD (บังคับตรวจทุกวันที่ 1 และ 16 ของเดือน) ==================== -->
+      <div id="upsBatteryCard" class="card-panel" style="border: 2px solid #cbd5e1; transition: all 0.3s ease;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="batteryIconBox" style="width: 44px; height: 44px; border-radius: 12px; background: #eff6ff; color: #1e40af; display: flex; align-items: center; justify-content: center;">
+              <span class="material-icons-round" style="font-size: 26px;">battery_charging_full</span>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h2 style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0;">
+                  การตรวจสอบแบตเตอรี่สำรอง / UPS (Battery Discharge Test)
+                </h2>
+                <span id="batteryCycleBadge" style="font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a;">
+                  รอบวันที่ 1 & 16 ของเดือน
+                </span>
+              </div>
+              <p id="batterySubtext" style="font-size: 12.5px; color: #64748b; margin-top: 2px;">
+                เกณฑ์มาตรฐาน: บังคับตรวจเช็คทุกๆ วันที่ 1 และ 16 ของเดือน ทุกเครื่อง (วันอื่นๆ ไม่ต้องตรวจ)
+              </p>
+            </div>
+          </div>
+
+          <!-- Simulation / Testing Toggle -->
+          <div style="display: flex; align-items: center; gap: 8px; background: #f8fafc; padding: 6px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <input type="checkbox" id="simulateBatteryCycleCheckbox" onchange="toggleBatteryCycleMode()" style="cursor: pointer; width: 16px; height: 16px; accent-color: #1e40af;">
+            <label for="simulateBatteryCycleCheckbox" style="font-size: 11.5px; font-weight: 600; color: #475569; cursor: pointer; user-select: none;">
+              ⚡ ทดสอบรอบตรวจวันที่ 1/16
+            </label>
+          </div>
+        </div>
+
+        <!-- Non-Cycle Notice (Active when today is NOT 1 or 16 and test mode is off) -->
+        <div id="batteryNonCycleNotice" style="display: none; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 14px 18px; color: #64748b; font-size: 13px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="material-icons-round" style="color: #059669; font-size: 22px;">check_circle</span>
+            <div>
+              <strong style="color: #334155;">วันนี้ไม่อยู่ในรอบบังคับตรวจแบตเตอรี่ UPS</strong> — ระบบจะเปิดบังคับเฉพาะวันที่ 1 และ 16 ของเดือน (ท่านสามารถทำการตรวจความพร้อมใช้งานด้านล่างได้ทันที)
+            </div>
+          </div>
+        </div>
+
+        <!-- Mandatory Battery Input Section -->
+        <div id="batteryInputSection">
+          <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 700; color: #1e40af; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+              <span class="material-icons-round" style="font-size: 18px;">priority_high</span>
+              <span>กรุณากรอกระยะเวลาการใช้งานจริงของแบตเตอรี่ UPS ก่อนทำการประเมินความพร้อมการใช้งานเครื่อง:</span>
+            </div>
+            <div style="font-size: 12px; color: #3b82f6; margin-bottom: 14px;">
+              โปรดทดสอบการจ่ายไฟสำรองและระบุ <strong>ระยะเวลาในการใช้งานได้จริง</strong> เป็น <code>_ _ : _ _ ชั่วโมง นาที</code>
+            </div>
+
+            <!-- Time Inputs ( _ _ : _ _ ) -->
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="text-align: center;">
+                  <input type="number" id="batteryHoursInput" min="0" max="99" placeholder="00" oninput="onBatteryRuntimeChanged()"
+                    style="width: 75px; text-align: center; font-size: 24px; font-family: monospace; font-weight: 800; padding: 8px 4px; border: 2px solid #93c5fd; border-radius: 10px; background: #ffffff; color: #1e3a8a; outline: none;">
+                  <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-top: 4px;">ชั่วโมง (ชม.)</div>
+                </div>
+
+                <span style="font-size: 28px; font-weight: 800; color: #1e40af; padding-bottom: 20px;">:</span>
+
+                <div style="text-align: center;">
+                  <input type="number" id="batteryMinutesInput" min="0" max="59" placeholder="00" oninput="onBatteryRuntimeChanged()"
+                    style="width: 75px; text-align: center; font-size: 24px; font-family: monospace; font-weight: 800; padding: 8px 4px; border: 2px solid #93c5fd; border-radius: 10px; background: #ffffff; color: #1e3a8a; outline: none;">
+                  <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-top: 4px;">นาที (น.)</div>
+                </div>
+              </div>
+
+              <!-- Quick Presets -->
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="font-size: 11px; font-weight: 600; color: #64748b;">กดเลือกเวลาลัด (Quick Presets):</div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button type="button" onclick="setBatteryPreset(0, 30)" class="quick-preset-btn">00:30 (30 น.)</button>
+                  <button type="button" onclick="setBatteryPreset(1, 0)" class="quick-preset-btn">01:00 (1 ชม.)</button>
+                  <button type="button" onclick="setBatteryPreset(1, 30)" class="quick-preset-btn">01:30 (1.5 ชม.)</button>
+                  <button type="button" onclick="setBatteryPreset(2, 0)" class="quick-preset-btn">02:00 (2 ชม.)</button>
+                  <button type="button" onclick="setBatteryPreset(3, 0)" class="quick-preset-btn">03:00 (3 ชม.)</button>
+                </div>
+              </div>
+
+              <!-- Real-time formatted badge -->
+              <div id="batteryRuntimeDisplayBadge" style="margin-left: auto; padding: 8px 16px; border-radius: 10px; background: #ffffff; border: 1.5px solid #cbd5e1; text-align: right;">
+                <div style="font-size: 10.5px; color: #64748b; font-weight: 600;">ระยะเวลาที่ใช้งานได้จริง (_ _ : _ _)</div>
+                <div id="batteryRuntimeText" style="font-size: 18px; font-weight: 800; font-family: monospace; color: #94a3b8;">-- : -- ชม.</div>
+              </div>
+            </div>
+
+            <!-- Lock / Unlock Status Banner for Checklist -->
+            <div id="batteryUnlockStatus" style="margin-top: 14px; padding: 9px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca;">
+              <span class="material-icons-round" id="batteryLockIcon" style="font-size: 18px;">lock</span>
+              <span id="batteryLockMsg">🔒 กรุณาระบุระยะเวลาการใช้งานจริงของแบตเตอรี่ UPS ด้านบนก่อน เพื่อปลดล็อคแบบประเมินความพร้อมใช้งาน</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Checklist Container (Widescreen 100%) -->
-      <div class="card-panel">
+      <div class="card-panel" id="checklistCardPanel" style="transition: all 0.25s ease;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
           <h2 style="font-size: 16px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px;">
             <span class="material-icons-round" style="color: #0284c7;">checklist</span>
@@ -257,6 +355,10 @@
             <span style="color: #64748b;">สถานะความพร้อม:</span>
             <span id="succStatusText" style="font-weight: 800; color: #059669;">พร้อมใช้งาน (Normal)</span>
           </div>
+          <div id="succBatteryRow" style="display: none; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 6px;">
+            <span style="color: #64748b;">ระยะเวลาแบตเตอรี่ UPS:</span>
+            <span id="succBatteryRuntime" style="font-weight: 700; color: #1e40af; font-family: monospace;">--</span>
+          </div>
         </div>
 
         <div style="display: flex; gap: 10px;">
@@ -283,6 +385,9 @@
     var currentForm = null;
     var selectedDevice = null;
     var checklistResults = {};
+    var isBatteryCheckActive = false;
+    var batteryRuntimeMinutes = 0;
+    var batteryRuntimeFormatted = '';
 
     document.addEventListener('DOMContentLoaded', function () {
       initEvaluationPage();
@@ -321,10 +426,151 @@
       var now = new Date();
       document.getElementById('evalDateDisplay').value = now.toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
 
+      // Check Battery UPS inspection rule: Mandatory on 1st and 16th of each month
+      var day = now.getDate();
+      var is1stOr16th = (day === 1 || day === 16);
+      var urlBatteryCheck = (urlParams.get('batteryCheck') === '1');
+
+      var shouldEnforceBattery = is1stOr16th || urlBatteryCheck;
+      var simChk = document.getElementById('simulateBatteryCycleCheckbox');
+      if (simChk) simChk.checked = shouldEnforceBattery;
+      setBatteryMandatoryMode(shouldEnforceBattery);
+
       setTimeout(function () {
         var loader = document.getElementById('pageLoader');
         if (loader) loader.classList.add('hidden');
       }, 350);
+    }
+
+    function setBatteryMandatoryMode(isMandatory) {
+      isBatteryCheckActive = isMandatory;
+      var notice = document.getElementById('batteryNonCycleNotice');
+      var inputSec = document.getElementById('batteryInputSection');
+      var badge = document.getElementById('batteryCycleBadge');
+
+      if (isMandatory) {
+        if (notice) notice.style.display = 'none';
+        if (inputSec) inputSec.style.display = 'block';
+        if (badge) {
+          badge.className = 'badge-pill daily';
+          badge.innerHTML = '⚡ รอบบังคับตรวจ (วันที่ 1 & 16)';
+          badge.style.background = '#fef3c7';
+          badge.style.color = '#b45309';
+          badge.style.borderColor = '#fde68a';
+        }
+        onBatteryRuntimeChanged();
+      } else {
+        if (notice) notice.style.display = 'block';
+        if (inputSec) inputSec.style.display = 'none';
+        if (badge) {
+          badge.className = 'badge-pill';
+          badge.innerHTML = 'วันอื่นๆ ไม่ต้องตรวจ';
+          badge.style.background = '#f1f5f9';
+          badge.style.color = '#64748b';
+          badge.style.borderColor = '#cbd5e1';
+        }
+        lockChecklist(false);
+      }
+    }
+
+    function toggleBatteryCycleMode() {
+      var chk = document.getElementById('simulateBatteryCycleCheckbox');
+      setBatteryMandatoryMode(chk ? chk.checked : false);
+      if (chk && chk.checked) {
+        showToast('เปิดโหมดรอบตรวจแบตเตอรี่ UPS (รอบวันที่ 1 / 16)', 'success');
+      } else {
+        showToast('ปิดโหมดบังคับตรวจแบตเตอรี่ (วันปกติไม่ต้องตรวจ)', 'warning');
+      }
+    }
+
+    function onBatteryRuntimeChanged() {
+      var hInput = document.getElementById('batteryHoursInput');
+      var mInput = document.getElementById('batteryMinutesInput');
+      if (!hInput || !mInput) return;
+
+      var hVal = hInput.value.trim();
+      var mVal = mInput.value.trim();
+
+      var h = parseInt(hVal, 10);
+      var m = parseInt(mVal, 10);
+      if (isNaN(h)) h = 0;
+      if (isNaN(m)) m = 0;
+      if (m > 59) { m = 59; mInput.value = 59; }
+      if (h > 99) { h = 99; hInput.value = 99; }
+      if (h < 0) { h = 0; hInput.value = 0; }
+      if (m < 0) { m = 0; mInput.value = 0; }
+
+      var totalMin = (h * 60) + m;
+      batteryRuntimeMinutes = totalMin;
+
+      var dispText = document.getElementById('batteryRuntimeText');
+      var unlockBanner = document.getElementById('batteryUnlockStatus');
+      var lockIcon = document.getElementById('batteryLockIcon');
+      var lockMsg = document.getElementById('batteryLockMsg');
+
+      if (hVal === '' && mVal === '') {
+        if (dispText) {
+          dispText.innerText = '-- : -- ชม.';
+          dispText.style.color = '#94a3b8';
+        }
+        batteryRuntimeFormatted = '';
+      } else {
+        var strH = String(h).padStart(2, '0');
+        var strM = String(m).padStart(2, '0');
+        batteryRuntimeFormatted = strH + ':' + strM;
+        if (dispText) {
+          dispText.innerText = strH + ':' + strM + ' ชม.';
+          dispText.style.color = '#1e40af';
+        }
+      }
+
+      if (isBatteryCheckActive) {
+        if (totalMin > 0) {
+          // Valid duration entered -> UNLOCK checklist!
+          lockChecklist(false);
+          if (unlockBanner) {
+            unlockBanner.style.background = '#dcfce7';
+            unlockBanner.style.color = '#15803d';
+            unlockBanner.style.borderColor = '#bbf7d0';
+          }
+          if (lockIcon) lockIcon.innerText = 'check_circle';
+          if (lockMsg) lockMsg.innerHTML = '✓ บันทึกเวลาสำรองไฟแล้ว <b>' + batteryRuntimeFormatted + ' ชม.</b> (' + h + ' ชม. ' + m + ' นาที) — ปลดล็อคแบบประเมินความพร้อมใช้งานเรียบร้อย';
+        } else {
+          // Mandatory and duration not filled -> LOCK checklist!
+          lockChecklist(true);
+          if (unlockBanner) {
+            unlockBanner.style.background = '#fef2f2';
+            unlockBanner.style.color = '#b91c1c';
+            unlockBanner.style.borderColor = '#fecaca';
+          }
+          if (lockIcon) lockIcon.innerText = 'lock';
+          if (lockMsg) lockMsg.innerHTML = '🔒 กรุณาระบุระยะเวลาการใช้งานจริงของแบตเตอรี่ UPS ด้านบนก่อน เพื่อปลดล็อคแบบประเมินความพร้อมใช้งาน';
+        }
+      } else {
+        lockChecklist(false);
+      }
+    }
+
+    function lockChecklist(isLocked) {
+      var panel = document.getElementById('checklistCardPanel');
+      if (!panel) return;
+      if (isLocked) {
+        panel.style.opacity = '0.55';
+        panel.style.pointerEvents = 'none';
+        panel.style.filter = 'grayscale(35%)';
+      } else {
+        panel.style.opacity = '1';
+        panel.style.pointerEvents = 'auto';
+        panel.style.filter = 'none';
+      }
+    }
+
+    function setBatteryPreset(h, m) {
+      var hInput = document.getElementById('batteryHoursInput');
+      var mInput = document.getElementById('batteryMinutesInput');
+      if (hInput) hInput.value = h;
+      if (mInput) mInput.value = m;
+      onBatteryRuntimeChanged();
     }
 
     function populateDevices(formId, preselectedDeviceId) {
@@ -476,6 +722,17 @@
         return;
       }
 
+      // Check mandatory battery UPS rule (Mandatory on 1st and 16th, or test mode)
+      if (isBatteryCheckActive && batteryRuntimeMinutes <= 0) {
+        showToast('กรุณาระบุระยะเวลาการใช้งานจริงของแบตเตอรี่ UPS (ชั่วโมง : นาที) ก่อนทำการประเมินค่ะ', 'error');
+        var bHours = document.getElementById('batteryHoursInput');
+        if (bHours) {
+          bHours.focus();
+          bHours.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
       var hasAbnormal = false;
       for (var k in checklistResults) {
         if (checklistResults[k] === 'fail') {
@@ -498,6 +755,23 @@
 
       setTimeout(function () {
         try {
+          var h = parseInt(document.getElementById('batteryHoursInput').value, 10) || 0;
+          var m = parseInt(document.getElementById('batteryMinutesInput').value, 10) || 0;
+          var upsBatteryData = null;
+
+          if (isBatteryCheckActive || batteryRuntimeMinutes > 0) {
+            var cycleDateStr = (new Date().getDate() === 16 ? '16' : '1');
+            upsBatteryData = {
+              tested: true,
+              runtimeHours: h,
+              runtimeMinutes: m,
+              runtimeFormatted: batteryRuntimeFormatted || (String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0')),
+              cycleDate: cycleDateStr,
+              testedAt: document.getElementById('evalDateDisplay').value,
+              status: (h > 0 || m >= 30) ? 'normal' : 'warning'
+            };
+          }
+
           var payload = {
             deviceId: deviceId,
             formId: currentForm.id,
@@ -505,7 +779,8 @@
             evaluatedBy: evaluator,
             result: hasAbnormal ? 'abnormal' : 'normal',
             abnormalNote: hasAbnormal ? abnormalNotes : '',
-            checklist: checklistResults
+            checklist: checklistResults,
+            upsBattery: upsBatteryData
           };
 
           var res = window.PPCH_STORE.submitEvaluation(payload);
@@ -548,6 +823,15 @@
         statusText.innerText = '✓ พร้อมใช้งานปกติ (Ready)';
       }
 
+      var bRow = document.getElementById('succBatteryRow');
+      var bRuntime = document.getElementById('succBatteryRuntime');
+      if (record.upsBattery && record.upsBattery.tested && bRow && bRuntime) {
+        bRow.style.display = 'flex';
+        bRuntime.innerText = record.upsBattery.runtimeFormatted + ' ชม. (' + record.upsBattery.runtimeHours + ' ชม. ' + record.upsBattery.runtimeMinutes + ' นาที)';
+      } else if (bRow) {
+        bRow.style.display = 'none';
+      }
+
       modal.classList.remove('hidden');
     }
 
@@ -555,6 +839,9 @@
       document.getElementById('successModal').classList.add('hidden');
       document.getElementById('evaluationForm').reset();
       checklistResults = {};
+      document.getElementById('batteryHoursInput').value = '';
+      document.getElementById('batteryMinutesInput').value = '';
+      onBatteryRuntimeChanged();
       document.getElementById('abnormalAlertBox').style.display = 'none';
       document.querySelectorAll('.check-item-row-wide').forEach(function (r) {
         r.classList.remove('is-failed');

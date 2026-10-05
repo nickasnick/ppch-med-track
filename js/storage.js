@@ -7,6 +7,151 @@
   var STORAGE_KEY = window.PPCH_CONFIG.storageKey;
   var TODAY = window.PPCH_CONFIG.todayDate || new Date().toISOString().slice(0, 10);
 
+  // Seed battery inspections for recent cycles (1st of Oct, 16th of Sep)
+  var INITIAL_BATTERY_SEEDS = [
+    {
+      id: 'EV-BAT-20261001-01',
+      deviceId: 'PPCH-EQ-DEF-001',
+      deviceAsset: 'EQ-68-DEF-001',
+      deviceName: 'เครื่อง Defibrillator ชนิดสองทิศทาง (Biphasic)',
+      formId: 'defibrillator',
+      department: 'ER',
+      evaluatedBy: 'พว.กมลทิพย์ ก้องเสียง',
+      evaluatedAt: '2026-10-01 08:30',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass', '5': 'pass', '6': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '02:45', runtimeHours: 2, runtimeMinutes: 45, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20261001-02',
+      deviceId: 'PPCH-EQ-DEF-002',
+      deviceAsset: 'EQ-68-DEF-002',
+      deviceName: 'เครื่อง Defibrillator พร้อม Pacing',
+      formId: 'defibrillator',
+      department: 'ICU',
+      evaluatedBy: 'พว.สมใจ นวลละออง',
+      evaluatedAt: '2026-10-01 08:45',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass', '5': 'pass', '6': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '02:15', runtimeHours: 2, runtimeMinutes: 15, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20261001-03',
+      deviceId: 'PPCH-EQ-VENT-001',
+      deviceAsset: 'EQ-67-VENT-001',
+      deviceName: 'เครื่องช่วยหายใจชนิดควบคุมด้วยปริมาตรและความดัน',
+      formId: 'ventilator',
+      department: 'ICU',
+      evaluatedBy: 'พว.สมใจ นวลละออง',
+      evaluatedAt: '2026-10-01 09:10',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass', '5': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '01:30', runtimeHours: 1, runtimeMinutes: 30, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20261001-04',
+      deviceId: 'PPCH-EQ-VENT-002',
+      deviceAsset: 'EQ-67-VENT-002',
+      deviceName: 'เครื่องช่วยหายใจ ICU Ventilator ชนิดเคลื่อนย้าย',
+      formId: 'ventilator',
+      department: 'CENTRAL',
+      evaluatedBy: 'นายช่างประสิทธิ์ บุญมี',
+      evaluatedAt: '2026-10-01 09:30',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass', '5': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '01:15', runtimeHours: 1, runtimeMinutes: 15, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20261001-05',
+      deviceId: 'PPCH-EQ-HF-001',
+      deviceAsset: 'EQ-66-HF-001',
+      deviceName: 'เครื่อง High Flow Nasal Cannula (HHHFINC)',
+      formId: 'high_flow',
+      department: 'ER',
+      evaluatedBy: 'พว.กมลทิพย์ ก้องเสียง',
+      evaluatedAt: '2026-10-01 10:00',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '01:45', runtimeHours: 1, runtimeMinutes: 45, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20261001-06',
+      deviceId: 'PPCH-EQ-INF-001',
+      deviceAsset: 'EQ-65-INF-001',
+      deviceName: 'เครื่องควบคุมการให้สารน้ำทางหลอดเลือดดำ (Infusion Pump)',
+      formId: 'infusion_pump',
+      department: 'WARD23',
+      evaluatedBy: 'พว.สุดารัตน์ พิมพา',
+      evaluatedAt: '2026-10-01 10:15',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '04:20', runtimeHours: 4, runtimeMinutes: 20, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20261001-07',
+      deviceId: 'PPCH-EQ-VS-001',
+      deviceAsset: 'EQ-66-VS-001',
+      deviceName: 'เครื่องตรวจติดตามสัญญาณชีพข้างเตียง (Vital Signs Monitor)',
+      formId: 'vital_signs',
+      department: 'OPD',
+      evaluatedBy: 'พว.อนงค์ ศรีสวัสดิ์',
+      evaluatedAt: '2026-10-01 10:40',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '03:10', runtimeHours: 3, runtimeMinutes: 10, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20261001-08',
+      deviceId: 'PPCH-EQ-ANES-001',
+      deviceAsset: 'EQ-65-ANES-001',
+      deviceName: 'เครื่องดมยาสลบพร้อมระบบช่วยหายใจ (Anesthesia Machine)',
+      formId: 'anesthesia',
+      department: 'OR',
+      evaluatedBy: 'พว.วราภรณ์ มั่นคง',
+      evaluatedAt: '2026-10-01 11:00',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '01:40', runtimeHours: 1, runtimeMinutes: 40, cycleDate: '2026-10-01', status: 'normal' }
+    },
+    // Previous cycle: 2026-09-16
+    {
+      id: 'EV-BAT-20260916-01',
+      deviceId: 'PPCH-EQ-DEF-001',
+      deviceAsset: 'EQ-68-DEF-001',
+      deviceName: 'เครื่อง Defibrillator ชนิดสองทิศทาง (Biphasic)',
+      formId: 'defibrillator',
+      department: 'ER',
+      evaluatedBy: 'พว.กมลทิพย์ ก้องเสียง',
+      evaluatedAt: '2026-09-16 08:35',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass', '5': 'pass', '6': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '02:50', runtimeHours: 2, runtimeMinutes: 50, cycleDate: '2026-09-16', status: 'normal' }
+    },
+    {
+      id: 'EV-BAT-20260916-02',
+      deviceId: 'PPCH-EQ-VENT-001',
+      deviceAsset: 'EQ-67-VENT-001',
+      deviceName: 'เครื่องช่วยหายใจชนิดควบคุมด้วยปริมาตรและความดัน',
+      formId: 'ventilator',
+      department: 'ICU',
+      evaluatedBy: 'พว.สมใจ นวลละออง',
+      evaluatedAt: '2026-09-16 09:20',
+      result: 'normal',
+      abnormalNote: '',
+      checklist: { '0': 'pass', '1': 'pass', '2': 'pass', '3': 'pass', '4': 'pass' },
+      upsBattery: { tested: true, runtimeFormatted: '01:35', runtimeHours: 1, runtimeMinutes: 35, cycleDate: '2026-09-16', status: 'normal' }
+    }
+  ];
+
   function loadData() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
@@ -18,6 +163,15 @@
             parsed.evaluations = parsed.evaluations.filter(function (ev) {
               return ev.id && ev.id.indexOf('EV-20260930') === -1 && ev.id.indexOf('EV-1791167475297') === -1;
             });
+            // Ensure battery cycle seeds exist if not present
+            var hasBatteryRecords = parsed.evaluations.some(function (ev) { return ev.upsBattery && ev.upsBattery.tested; });
+            if (!hasBatteryRecords) {
+              parsed.evaluations = INITIAL_BATTERY_SEEDS.concat(parsed.evaluations);
+              saveData(parsed);
+            }
+          } else {
+            parsed.evaluations = INITIAL_BATTERY_SEEDS.slice();
+            saveData(parsed);
           }
           if (Array.isArray(parsed.transfers)) {
             parsed.transfers = parsed.transfers.filter(function (tr) {
@@ -31,10 +185,10 @@
       console.warn('Storage read error, using fallback seed:', e);
     }
 
-    // Default Seed (100% Clean - No dummy evaluations or transfers)
+    // Default Seed (With Battery Cycle Seeds)
     var initial = {
       equipment: window.PPCH_CONFIG.initialEquipment,
-      evaluations: [],
+      evaluations: INITIAL_BATTERY_SEEDS.slice(),
       transfers: []
     };
     saveData(initial);
@@ -127,6 +281,13 @@
         eq.abnormalReason = '';
       }
 
+      // Track latest UPS Battery status if evaluated
+      if (evalPayload.upsBattery && evalPayload.upsBattery.tested) {
+        eq.lastBatteryTestedAt = nowStr;
+        eq.lastBatteryRuntime = evalPayload.upsBattery.runtimeFormatted;
+        eq.lastBatteryStatus = evalPayload.upsBattery.status || 'normal';
+      }
+
       data.equipment[eqIndex] = eq;
 
       // Add to evaluations list
@@ -141,7 +302,8 @@
         evaluatedAt: nowStr,
         result: evalPayload.result,
         abnormalNote: evalPayload.abnormalNote || '',
-        checklist: evalPayload.checklist || {}
+        checklist: evalPayload.checklist || {},
+        upsBattery: evalPayload.upsBattery || null
       };
 
       data.evaluations.unshift(evalRecord);
@@ -252,6 +414,32 @@
       return data.equipment.filter(function (eq) {
         return eq.status === 'abnormal' || eq.lastEvaluatedStatus === 'abnormal';
       });
+    },
+
+    // Check if a given date is mandatory battery inspection date (1st or 16th)
+    isBatteryMandatoryDate: function (dateObjOrStr) {
+      var d = dateObjOrStr ? new Date(dateObjOrStr) : new Date();
+      var day = d.getDate();
+      return day === 1 || day === 16;
+    },
+
+    // Get all evaluations with UPS battery inspection records
+    getBatteryEvaluations: function (cycleFilter) {
+      var data = loadData();
+      var list = (data.evaluations || []).filter(function (ev) {
+        return ev.upsBattery && ev.upsBattery.tested;
+      });
+      if (cycleFilter && cycleFilter !== 'all') {
+        list = list.filter(function (ev) {
+          if (cycleFilter === 'latest') {
+            // Find most recent cycle
+            return true;
+          }
+          return (ev.upsBattery && ev.upsBattery.cycleDate === cycleFilter) || 
+                 (ev.evaluatedAt && ev.evaluatedAt.indexOf(cycleFilter) === 0);
+        });
+      }
+      return list;
     },
 
     // Reset seed data
