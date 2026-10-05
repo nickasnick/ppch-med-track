@@ -8,6 +8,7 @@ window.PPCH_CONFIG = {
   hospitalName: 'โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital)',
   storageKey: 'ppch_med_track_v1',
   adminPin: 'ppch1234',
+  defaultGasUrl: 'https://script.google.com/macros/s/AKfycbz8oIgnJWUcji2DaPI8CSBrPd22BFjL9A9Ui9mhamLCkRV7FVYGNWBKYJvZbjq31KE36g/exec',
   todayDate: '2026-09-30', // Contextual date
   
   // Standardized PPCH Departments

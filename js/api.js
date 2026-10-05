@@ -8,7 +8,7 @@
 
   var PPCH_API = {
     getEndpoint: function () {
-      return localStorage.getItem(STORAGE_KEY_GAS) || '';
+      return localStorage.getItem(STORAGE_KEY_GAS) || (window.PPCH_CONFIG && window.PPCH_CONFIG.defaultGasUrl) || '';
     },
 
     setEndpoint: function (url) {
