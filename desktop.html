@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPCH Medical Equipment Hub (Widescreen Workstation) | รพ.พิษณุเวช</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <style>
+    /* Widescreen Workstation 100% - No artificial max-width constraints */
+    .widescreen-container {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 24px 36px !important;
+    }
+    .widescreen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col">
+
+  <!-- Phitsanuvej Medical Cross Preloader -->
+  <div id="pageLoader" class="css-loader-overlay">
+    <div class="medical-cross-container">
+      <div class="cross-v"></div>
+      <div class="cross-h"></div>
+    </div>
+    <div class="loader-title">โรงพยาบาลพิษณุเวช • PPCH Medical Equipment Suite</div>
+    <div class="loader-subtitle">กำลังโหลดมุมมองจอคอมพิวเตอร์ (Widescreen Workstation 100%)...</div>
+  </div>
+
+  <!-- Executive Header -->
+  <header class="app-header">
+    <div class="header-top" style="padding: 12px 36px;">
+      <a href="desktop.html" class="brand-section">
+        <div class="brand-logo-card">
+          <img src="logo.png" alt="PPCH Logo" onerror="this.src='https://placehold.co/120x40/ffffff/1e40af?text=PPCH+LOGO'">
+        </div>
+        <div class="brand-titles">
+          <h1>PPCH Medical Equipment Hub</h1>
+          <p>ระบบติดตามการใช้งานและตรวจเช็คเครื่องมือแพทย์ (Widescreen Workstation)</p>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <span class="status-pill-online">
+          <span class="status-dot"></span>
+          <span>ระบบออนไลน์พร้อมใช้งาน</span>
+        </span>
+        <button onclick="switchToMobile()" class="btn-glass" title="สลับไปยังมุมมองสมาร์ตโฟน">
+          <span class="material-icons-round">smartphone</span>
+          <span>มุมมองมือถือ</span>
+        </button>
+        <button onclick="openRelocationModal()" class="btn-glass btn-glass-teal">
+          <span class="material-icons-round">swap_horiz</span>
+          <span>ย้ายพิกัด / รับเครื่อง</span>
+        </button>
+        <button onclick="openAdminModal()" class="btn-glass">
+          <span class="material-icons-round">admin_panel_settings</span>
+          <span>Admin</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Filter Bar -->
+    <div class="tab-bar-executive" style="padding: 0 36px;">
+      <button id="tabAll" onclick="setFrequencyFilter('all')" class="tab-btn-exec active">
+        <span class="material-icons-round">apps</span>
+        <span>แบบประเมินทั้งหมด (8 หมวด)</span>
+      </button>
+      <button id="tabDaily" onclick="setFrequencyFilter('daily')" class="tab-btn-exec">
+        <span class="material-icons-round">schedule</span>
+        <span>ตรวจเช็คทุกวัน (Daily)</span>
+        <span class="badge-counter">7</span>
+      </button>
+      <button id="tabMonthly" onclick="setFrequencyFilter('monthly')" class="tab-btn-exec">
+        <span class="material-icons-round">event_available</span>
+        <span>ตรวจเช็ครายเดือน (Monthly)</span>
+        <span class="badge-counter-amber">1</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workstation View - 100% Full Width -->
+  <main class="widescreen-container flex-1">
+    
+    <!-- Hero Glass Panel (Full Width) -->
+    <div class="hero-glass-panel" style="margin-bottom: 24px; padding: 28px 36px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 320px;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; margin-bottom: 10px;">
+            <span class="material-icons-round" style="font-size: 15px;">verified_user</span>
+            Biomedical Engineering & Safety Standard • โรงพยาบาลพิษณุเวช
+          </div>
+          <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.3px;">
+            ระบบบันทึกความพร้อมใช้ & ควบคุมการเคลื่อนย้ายเครื่องมือแพทย์
+          </h2>
+          <p style="font-size: 13px; color: #64748b; line-height: 1.6;">
+            เลือกเปิดแบบประเมินรายวันหรือรายเดือนเพื่อตรวจเช็คก่อนการใช้งานผู้ป่วย 
+            หากมีการ <b>ยืมเครื่องข้ามแผนก</b> โปรดกดปุ่ม <b>"ย้ายพิกัด / รับเครื่อง"</b> ด้านบน เพื่อให้การติดตามและแจ้งเตือนมุ่งเป้าไปยังแผนกผู้ถือครองจริง
+          </p>
+        </div>
+
+        <!-- Quick Search -->
+        <div style="width: 380px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">ค้นหาแบบประเมินอย่างรวดเร็ว</label>
+          <div style="position: relative;">
+            <span class="material-icons-round" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">search</span>
+            <input type="text" id="searchInput" oninput="renderFormCards()" placeholder="พิมพ์ชื่อแบบประเมิน, ชนิดเครื่องมือแพทย์..."
+              style="width: 100%; padding: 11px 16px 11px 42px; border: 1.5px solid #cbd5e1; border-radius: 12px; font-size: 13px; outline: none; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Live Stats Summary Grid (Full Width 4 Columns) -->
+    <div class="stats-grid" style="margin-bottom: 24px;">
+      <div class="stat-card blue">
+        <div class="stat-info">
+          <p>เครื่องมือแพทย์ทั้งหมด</p>
+          <h2 id="statTotal">--</h2>
+          <div class="stat-desc">ประจำการ 14 แผนก รพ.พิษณุเวช</div>
+        </div>
+        <div class="stat-icon-wrapper">
+          <span class="material-icons-round">medical_services</span>
+        </div>
+      </div>
+
+      <div class="stat-card emerald">
+        <div class="stat-info">
+          <p>พร้อมใช้งานปกติ 100%</p>
+          <h2 id="statReady">--</h2>
+          <div class="stat-desc">ผ่านการตรวจเช็คตามเกณฑ์</div>
+        </div>
+        <div class="stat-icon-wrapper">
+          <span class="material-icons-round">check_circle</span>
+        </div>
+      </div>
+
+      <div class="stat-card rose">
+        <div class="stat-info">
+          <p>ตรวจพบผิดปกติ / ชำรุด</p>
+          <h2 id="statAbnormal" style="color: #dc2626;">--</h2>
+          <div class="stat-desc">รอการตรวจซ่อมจากวิศวกรรม</div>
+        </div>
+        <div class="stat-icon-wrapper">
+          <span class="material-icons-round">error_outline</span>
+        </div>
+      </div>
+
+      <div class="stat-card amber">
+        <div class="stat-info">
+          <p>ค้างตรวจเช็ควันนี้ (Daily)</p>
+          <h2 id="statOverdue" style="color: #d97706;">--</h2>
+          <div class="stat-desc">ระบบระบุแผนกผู้ถือครองแล้ว</div>
+        </div>
+        <div class="stat-icon-wrapper">
+          <span class="material-icons-round">pending_actions</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px;">
+        <span class="material-icons-round" style="color: #0284c7;">playlist_add_check</span>
+        <span>รายการแบบตรวจเช็คความพร้อมใช้</span>
+      </h3>
+      <span id="formCountLabel" style="font-size: 12px; color: #64748b; font-weight: 600;">กำลังแสดง 8 แบบประเมิน</span>
+    </div>
+
+    <!-- Forms Grid (Stretches Full Width Across Wide Screen) -->
+    <div id="formsGrid" class="widescreen-grid">
+      <!-- Injected Dynamically -->
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: #ffffff; border-top: 1px solid #e2e8f0; padding: 16px 36px; font-size: 12px; color: #64748b; display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
+    <div>โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital) • ระบบติดตามเครื่องมือแพทย์ (Widescreen Workstation 100%)</div>
+    <div style="display: flex; gap: 16px;">
+      <button onclick="switchToMobile()" style="border: none; background: none; color: #0284c7; cursor: pointer; font-weight: 600;">📱 สลับไปมุมมองมือถือ</button>
+      <button onclick="openAdminModal()" style="border: none; background: none; color: #1e40af; cursor: pointer; font-weight: 600;">🔒 เข้าสู่ระบบ Admin</button>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Quick Relocation Modal -->
+  <div id="relocationModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 42px; height: 42px; border-radius: 12px; background: #ccfbf1; color: #0d9488; display: flex; align-items: center; justify-content: center;">
+            <span class="material-icons-round" style="font-size: 24px;">swap_horiz</span>
+          </div>
+          <div>
+            <h3 style="font-size: 17px; font-weight: 800; color: #0f172a;">ย้ายสถานที่ / รับเครื่องข้ามแผนก</h3>
+            <p style="font-size: 12px; color: #64748b;">บันทึกผู้ถือครองปัจจุบัน เพื่อให้ระบบแจ้งเตือนไปยังแผนกของคุณอย่างถูกต้อง</p>
+          </div>
+        </div>
+        <button onclick="closeRelocationModal()" style="border: none; background: transparent; cursor: pointer; color: #94a3b8; padding: 4px;">
+          <span class="material-icons-round" style="font-size: 22px;">close</span>
+        </button>
+      </div>
+
+      <form id="relocationForm" onsubmit="handleRelocationSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">เลือกเครื่องมือแพทย์ที่ต้องการย้าย *</label>
+          <select id="transferDeviceId" onchange="updateTransferCurrentDeptDisplay()" required 
+            style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; background: #f8fafc; outline: none;">
+            <option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>
+          </select>
+        </div>
+
+        <div style="padding: 12px 16px; background: #eff6ff; border: 1px solid #dbeafe; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+          <span style="color: #64748b;">แผนกผู้ถือครองปัจจุบัน:</span>
+          <span id="currentDeptLabel" style="font-weight: 800; color: #1e40af;">กรุณาเลือกเครื่องก่อน</span>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">ย้ายไปประจำที่แผนกใหม่ (แผนกของคุณที่รับเครื่อง) *</label>
+          <select id="transferTargetDept" required 
+            style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; background: #ffffff; outline: none;">
+            <option value="">-- เลือกแผนกปลายทาง --</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">ชื่อผู้รับเครื่อง / ผู้บันทึกย้าย *</label>
+          <input type="text" id="transferByName" required placeholder="เช่น พว.สมศรี (Ward 4-5) หรือ ช่างวิศวกรรม"
+            style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none;">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">เหตุผลในการย้าย / วัตถุประสงค์ใช้งาน</label>
+          <input type="text" id="transferReason" placeholder="เช่น ยืมใช้งานฉุกเฉินผู้ป่วยวิกฤต, ส่งคืนคลังส่วนกลาง"
+            style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none;">
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 8px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+          <button type="button" onclick="closeRelocationModal()" class="btn-ppch btn-ppch-outline">ยกเลิก</button>
+          <button type="submit" class="btn-ppch btn-ppch-teal">
+            <span class="material-icons-round" style="font-size: 18px;">check</span>
+            <span>ยืนยันย้ายสถานที่รับเครื่อง</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. QR Code Modal -->
+  <div id="qrModal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 440px; text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; margin-bottom: 18px; text-align: left;">
+        <div>
+          <h3 id="qrModalTitle" style="font-size: 16px; font-weight: 800; color: #0f172a;">QR Code แบบประเมิน</h3>
+          <p id="qrModalSubtitle" style="font-size: 11px; color: #64748b;">สแกนเพื่อเปิดแบบประเมินความพร้อมใช้</p>
+        </div>
+        <button onclick="closeQrModal()" style="border: none; background: transparent; cursor: pointer; color: #94a3b8;">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+
+      <div style="display: inline-block; padding: 18px; background: #ffffff; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.08); border: 2px solid #e2e8f0; margin-bottom: 16px;">
+        <div id="qrcodeCanvas" style="display: flex; justify-content: center;"></div>
+      </div>
+
+      <div style="margin-bottom: 18px; text-align: left;">
+        <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">ลิงก์ตรงสำหรับเปิดแบบประเมินนี้</label>
+        <div style="display: flex; gap: 6px;">
+          <input type="text" id="qrModalUrl" readonly style="flex: 1; font-size: 11px; font-family: monospace; padding: 8px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; color: #334155;">
+          <button onclick="copyFormLink()" class="btn-ppch btn-ppch-primary" style="padding: 6px 12px; font-size: 12px;">
+            <span class="material-icons-round" style="font-size: 16px;">content_copy</span> คัดลอก
+          </button>
+        </div>
+      </div>
+
+      <a id="qrOpenLink" href="#" target="_blank" class="btn-ppch btn-ppch-teal" style="width: 100%; text-decoration: none;">
+        <span class="material-icons-round" style="font-size: 18px;">open_in_new</span>
+        <span>เปิดหน้าแบบประเมิน</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 3. Admin Security PIN Modal -->
+  <div id="adminPinModal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 400px; text-align: center;">
+      <div style="width: 54px; height: 54px; border-radius: 16px; background: #eff6ff; color: #1e40af; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(30, 64, 175, 0.15);">
+        <span class="material-icons-round" style="font-size: 28px;">lock</span>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 4px;">เข้าสู่ระบบผู้ดูแล (Admin)</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 20px;">เฉพาะผู้ดูแลระบบและช่างวิศวกรรมการแพทย์เท่านั้น</p>
+
+      <form onsubmit="handleAdminLogin(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <input type="password" id="adminPinInput" required placeholder="ใส่ Admin PIN"
+            style="width: 100%; text-align: center; font-size: 22px; letter-spacing: 6px; font-family: monospace; font-weight: 700; padding: 12px; border: 2px solid #cbd5e1; border-radius: 12px; background: #f8fafc; outline: none;">
+          <div style="font-size: 11px; color: #94a3b8; margin-top: 6px;">รหัสเริ่มต้น: <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-family: monospace;">ppch1234</code></div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" onclick="closeAdminModal()" class="btn-ppch btn-ppch-outline" style="flex: 1;">ยกเลิก</button>
+          <button type="submit" class="btn-ppch btn-ppch-primary" style="flex: 1;">เข้าสู่ระบบ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="appToast" class="ppch-toast">
+    <span class="material-icons-round" id="toastIcon" style="font-size: 20px;">info</span>
+    <span id="toastMsg">แจ้งเตือน</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/api.js"></script>
+
+  <script>
+    var currentFilter = 'all';
+    var qrcodeInstance = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initApp();
+      window.addEventListener('ppch:data-updated', updateStats);
+    });
+
+    function initApp() {
+      // Remember desktop preference
+      localStorage.setItem('ppch_med_view', 'desktop');
+
+      renderFormCards();
+      updateStats();
+      populateDeptOptions();
+      populateEquipmentOptions();
+
+      // Dismiss Preloader
+      setTimeout(function () {
+        var loader = document.getElementById('pageLoader');
+        if (loader) loader.classList.add('hidden');
+      }, 350);
+    }
+
+    function switchToMobile() {
+      localStorage.setItem('ppch_med_view', 'mobile');
+      window.location.href = 'mobile.html' + window.location.search;
+    }
+
+    function setFrequencyFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.tab-btn-exec').forEach(function (btn) {
+        btn.classList.remove('active');
+      });
+
+      var activeBtn = document.getElementById(
+        filter === 'all' ? 'tabAll' : (filter === 'daily' ? 'tabDaily' : 'tabMonthly')
+      );
+      if (activeBtn) activeBtn.classList.add('active');
+
+      renderFormCards();
+    }
+
+    function renderFormCards() {
+      var grid = document.getElementById('formsGrid');
+      var search = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+      var forms = window.PPCH_CONFIG.forms;
+      var equipmentList = window.PPCH_STORE.getEquipment();
+
+      var filtered = forms.filter(function (f) {
+        if (currentFilter === 'daily' && f.frequency !== 'daily') return false;
+        if (currentFilter === 'monthly' && f.frequency !== 'monthly') return false;
+        if (search) {
+          var matchName = f.name.toLowerCase().indexOf(search) !== -1;
+          var matchShort = f.shortName.toLowerCase().indexOf(search) !== -1;
+          var matchDesc = f.description.toLowerCase().indexOf(search) !== -1;
+          if (!matchName && !matchShort && !matchDesc) return false;
+        }
+        return true;
+      });
+
+      document.getElementById('formCountLabel').innerText = 'กำลังแสดง ' + filtered.length + ' แบบประเมิน';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; padding: 48px; text-align: center; color: #94a3b8;">' +
+          '<span class="material-icons-round" style="font-size: 48px; opacity: 0.4;">inbox</span>' +
+          '<div style="font-size: 14px; margin-top: 8px;">ไม่พบแบบประเมินที่ตรงกับคำค้นหา</div></div>';
+        return;
+      }
+
+      var iconMap = {
+        'defibrillator': 'flash_on',
+        'ventilator': 'air',
+        'high_flow': 'thermostat',
+        'infusion_pump': 'water_drop',
+        'vital_signs': 'monitor_heart',
+        'anesthesia': 'healing',
+        'ekg_monitor': 'show_chart',
+        'ultrasound': 'radar'
+      };
+
+      var html = '';
+      filtered.forEach(function (f) {
+        var matchingEq = equipmentList.filter(function (eq) { return eq.formId === f.id; });
+        var eqCount = matchingEq.length;
+        var abnormalCount = matchingEq.filter(function (eq) { return eq.status === 'abnormal'; }).length;
+
+        var freqBadge = f.frequency === 'daily'
+          ? '<span class="badge-pill daily"><span class="material-icons-round" style="font-size: 13px;">schedule</span> ทุกวัน (Daily)</span>'
+          : '<span class="badge-pill monthly"><span class="material-icons-round" style="font-size: 13px;">event</span> ประจำเดือน (Monthly)</span>';
+
+        var alertBadge = abnormalCount > 0
+          ? '<span class="badge-pill abnormal" style="margin-left: 6px;"><span class="material-icons-round" style="font-size: 13px;">warning</span> พบผิดปกติ ' + abnormalCount + '</span>'
+          : '';
+
+        var icon = iconMap[f.id] || 'medical_services';
+
+        html += '<div class="form-item-card">' +
+          '<div>' +
+            '<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">' +
+              '<div style="display: flex; align-items: center;">' + freqBadge + alertBadge + '</div>' +
+              '<span style="font-size: 11px; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 6px;">' + f.category + '</span>' +
+            '</div>' +
+            '<div class="form-card-top">' +
+              '<div class="form-icon-avatar ' + f.frequency + '">' +
+                '<span class="material-icons-round">' + icon + '</span>' +
+              '</div>' +
+              '<div class="form-card-info">' +
+                '<h3>' + f.name + '</h3>' +
+                '<p>' + f.description + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="form-meta-box">' +
+              '<span style="color: #64748b;">เครื่องประจำการในระบบ:</span>' +
+              '<span style="font-weight: 700; color: #1e293b;">' + eqCount + ' เครื่อง</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="form-actions-bar">' +
+            '<a href="eval.html?formId=' + f.id + '" class="btn-ppch btn-ppch-primary" style="flex: 1; text-decoration: none;">' +
+              '<span class="material-icons-round" style="font-size: 18px;">assignment_turned_in</span>' +
+              '<span>เปิดแบบประเมิน</span>' +
+            '</a>' +
+            '<button onclick="openQrModal(\'' + f.id + '\')" title="ดู QR Code ประจำฟอร์มนี้" class="btn-ppch btn-ppch-outline btn-ppch-icon-only">' +
+              '<span class="material-icons-round" style="font-size: 20px;">qr_code_2</span>' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      });
+
+      grid.innerHTML = html;
+    }
+
+    function updateStats() {
+      var all = window.PPCH_STORE.getEquipment();
+      var total = all.length;
+      var ready = all.filter(function (eq) { return eq.status === 'ready'; }).length;
+      var abnormal = all.filter(function (eq) { return eq.status === 'abnormal'; }).length;
+      var overdueToday = window.PPCH_STORE.getOverdueEquipment('daily').length;
+
+      document.getElementById('statTotal').innerText = total;
+      document.getElementById('statReady').innerText = ready;
+      document.getElementById('statAbnormal').innerText = abnormal;
+      document.getElementById('statOverdue').innerText = overdueToday;
+    }
+
+    function populateDeptOptions() {
+      var depts = window.PPCH_CONFIG.departments;
+      var sel = document.getElementById('transferTargetDept');
+      sel.innerHTML = '<option value="">-- เลือกแผนกปลายทาง --</option>';
+      depts.forEach(function (d) {
+        sel.innerHTML += '<option value="' + d.id + '">' + d.name + '</option>';
+      });
+    }
+
+    function populateEquipmentOptions() {
+      var list = window.PPCH_STORE.getEquipment();
+      var sel = document.getElementById('transferDeviceId');
+      sel.innerHTML = '<option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>';
+      list.forEach(function (eq) {
+        var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+        sel.innerHTML += '<option value="' + eq.id + '">' + eq.assetCode + ' | ' + eq.name + ' (อยู่ที่: ' + deptName + ')</option>';
+      });
+    }
+
+    function updateTransferCurrentDeptDisplay() {
+      var deviceId = document.getElementById('transferDeviceId').value;
+      var label = document.getElementById('currentDeptLabel');
+      if (!deviceId) {
+        label.innerText = 'กรุณาเลือกเครื่องก่อน';
+        return;
+      }
+      var eq = window.PPCH_STORE.getEquipmentById(deviceId);
+      if (eq) {
+        var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+        label.innerHTML = '<span style="color: #1e40af; font-weight: 800;">' + deptName + '</span>';
+      }
+    }
+
+    function handleRelocationSubmit(e) {
+      e.preventDefault();
+      var deviceId = document.getElementById('transferDeviceId').value;
+      var targetDept = document.getElementById('transferTargetDept').value;
+      var byName = document.getElementById('transferByName').value.trim();
+      var reason = document.getElementById('transferReason').value.trim();
+
+      if (!deviceId || !targetDept || !byName) {
+        showToast('กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+        return;
+      }
+
+      try {
+        var res = window.PPCH_STORE.transferEquipment(deviceId, targetDept, byName, reason);
+        var targetDeptName = window.PPCH_STORE.getDepartmentName(targetDept);
+        closeRelocationModal();
+        showToast('ย้ายเครื่องไป [' + targetDeptName + '] สำเร็จ! สิทธิ์การตรวจเช็คถูกย้ายแล้วค่ะ', 'success');
+        renderFormCards();
+        populateEquipmentOptions();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function openQrModal(formId) {
+      var f = window.PPCH_STORE.getFormById(formId);
+      if (!f) return;
+
+      document.getElementById('qrModalTitle').innerText = f.name;
+      document.getElementById('qrModalSubtitle').innerText = 'หมวด: ' + f.category + ' (' + f.frequencyLabel + ')';
+
+      var fullUrl = window.location.origin + window.location.pathname.replace('desktop.html', '') + 'eval.html?formId=' + f.id;
+      document.getElementById('qrModalUrl').value = fullUrl;
+      document.getElementById('qrOpenLink').href = fullUrl;
+
+      var qrContainer = document.getElementById('qrcodeCanvas');
+      qrContainer.innerHTML = '';
+      qrcodeInstance = new QRCode(qrContainer, {
+        text: fullUrl,
+        width: 170,
+        height: 170,
+        colorDark: '#0f172a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      document.getElementById('qrModal').classList.remove('hidden');
+    }
+
+    function closeQrModal() {
+      document.getElementById('qrModal').classList.add('hidden');
+    }
+
+    function copyFormLink() {
+      var input = document.getElementById('qrModalUrl');
+      input.select();
+      document.execCommand('copy');
+      showToast('คัดลอกลิงก์สำเร็จแล้ว!', 'success');
+    }
+
+    function openRelocationModal() {
+      populateEquipmentOptions();
+      document.getElementById('relocationModal').classList.remove('hidden');
+    }
+
+    function closeRelocationModal() {
+      document.getElementById('relocationModal').classList.add('hidden');
+      document.getElementById('relocationForm').reset();
+      document.getElementById('currentDeptLabel').innerText = 'กรุณาเลือกเครื่องก่อน';
+    }
+
+    function openAdminModal() {
+      if (sessionStorage.getItem('ppch_admin_auth') === 'true') {
+        window.location.href = 'admin.html';
+        return;
+      }
+      document.getElementById('adminPinModal').classList.remove('hidden');
+      document.getElementById('adminPinInput').value = '';
+      document.getElementById('adminPinInput').focus();
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminPinModal').classList.add('hidden');
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      var pin = document.getElementById('adminPinInput').value.trim();
+      if (pin === window.PPCH_CONFIG.adminPin) {
+        sessionStorage.setItem('ppch_admin_auth', 'true');
+        closeAdminModal();
+        window.location.href = 'admin.html';
+      } else {
+        showToast('รหัสผ่าน Admin PIN ไม่ถูกต้อง!', 'error');
+        document.getElementById('adminPinInput').select();
+      }
+    }
+
+    function showToast(msg, type) {
+      var toast = document.getElementById('appToast');
+      var toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.className = 'ppch-toast active ' + (type === 'error' ? 'error' : 'success');
+      setTimeout(function () {
+        toast.classList.remove('active');
+      }, 3500);
+    }
+  </script>
+</body>
+</html>

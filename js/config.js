@@ -1,0 +1,397 @@
+/**
+ * PPCH Medical Equipment Tracking & Evaluation System
+ * Configuration & Master Seed Data
+ */
+
+window.PPCH_CONFIG = {
+  appName: 'PPCH Medical Equipment Custody & Evaluation Suite',
+  hospitalName: 'โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital)',
+  storageKey: 'ppch_med_track_v1',
+  adminPin: 'ppch1234',
+  todayDate: '2026-09-30', // Contextual date
+  
+  // Standardized PPCH Departments
+  departments: [
+    { id: 'CENTRAL', name: 'คลังเครื่องมือแพทย์ส่วนกลาง (Central Supply)' },
+    { id: 'ER', name: 'แผนกอุบัติเหตุและฉุกเฉิน (ER)' },
+    { id: 'ICU', name: 'แผนกผู้ป่วยหนัก (ICU)' },
+    { id: 'OR', name: 'แผนกห้องผ่าตัด (OR)' },
+    { id: 'WARD23', name: 'แผนกหอผู้ป่วยใน ชั้น 2-3 (Ward 2-3)' },
+    { id: 'WARD45', name: 'แผนกหอผู้ป่วยใน ชั้น 4-5 (Ward 4-5)' },
+    { id: 'LR', name: 'แผนกห้องคลอดและทารกแรกเกิด (LR)' },
+    { id: 'OPD', name: 'แผนกผู้ป่วยนอก (OPD)' },
+    { id: 'OPD2', name: 'แผนกผู้ป่วยนอก 2 (OPD 2)' },
+    { id: 'XRAY', name: 'แผนกรังสีวิทยา (X-Ray)' },
+    { id: 'REHAB', name: 'แผนกกายภาพบำบัด' },
+    { id: 'HEMODIALYSIS', name: 'ศูนย์ไตเทียม (Hemodialysis)' },
+    { id: 'CATHLAB', name: 'ห้องปฏิบัติการสวนหัวใจ (Cath Lab)' },
+    { id: 'FACILITY', name: 'แผนกวิศวกรรมชีวการแพทย์และอาคาร' }
+  ],
+
+  // 8 Evaluation Forms (ตรงตาม Google Form เดิมทั้ง 8 ชุด)
+  forms: [
+    {
+      id: 'defibrillator',
+      name: 'แบบตรวจเช็ค Defibrillator (เครื่องกระตุกหัวใจ)',
+      shortName: 'Defibrillator',
+      category: 'เครื่องมือกู้ชีพวิกฤต',
+      frequency: 'daily',
+      frequencyLabel: 'ประเมินทุกวัน',
+      icon: 'zap',
+      badgeColor: 'red',
+      description: 'ตรวจเช็คความพร้อมระบบช็อกไฟฟ้า แบตเตอรี่สำรอง แผ่น Paddle และกระดาษพิมพ์ผล',
+      items: [
+        'สภาพสายไฟ ปลั๊กไฟ และสายต่อเชื่อม ไม่ชำรุด ฉีกขาด หรือหักงอ',
+        'ระดับแบตเตอรี่สำรอง (Battery Status) เต็มหรือพร้อมใช้งานเมื่อเกิดไฟฟ้าดับ',
+        'แผ่น Paddles / อุปกรณ์นำไฟฟ้า (Electrode Pads) ครบ สะอาด และไม่หมดอายุ',
+        'ผลการทำ Routine Self-Test (ผ่านเกณฑ์ 100% ไม่มี Error Code)',
+        'ระบบทดสอบการช็อกพลังงาน (Discharge Test 30-50 Joules) สัญญาณพร้อมช็อกทำงานปกติ',
+        'กระดาษบันทึกผล EKG Strip มีเพียงพอในตัวเครื่อง',
+        'ความสะอาดของตัวเครื่องและอุปกรณ์ประกอบ พร้อมใช้งานทันที'
+      ]
+    },
+    {
+      id: 'ventilator',
+      name: 'แบบตรวจเช็คเครื่อง Ventilator (เครื่องช่วยหายใจ)',
+      shortName: 'Ventilator',
+      category: 'เครื่องมือกู้ชีพวิกฤต',
+      frequency: 'daily',
+      frequencyLabel: 'ประเมินทุกวัน',
+      icon: 'activity',
+      badgeColor: 'red',
+      description: 'ตรวจเช็ควงจรช่วยหายใจ ออกซิเจน ระบบ Pre-use Check และระบบเสียง Alarm',
+      items: [
+        'ระบบต่อท่อก๊าซออกซิเจน (O2) และท่อลม (Air) แน่นหนา ไม่มีเสียงรั่วซึม',
+        'สายไฟหลักและระดับประจุแบตเตอรี่สำรองพร้อมทำงานต่อเนื่องอย่างน้อย 30-60 นาที',
+        'วงจรท่อช่วยหายใจ (Breathing Circuit) สะอาด ปลอดเชื้อ และติดตั้ง Flow Sensor ถูกต้อง',
+        'ผลการทดสอบ Pre-use Check / Tightness Check ผ่านทุกขั้นตอน',
+        'ระบบสัญญาณเตือนภาพและเสียง (Audio & Visual Alarm) ทำงานปกติเมื่อจำลองภาวะผิดปกติ',
+        'ตัวกรองฝุ่นและแผ่นดักความชื้น (Expiratory Filter) แห้ง สะอาด ไม่อุดตัน'
+      ]
+    },
+    {
+      id: 'high_flow',
+      name: 'แบบตรวจเช็คเครื่อง High Flow Nasal Cannula (HHHFINC)',
+      shortName: 'High Flow (HHHFINC)',
+      category: 'เครื่องมือระบบทางเดินหายใจ',
+      frequency: 'daily',
+      frequencyLabel: 'ประเมินทุกวัน',
+      icon: 'wind',
+      badgeColor: 'amber',
+      description: 'ตรวจเช็คหม้อต้มทำความชื้น ท่อให้ความร้อน Breathing Circuit และสายวัดอุณหภูมิ',
+      items: [
+        'สายไฟ ปลั๊กไฟ และระบบจ่ายไฟหลักทำงานปกติ',
+        'ชุดทำความชื้น (Humidifier Chamber) และน้ำ Sterile Water สำหรับเติมอยู่ในระดับที่กำหนด',
+        'สายส่งก๊าซแบบปรับอุณหภูมิ (Heated Breathing Tube) ต่อแน่นหนา ไม่ฉีกขาด',
+        'ระบบควบคุมอุณหภูมิและการตั้งค่า FiO2 ตอบสนองได้ตามสเปก',
+        'สัญญาณเตือนการอุดตันของท่อ (Occlusion Alarm) และน้ำหมดทำงานปกติ'
+      ]
+    },
+    {
+      id: 'infusion_pump',
+      name: 'แบบตรวจเช็ค INFUSION PUMP (เครื่องให้สารน้ำ)',
+      shortName: 'Infusion Pump',
+      category: 'เครื่องมือควบคุมการให้ยา/สารน้ำ',
+      frequency: 'daily',
+      frequencyLabel: 'ประเมินทุกวัน',
+      icon: 'droplet',
+      badgeColor: 'blue',
+      description: 'ตรวจเช็ค Drop Sensor ตัวหนีบล็อคสาย การหยด และสัญญาณเตือนการอุดตัน',
+      items: [
+        'สภาพโครงสร้างภายนอก ขาแขวน และตัวล็อคเสาน้ำเกลือแข็งแรง มั่นคง',
+        'สายไฟ ปลั๊กไฟ และแบตเตอรี่สำรองสามารถใช้งานต่อเนื่องได้',
+        'เซนเซอร์ตรวจจับฟองอากาศ (Air-in-line Sensor) และการอุดตัน (Occlusion) ตอบสนองแม่นยำ',
+        'ตัวหนีบควบคุมการไหลอิสระ (Free-Flow Clamp / Safety Clamp) ทำงานสมบูรณ์',
+        'หน้าจอแสดงอัตราการไหล (Flow Rate) คมชัด ตัวเลขไม่ขาดหาย'
+      ]
+    },
+    {
+      id: 'vital_signs',
+      name: 'แบบตรวจเช็ค Vital Signs Monitor (เครื่องวัดสัญญาณชีพ)',
+      shortName: 'Vital Signs Monitor',
+      category: 'เครื่องมือเฝ้าระวังผู้ป่วย',
+      frequency: 'daily',
+      frequencyLabel: 'ประเมินทุกวัน',
+      icon: 'heart',
+      badgeColor: 'emerald',
+      description: 'ตรวจเช็คโมดูล NIBP Cuff, SpO2 Probe, Temp Probe และเสียงเตือน Alarm Limit',
+      items: [
+        'สายไฟ AC และระบบประจุแบตเตอรี่ทำงานปกติ',
+        'ปลอกวัดความดัน (NIBP Cuff) และสายลมไม่รั่ว บีบและวัดค่าได้ถูกต้อง',
+        'เซนเซอร์วัดออกซิเจนในเลือด (SpO2 Probe) สายไม่หักงอ แสงสีแดงติดสว่างสม่ำเสมอ',
+        'หน้าจอแสดงคลื่นและตัวเลขชัดเจน ปุ่มกดหรือระบบสัมผัสทำงานลื่นไหล',
+        'ระบบตั้งค่าและส่งเสียงเตือนเมื่อค่าวิกฤต (Alarm Limit) ดังชัดเจน'
+      ]
+    },
+    {
+      id: 'anesthesia',
+      name: 'แบบตรวจเช็คเครื่องให้ยาสลบ (Anesthesia Machine)',
+      shortName: 'เครื่องให้ยาสลบ',
+      category: 'เครื่องมือห้องผ่าตัด',
+      frequency: 'daily',
+      frequencyLabel: 'ประเมินทุกวัน',
+      icon: 'shield',
+      badgeColor: 'purple',
+      description: 'ตรวจเช็คระบบแก๊สทางการแพทย์ Vaporizer ระบบ Scavenging และ Soda Lime',
+      items: [
+        'แรงดันท่อก๊าซ O2, N2O, Air จากระบบ Pipeline หรือถังก๊าซอยู่ในเกณฑ์มาตรฐาน',
+        'Vaporizer ล็อคแน่นหนา ไม่มีรอยรั่วซึมของยาระเหย และปริมาณยาเพียงพอ',
+        'ระบบดูดซับคาร์บอนไดออกไซด์ (Soda Lime Canister) สียังไม่เปลี่ยนสภาพ (ไม่หมดอายุ)',
+        'ระบบกำจัดก๊าซดมยาส่วนเกิน (Scavenging System) ทำงานปกติ',
+        'ระบบทดสอบความดันรั่วซึม (High-pressure & Low-pressure Leak Test) ผ่านเกณฑ์'
+      ]
+    },
+    {
+      id: 'ekg_monitor',
+      name: 'แบบตรวจเช็คเครื่อง EKG Monitor (ตรวจคลื่นไฟฟ้าหัวใจ)',
+      shortName: 'EKG Monitor',
+      category: 'เครื่องมือวินิจฉัยโรคหัวใจ',
+      frequency: 'daily',
+      frequencyLabel: 'ประเมินทุกวัน',
+      icon: 'bar-chart-2',
+      badgeColor: 'teal',
+      description: 'ตรวจเช็คสาย Leadwire 12 Leads กระดาษกราฟ ระบบกรองสัญญาณ และความสะอาด',
+      items: [
+        'สายไฟหลักและแบตเตอรี่สำรองใช้งานได้ปกติ',
+        'สายสัญญาณ Leadwires ครบ 10 ขั้ว (12 Leads) ปลายสายไม่แตกหัก ไม่ขึ้นสนิม',
+        'กระดาษพิมพ์ผลความร้อน (Thermal Paper) บรรจุพร้อมใช้งาน และหัวพิมพ์ชัดเจน',
+        'สัญญาณ EKG บนหน้าจอไม่มีสัญญาณรบกวน (Artifact) รุนแรงเมื่อต่อกับเครื่องจำลอง',
+        'ลูกยางดูดหน้าอก (Chest Electrodes) และแคลมป์หนีบแขนขา (Limb Clamps) สะอาด ไม่แตกร้าว'
+      ]
+    },
+    {
+      id: 'ultrasound',
+      name: 'แบบตรวจเช็คความพร้อมใช้งาน Ultrasound (เครื่องอัลตราซาวด์)',
+      shortName: 'Ultrasound',
+      category: 'เครื่องมือภาพถ่ายทางการแพทย์',
+      frequency: 'monthly',
+      frequencyLabel: 'ประเมินเดือนละ 1 ครั้ง',
+      icon: 'radio',
+      badgeColor: 'indigo',
+      description: 'ตรวจเช็คความสมบูรณ์ของหัวตรวจ (Probes), จอภาพ, แทร็กบอล, ล้อล็อค และการบันทึกภาพ',
+      items: [
+        'สายไฟ ปลั๊กไฟ และระบบตัดไฟอัตโนมัติสมบูรณ์',
+        'หัวตรวจ (Probes: Convex, Linear, Cardiac) เลนส์ไม่แตก ปลอกหุ้มไม่ปริ และสายไม่พับงอ',
+        'หน้าจอภาพหลักและจอสัมผัส สะอาด คมชัด ไม่มีเส้นบอด (Dead Pixels)',
+        'ปุ่มปรับแต่ง Gain, Depth, Trackball และฟังก์ชันบันทึกภาพ Freeze ตอบสนองแม่นยำ',
+        'ระบบเบรกล้อเข็นทั้ง 4 ล้อ ล็อคได้มั่นคง ไม่ลื่นไถล',
+        'ระบบระบายความร้อน พัดลมทำงานเงียบ ไม่มีเสียงผิดปกติ และช่องกรองฝุ่นสะอาด'
+      ]
+    }
+  ],
+
+  // Realistic Initial Equipment Master Seed (รวมตัวอย่างเครื่องในแผนกต่างๆ)
+  initialEquipment: [
+    {
+      id: 'PPCH-EQ-DEF-001',
+      assetCode: 'EQ-68-DEF-001',
+      name: 'เครื่อง Defibrillator ชนิดสองทิศทาง (Biphasic)',
+      formId: 'defibrillator',
+      model: 'Zoll R Series Plus',
+      serialNo: 'ZR-2024-8891',
+      frequency: 'daily',
+      homeDept: 'ER',
+      currentDept: 'ER',
+      status: 'ready', // ready | abnormal | loaned | maintenance
+      lastEvaluatedAt: '2026-09-30 07:45',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'พว.สุดารัตน์ พงษ์ศิริ (ER)'
+    },
+    {
+      id: 'PPCH-EQ-DEF-002',
+      assetCode: 'EQ-68-DEF-002',
+      name: 'เครื่อง Defibrillator พร้อม Pacing',
+      formId: 'defibrillator',
+      model: 'Mindray BeneHeart D3',
+      serialNo: 'MR-D3-99120',
+      frequency: 'daily',
+      homeDept: 'ICU',
+      currentDept: 'ICU',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-30 08:10',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'พว.เกวลิน ชาญชัย (ICU)'
+    },
+    {
+      id: 'PPCH-EQ-VENT-001',
+      assetCode: 'EQ-67-VENT-001',
+      name: 'เครื่องช่วยหายใจชนิดควบคุมด้วยปริมาตรและความดัน',
+      formId: 'ventilator',
+      model: 'Hamilton-C3',
+      serialNo: 'HM-C3-00452',
+      frequency: 'daily',
+      homeDept: 'ICU',
+      currentDept: 'ICU',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-30 08:30',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'พว.เกวลิน ชาญชัย (ICU)'
+    },
+    {
+      id: 'PPCH-EQ-VENT-002',
+      assetCode: 'EQ-67-VENT-002',
+      name: 'เครื่องช่วยหายใจ ICU Ventilator ชนิดเคลื่อนย้าย',
+      formId: 'ventilator',
+      model: 'Maquet Servo-i',
+      serialNo: 'MQ-SV-7714',
+      frequency: 'daily',
+      homeDept: 'CENTRAL', // เบิกจากส่วนกลาง
+      currentDept: 'WARD23', // ปัจจุบัน Ward 2-3 ยืมมาใช้งาน!
+      status: 'ready',
+      lastEvaluatedAt: '', // ค้างประเมินวันนี้! เพื่อจำลองการเตือนไปที่ Ward 2-3
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: ''
+    },
+    {
+      id: 'PPCH-EQ-HF-001',
+      assetCode: 'EQ-68-HF-001',
+      name: 'เครื่อง High Flow Nasal Cannula (Airvo 2)',
+      formId: 'high_flow',
+      model: 'Fisher & Paykel Airvo 2',
+      serialNo: 'FP-AV2-1920',
+      frequency: 'daily',
+      homeDept: 'ER',
+      currentDept: 'ER',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-30 08:00',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'พว.กมลทิพย์ ก้องเสียง (ER)'
+    },
+    {
+      id: 'PPCH-EQ-HF-002',
+      assetCode: 'EQ-68-HF-002',
+      name: 'เครื่อง High Flow Nasal Cannula (Airvo 2)',
+      formId: 'high_flow',
+      model: 'Fisher & Paykel Airvo 2',
+      serialNo: 'FP-AV2-1921',
+      frequency: 'daily',
+      homeDept: 'CENTRAL',
+      currentDept: 'WARD45', // ย้ายไป Ward 4-5
+      status: 'ready',
+      lastEvaluatedAt: '', // ค้างประเมิน!
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: ''
+    },
+    {
+      id: 'PPCH-EQ-INF-001',
+      assetCode: 'EQ-69-INF-001',
+      name: 'เครื่อง Infusion Pump (ควบคุมสารน้ำ)',
+      formId: 'infusion_pump',
+      model: 'Terumo TE-LM700',
+      serialNo: 'TR-LM-6621',
+      frequency: 'daily',
+      homeDept: 'WARD23',
+      currentDept: 'WARD23',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-30 07:15',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'พว.นุชจรี พรหมมา (Ward 2-3)'
+    },
+    {
+      id: 'PPCH-EQ-INF-002',
+      assetCode: 'EQ-69-INF-002',
+      name: 'เครื่อง Infusion Pump (ควบคุมสารน้ำ)',
+      formId: 'infusion_pump',
+      model: 'Terumo TE-LM700',
+      serialNo: 'TR-LM-6622',
+      frequency: 'daily',
+      homeDept: 'CENTRAL',
+      currentDept: 'CENTRAL', // อยู่ที่คลังส่วนกลาง
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-29 16:00',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'เจ้าหน้าที่คลังกลาง'
+    },
+    {
+      id: 'PPCH-EQ-VS-001',
+      assetCode: 'EQ-68-VS-001',
+      name: 'เครื่อง Vital Signs Monitor พร้อม NIBP & SpO2',
+      formId: 'vital_signs',
+      model: 'Mindray uMEC10',
+      serialNo: 'MR-UM10-4411',
+      frequency: 'daily',
+      homeDept: 'OPD',
+      currentDept: 'OPD',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-30 08:20',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'พว.ศิรินภา วงศ์ษา (OPD)'
+    },
+    {
+      id: 'PPCH-EQ-VS-002',
+      assetCode: 'EQ-68-VS-002',
+      name: 'เครื่อง Vital Signs Monitor พร้อม NIBP & SpO2',
+      formId: 'vital_signs',
+      model: 'Mindray uMEC10',
+      serialNo: 'MR-UM10-4412',
+      frequency: 'daily',
+      homeDept: 'ER',
+      currentDept: 'ER',
+      status: 'abnormal', // จำลองเครื่องมีปัญหา (แจ้งเตือนความผิดปกติ)
+      lastEvaluatedAt: '2026-09-30 08:45',
+      lastEvaluatedStatus: 'abnormal',
+      lastEvaluatedBy: 'พว.สุดารัตน์ พงษ์ศิริ (ER)',
+      abnormalReason: 'Cuff NIBP สายลมรั่วซึม บีบลมไม่ขึ้น Error 03 แจ้งช่างเปลี่ยนด่วน'
+    },
+    {
+      id: 'PPCH-EQ-ANES-001',
+      assetCode: 'EQ-66-ANES-001',
+      name: 'เครื่องให้ยาสลบพร้อมระบบช่วยหายใจ (OR 1)',
+      formId: 'anesthesia',
+      model: 'Dräger Fabius Plus',
+      serialNo: 'DR-FB-1033',
+      frequency: 'daily',
+      homeDept: 'OR',
+      currentDept: 'OR',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-30 07:30',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'วิสัญญีพยาบาล อารยา สุขเกษม (OR)'
+    },
+    {
+      id: 'PPCH-EQ-EKG-001',
+      assetCode: 'EQ-67-EKG-001',
+      name: 'เครื่อง EKG 12 Leads พร้อมตีพิมพ์ผล',
+      formId: 'ekg_monitor',
+      model: 'Nihon Kohden Cardiofax M',
+      serialNo: 'NK-CF-9011',
+      frequency: 'daily',
+      homeDept: 'ER',
+      currentDept: 'ER',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-30 08:15',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'พว.สุดารัตน์ พงษ์ศิริ (ER)'
+    },
+    {
+      id: 'PPCH-EQ-US-001',
+      assetCode: 'EQ-67-US-001',
+      name: 'เครื่องตรวจคลื่นเสียงสะท้อนความถี่สูง Ultrasound',
+      formId: 'ultrasound',
+      model: 'GE LOGIQ P9',
+      serialNo: 'GE-LQ-5541',
+      frequency: 'monthly',
+      homeDept: 'XRAY',
+      currentDept: 'XRAY',
+      status: 'ready',
+      lastEvaluatedAt: '2026-09-02 09:30',
+      lastEvaluatedStatus: 'normal',
+      lastEvaluatedBy: 'นพ. รังสีแพทย์ ประจำศูนย์'
+    },
+    {
+      id: 'PPCH-EQ-US-002',
+      assetCode: 'EQ-68-US-002',
+      name: 'เครื่อง Ultrasound ชนิดเคลื่อนย้ายข้างเตียง (Point-of-Care)',
+      formId: 'ultrasound',
+      model: 'SonoSite Edge II',
+      serialNo: 'SS-ED2-8840',
+      frequency: 'monthly',
+      homeDept: 'ICU',
+      currentDept: 'ICU',
+      status: 'ready',
+      lastEvaluatedAt: '', // ค้างประเมินรอบเดือน 9
+      lastEvaluatedStatus: 'pending',
+      lastEvaluatedBy: ''
+    }
+  ]
+};
