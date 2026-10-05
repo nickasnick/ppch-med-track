@@ -304,62 +304,33 @@
       }
     }
 
-    /* ==================== COMMAND HERO BANNER ==================== */
-    .command-hero {
+    /* ==================== CLEAN EXECUTIVE HEADER ==================== */
+    .command-hero-clean {
       background: #ffffff;
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      border-left: 5px solid #1e40af;
-      border-radius: 18px;
-      padding: 20px 24px;
-      margin-bottom: 22px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
       flex-wrap: wrap;
     }
 
     .command-hero-left {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
-    .command-tag-row {
+    .command-meta-bar {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .hero-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 10px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .hero-chip-primary {
-      background: #eff6ff;
-      color: #1e40af;
-      border: 1px solid #bfdbfe;
-    }
-
-    .hero-chip-live {
-      background: #ecfdf5;
-      color: #047857;
-      border: 1px solid #a7f3d0;
-    }
-
-    .hero-chip-hospital {
-      background: #f8fafc;
-      color: #475569;
-      border: 1px solid #e2e8f0;
+      font-size: 11.5px;
+      color: #64748b;
     }
 
     .live-pulse-dot {
@@ -369,25 +340,26 @@
       background: #10b981;
       box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
       animation: pulseDot 2s infinite;
+      display: inline-block;
     }
 
     @keyframes pulseDot {
       0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
       100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
-    .command-title {
-      font-size: 22px;
+    .command-title-clean {
+      font-size: 19px;
       font-weight: 800;
       color: #0f172a;
       line-height: 1.25;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
       margin: 0;
     }
 
-    .command-subtitle {
-      font-size: 13px;
+    .command-subtitle-clean {
+      font-size: 12.5px;
       color: #64748b;
       margin: 0;
     }
@@ -395,312 +367,167 @@
     .command-hero-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .hero-stat-badge {
+    .stat-badge-clean {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 8px 14px;
+      gap: 6px;
+      padding: 6px 12px;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
     }
 
-    .stat-badge-num {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #1e293b;
-      line-height: 1.2;
-    }
-
-    .stat-badge-label {
-      font-size: 10.5px;
-      color: #64748b;
-    }
-
-    .hero-action-btn {
+    .btn-print-clean {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 9px 16px;
-      border-radius: 11px;
-      font-size: 12.5px;
-      font-weight: 700;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
-      background: #1e40af;
-      color: #ffffff;
-      border: none;
-      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #ffffff;
+      color: #1e40af;
+      border: 1px solid #cbd5e1;
+      transition: all 0.15s ease;
+      white-space: nowrap;
     }
 
-    .hero-action-btn:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.35);
+    .btn-print-clean:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
     }
 
-    /* ==================== HIGH-IMPACT KPI GRID ==================== */
-    .kpi-grid {
+    /* ==================== CLEAN MINIMAL KPI ROW ==================== */
+    .kpi-strip {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-      margin-bottom: 24px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     @media (max-width: 1280px) {
-      .kpi-grid {
+      .kpi-strip {
         grid-template-columns: repeat(3, 1fr);
       }
     }
 
     @media (max-width: 768px) {
-      .kpi-grid {
+      .kpi-strip {
         grid-template-columns: 1fr;
       }
     }
 
-    .kpi-card {
+    .kpi-mini-card {
       background: #ffffff;
-      border-radius: 16px;
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      padding: 16px 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-      box-shadow: var(--shadow-ambient);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .kpi-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    /* Specific Card Themes */
-    .kpi-card-total {
-      border-top: 4px solid #2563eb;
-      background: linear-gradient(180deg, #ffffff 0%, #f0f7ff 100%);
-    }
-
-    .kpi-card-progress {
-      border-top: 4px solid #0d9488;
-      background: linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%);
-    }
-
-    .kpi-card-ready {
-      border-top: 4px solid #059669;
-      background: linear-gradient(180deg, #ffffff 0%, #ecfdf5 100%);
-    }
-
-    .kpi-card-abnormal {
-      border: 1.5px solid #fecaca;
-      border-top: 4px solid #dc2626;
-      background: linear-gradient(180deg, #fff5f5 0%, #fee2e2 100%);
-      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.08);
-    }
-
-    .kpi-card-pending {
-      border-top: 4px solid #d97706;
-      background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
-    }
-
-    .kpi-top {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      transition: all 0.18s ease;
     }
 
-    .kpi-icon-wrap {
-      width: 40px;
-      height: 40px;
-      border-radius: 11px;
+    .kpi-mini-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .kpi-mini-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 21px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      font-size: 20px;
+      flex-shrink: 0;
     }
 
-    .kpi-icon-blue { background: #dbeafe; color: #1d4ed8; }
-    .kpi-icon-teal { background: #ccfbf1; color: #0f766e; }
-    .kpi-icon-green { background: #dcfce7; color: #15803d; }
-    .kpi-icon-red { background: #fee2e2; color: #b91c1c; }
-    .kpi-icon-amber { background: #fef3c7; color: #b45309; }
+    .icon-blue { background: #eff6ff; color: #1d4ed8; }
+    .icon-teal { background: #f0fdfa; color: #0f766e; }
+    .icon-green { background: #ecfdf5; color: #059669; }
+    .icon-red { background: #fef2f2; color: #dc2626; }
+    .icon-amber { background: #fffbeb; color: #d97706; }
 
-    .kpi-pill {
-      padding: 3px 8px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .kpi-pill-blue { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
-    .kpi-pill-teal { background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; }
-    .kpi-pill-green { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
-    .kpi-pill-red {
-      background: #fef2f2;
-      color: #b91c1c;
-      border: 1px solid #fca5a5;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .kpi-pill-amber { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
-
-    .pulse-dot-red {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #dc2626;
-      animation: pulseDotRed 1.5s infinite;
-    }
-
-    @keyframes pulseDotRed {
-      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-      70% { box-shadow: 0 0 0 5px rgba(220, 38, 38, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-    }
-
-    .kpi-metric-wrap {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-
-    .kpi-val {
-      font-size: 26px;
+    .kpi-mini-num {
+      font-size: 20px;
       font-weight: 800;
-      line-height: 1.1;
+      line-height: 1.15;
       color: #0f172a;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
     }
 
-    .val-abnormal {
-      color: #dc2626;
-    }
-
-    .kpi-unit {
-      font-size: 12px;
-      font-weight: 600;
-      color: #64748b;
-    }
-
-    .unit-abnormal {
-      color: #b91c1c;
-    }
-
-    .kpi-label {
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #475569;
-      margin-top: 4px;
-    }
-
-    .kpi-progress-track {
-      width: 100%;
-      height: 6px;
-      background: #e2e8f0;
-      border-radius: 9999px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-
-    .kpi-progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #0d9488 0%, #10b981 100%);
-      border-radius: 9999px;
-      transition: width 0.4s ease;
-    }
-
-    .kpi-footer-bar {
+    .kpi-mini-lbl {
       font-size: 11px;
       font-weight: 600;
       color: #64748b;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding-top: 4px;
+      margin-top: 1px;
     }
-
-    .text-emerald { color: #059669; }
-    .text-rose { color: #dc2626; }
-    .text-amber { color: #d97706; }
 
     /* ==================== CATEGORY CARDS & DATA TABLES ==================== */
     .category-card {
       background: #ffffff;
-      border-radius: 18px;
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      box-shadow: var(--shadow-card);
-      margin-bottom: 22px;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      margin-bottom: 20px;
       overflow: hidden;
       page-break-inside: avoid;
       transition: all 0.2s ease;
     }
 
-    .category-card:hover {
-      box-shadow: var(--shadow-hover);
-    }
-
     .category-header {
-      padding: 16px 22px;
-      background: linear-gradient(90deg, #f8fafc 0%, #ffffff 100%);
-      border-bottom: 1.5px solid #e2e8f0;
+      padding: 12px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
     .category-title-wrap {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
     }
 
     .category-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      font-size: 18px;
       flex-shrink: 0;
     }
 
     .category-name {
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 15px;
+      font-weight: 700;
       color: #0f172a;
       line-height: 1.25;
       letter-spacing: -0.01em;
     }
 
     .category-desc {
-      font-size: 12px;
+      font-size: 11.5px;
       color: #64748b;
-      margin-top: 2px;
+      margin-top: 1px;
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .category-freq-pill {
-      background: #f1f5f9;
-      color: #334155;
-      padding: 2px 7px;
-      border-radius: 5px;
-      font-size: 11px;
-      font-weight: 600;
     }
 
     /* Device Table */
@@ -712,20 +539,20 @@
 
     .device-table th {
       background: #f8fafc;
-      color: #475569;
-      font-size: 11.5px;
+      color: #64748b;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 12px 18px;
-      border-bottom: 1.5px solid #e2e8f0;
+      letter-spacing: 0.04em;
+      padding: 10px 16px;
+      border-bottom: 1px solid #e2e8f0;
       white-space: nowrap;
     }
 
     .device-table td {
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-bottom: 1px solid #f1f5f9;
-      font-size: 13px;
+      font-size: 12.5px;
       vertical-align: middle;
       transition: background 0.15s ease;
     }
@@ -746,115 +573,109 @@
       border-bottom: none;
     }
 
-    .asset-badge {
-      background: #0f172a;
-      color: #38bdf8;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-family: 'Inter', monospace;
+    /* Clean Monospace Asset Code */
+    .asset-code-clean {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      border: 1px solid #1e293b;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
-    }
-
-    .dept-pill {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      color: #334155;
-      padding: 4px 10px;
-      border-radius: 8px;
       font-weight: 600;
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 2.5px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
     }
 
-    /* Status Badges */
+    /* Status Badges - The Only Focal Pill */
     .badge-status {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
+      gap: 5px;
+      padding: 4px 10px;
       border-radius: 9999px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       white-space: nowrap;
-      transition: all 0.15s;
     }
 
     .badge-status-ready {
       background: #ecfdf5;
       color: #047857;
-      border: 1.5px solid #a7f3d0;
-      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.1);
+      border: 1px solid #a7f3d0;
     }
 
     .badge-status-abnormal {
       background: #fef2f2;
       color: #b91c1c;
-      border: 1.5px solid #fca5a5;
-      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
-      font-weight: 800;
+      border: 1px solid #fca5a5;
     }
 
     .badge-status-pending {
       background: #fffbeb;
       color: #b45309;
-      border: 1.5px solid #fde68a;
+      border: 1px solid #fde68a;
+    }
+
+    .pulse-dot-red {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #dc2626;
+      animation: pulseDotRed 1.5s infinite;
+      display: inline-block;
+    }
+
+    @keyframes pulseDotRed {
+      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+      70% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
     }
 
     /* Table Action Buttons */
     .btn-table-slip {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 6px 12px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #1e293b;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #334155;
       background: #ffffff;
-      border: 1.5px solid #cbd5e1;
+      border: 1px solid #cbd5e1;
       cursor: pointer;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      transition: all 0.15s ease;
     }
 
     .btn-table-slip:hover {
-      background: #f8fafc;
-      border-color: #1e40af;
-      color: #1e40af;
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+      background: #f1f5f9;
+      border-color: #94a3b8;
+      color: #0f172a;
     }
 
     .btn-table-check {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 6px 14px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 700;
+      gap: 4px;
+      padding: 5px 12px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 600;
       color: #ffffff;
-      background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-      border: none;
+      background: #1e40af;
+      border: 1px solid #1e40af;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      transition: all 0.15s ease;
     }
 
     .btn-table-check:hover {
-      background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      background: #1d4ed8;
+      border-color: #1d4ed8;
     }
 
     /* Forms 8 Cards Grid (For View 2) */
@@ -1156,148 +977,89 @@
         </div>
       </div>
 
-      <!-- Executive Command Hero Banner -->
-      <div class="command-hero no-print">
+      <!-- Executive Minimal Header -->
+      <div class="command-hero-clean no-print">
         <div class="command-hero-left">
-          <div class="command-tag-row">
-            <span class="hero-chip hero-chip-primary">
-              <span class="material-icons-round" style="font-size: 14px;">verified_user</span>
-              <span>BIOMEDICAL ENGINEERING & SAFETY</span>
-            </span>
-            <span class="hero-chip hero-chip-live">
-              <span class="live-pulse-dot"></span>
-              <span>REALTIME READY</span>
-            </span>
-            <span class="hero-chip hero-chip-hospital">
-              <span>โรงพยาบาลพิษณุเวช</span>
-            </span>
+          <div class="command-meta-bar">
+            <span class="live-pulse-dot"></span>
+            <span style="font-weight: 700; color: #059669; letter-spacing: 0.03em;">REALTIME READY</span>
+            <span>•</span>
+            <span>โรงพยาบาลพิษณุเวช</span>
           </div>
-          <h2 id="mainHeadingTitle" class="command-title">
-            ศูนย์ควบคุมและรายงานความพร้อมเครื่องมือแพทย์
+          <h2 id="mainHeadingTitle" class="command-title-clean">
+            รายงานการตรวจเช็คความพร้อมเครื่องมือแพทย์ประจำวัน
           </h2>
-          <p id="mainHeadingDate" class="command-subtitle">
+          <p id="mainHeadingDate" class="command-subtitle-clean">
             กำลังโหลดข้อมูลประจำวัน...
           </p>
         </div>
 
         <div class="command-hero-right">
-          <div class="hero-stat-badge">
-            <span class="material-icons-round" style="color: #1e40af; font-size: 20px;">inventory_2</span>
-            <div>
-              <div class="stat-badge-num" id="filteredCountBadge">กำลังประมวลผล...</div>
-              <div class="stat-badge-label">สถานะการแสดงผล</div>
-            </div>
+          <div class="stat-badge-clean">
+            <span class="material-icons-round" style="color: #1e40af; font-size: 18px;">inventory_2</span>
+            <span id="filteredCountBadge">กำลังประมวลผล...</span>
           </div>
-          <button onclick="window.print()" class="hero-action-btn" title="พิมพ์รายงาน A4">
+          <button onclick="window.print()" class="btn-print-clean" title="พิมพ์รายงาน A4">
             <span class="material-icons-round" style="font-size: 16px;">print</span>
             <span>พิมพ์ A4</span>
           </button>
         </div>
       </div>
 
-      <!-- High-Impact KPI Summary Cards -->
-      <div class="kpi-grid no-print">
-        <!-- Tile 1: Total Devices -->
-        <div class="kpi-card kpi-card-total">
-          <div class="kpi-top">
-            <div class="kpi-icon-wrap kpi-icon-blue">
-              <span class="material-icons-round">medical_services</span>
-            </div>
-            <span class="kpi-pill kpi-pill-blue">8 หมวด</span>
+      <!-- Minimalist KPI Strip -->
+      <div id="kpiStripContainer" class="kpi-strip no-print">
+        <!-- 1: Total Devices -->
+        <div class="kpi-mini-card">
+          <div class="kpi-mini-icon icon-blue">
+            <span class="material-icons-round">medical_services</span>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-metric-wrap">
-              <span class="kpi-val" id="kpiTotalDevices">0</span>
-              <span class="kpi-unit">เครื่อง</span>
-            </div>
-            <div class="kpi-label">เครื่องมือแพทย์ทั้งหมด</div>
-          </div>
-          <div class="kpi-footer-bar">
-            <span>ครอบคลุมทุกแผนก</span>
+          <div>
+            <div class="kpi-mini-num" id="kpiTotalDevices">0</div>
+            <div class="kpi-mini-lbl">เครื่องมือแพทย์ทั้งหมด</div>
           </div>
         </div>
 
-        <!-- Tile 2: Checked Today -->
-        <div class="kpi-card kpi-card-progress">
-          <div class="kpi-top">
-            <div class="kpi-icon-wrap kpi-icon-teal">
-              <span class="material-icons-round">fact_check</span>
-            </div>
-            <span class="kpi-pill kpi-pill-teal" id="kpiProgressPill">ประจำวัน</span>
+        <!-- 2: Checked Today -->
+        <div class="kpi-mini-card">
+          <div class="kpi-mini-icon icon-teal">
+            <span class="material-icons-round">fact_check</span>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-metric-wrap">
-              <span class="kpi-val" id="kpiCheckedDevices">0</span>
-            </div>
-            <div class="kpi-label">ตรวจเช็คแล้ววันนี้</div>
-          </div>
-          <div class="kpi-progress-track">
-            <div class="kpi-progress-fill" id="kpiProgressBar" style="width: 0%;"></div>
+          <div>
+            <div class="kpi-mini-num" id="kpiCheckedDevices">0</div>
+            <div class="kpi-mini-lbl">ตรวจเช็คแล้ววันนี้</div>
           </div>
         </div>
 
-        <!-- Tile 3: Ready Devices -->
-        <div class="kpi-card kpi-card-ready">
-          <div class="kpi-top">
-            <div class="kpi-icon-wrap kpi-icon-green">
-              <span class="material-icons-round">verified</span>
-            </div>
-            <span class="kpi-pill kpi-pill-green">100% Pass</span>
+        <!-- 3: Ready Devices -->
+        <div class="kpi-mini-card">
+          <div class="kpi-mini-icon icon-green">
+            <span class="material-icons-round">check_circle</span>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-metric-wrap">
-              <span class="kpi-val" id="kpiReadyDevices">0</span>
-              <span class="kpi-unit">เครื่อง</span>
-            </div>
-            <div class="kpi-label">พร้อมใช้งานปกติ</div>
-          </div>
-          <div class="kpi-footer-bar text-emerald">
-            <span class="material-icons-round" style="font-size: 13px;">check_circle</span>
-            <span>ผ่านเกณฑ์มาตรฐาน</span>
+          <div>
+            <div class="kpi-mini-num" id="kpiReadyDevices" style="color: #059669;">0</div>
+            <div class="kpi-mini-lbl">พร้อมใช้งานปกติ</div>
           </div>
         </div>
 
-        <!-- Tile 4: Abnormal Devices (Alert!) -->
-        <div class="kpi-card kpi-card-abnormal">
-          <div class="kpi-top">
-            <div class="kpi-icon-wrap kpi-icon-red">
-              <span class="material-icons-round">error</span>
-            </div>
-            <span class="kpi-pill kpi-pill-red">
-              <span class="pulse-dot-red"></span> แจ้งเตือน
-            </span>
+        <!-- 4: Abnormal Devices -->
+        <div class="kpi-mini-card" id="kpiCardAbnormal">
+          <div class="kpi-mini-icon icon-red">
+            <span class="material-icons-round">error</span>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-metric-wrap">
-              <span class="kpi-val val-abnormal" id="kpiAbnormalDevices">0</span>
-              <span class="kpi-unit unit-abnormal">เครื่อง</span>
-            </div>
-            <div class="kpi-label">พบข้อบกพร่อง/ชำรุด</div>
-          </div>
-          <div class="kpi-footer-bar text-rose">
-            <span class="material-icons-round" style="font-size: 13px;">warning</span>
-            <span>ต้องดำเนินการแก้ไข</span>
+          <div>
+            <div class="kpi-mini-num" id="kpiAbnormalDevices" style="color: #dc2626;">0</div>
+            <div class="kpi-mini-lbl">พบข้อบกพร่อง/ชำรุด</div>
           </div>
         </div>
 
-        <!-- Tile 5: Pending Devices -->
-        <div class="kpi-card kpi-card-pending">
-          <div class="kpi-top">
-            <div class="kpi-icon-wrap kpi-icon-amber">
-              <span class="material-icons-round">schedule</span>
-            </div>
-            <span class="kpi-pill kpi-pill-amber">รอตรวจ</span>
+        <!-- 5: Pending Devices -->
+        <div class="kpi-mini-card">
+          <div class="kpi-mini-icon icon-amber">
+            <span class="material-icons-round">schedule</span>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-metric-wrap">
-              <span class="kpi-val" id="kpiPendingDevices">0</span>
-              <span class="kpi-unit">เครื่อง</span>
-            </div>
-            <div class="kpi-label">ยังไม่ตรวจเช็ควันนี้</div>
-          </div>
-          <div class="kpi-footer-bar text-amber">
-            <span class="material-icons-round" style="font-size: 13px;">hourglass_bottom</span>
-            <span>รอประเมินตามรอบ</span>
+          <div>
+            <div class="kpi-mini-num" id="kpiPendingDevices" style="color: #d97706;">0</div>
+            <div class="kpi-mini-lbl">ยังไม่ตรวจเช็ค</div>
           </div>
         </div>
       </div>
@@ -1843,8 +1605,8 @@
       var searchGrp = document.getElementById('filterSearchGroup');
       if (searchGrp) searchGrp.style.display = 'block';
 
-      var kpiBlock = document.querySelector('.kpi-row');
-      if (kpiBlock) kpiBlock.style.display = (mode === 'daily') ? '' : 'none';
+      var kpiBlock = document.getElementById('kpiStripContainer') || document.querySelector('.kpi-strip');
+      if (kpiBlock) kpiBlock.style.display = (mode === 'daily') ? 'grid' : 'none';
     }
 
     function setViewMode(mode) {
@@ -2043,10 +1805,16 @@
       document.getElementById('kpiAbnormalDevices').innerText = abnormalTodayCount;
       document.getElementById('kpiPendingDevices').innerText = pendingTodayCount;
 
-      var pBar = document.getElementById('kpiProgressBar');
-      if (pBar) pBar.style.width = pct + '%';
-      var pPill = document.getElementById('kpiProgressPill');
-      if (pPill) pPill.innerText = pct + '% ตรวจแล้ว';
+      var abCard = document.getElementById('kpiCardAbnormal');
+      if (abCard) {
+        if (abnormalTodayCount > 0) {
+          abCard.style.borderColor = '#fca5a5';
+          abCard.style.background = '#fff5f5';
+        } else {
+          abCard.style.borderColor = '#e2e8f0';
+          abCard.style.background = '#ffffff';
+        }
+      }
 
       document.getElementById('filteredCountBadge').innerText = filteredEq.length + ' เครื่อง (จาก ' + totalDevices + ')';
 
@@ -2084,7 +1852,7 @@
         if (catAbnormal > 0) badgePillText += ' (⚠️ ผิดปกติ ' + catAbnormal + ')';
 
         html += '<div class="category-card">' +
-          '<div class="category-header" style="border-left: 5px solid ' + meta.color + ';">' +
+          '<div class="category-header">' +
             '<div class="category-title-wrap">' +
               '<div class="category-avatar" style="background: ' + meta.bg + '; color: ' + meta.color + ';">' +
                 '<span class="material-icons-round">' + meta.icon + '</span>' +
@@ -2092,26 +1860,27 @@
               '<div>' +
                 '<div class="category-name">' + (fIdx + 1) + '. ' + f.name + '</div>' +
                 '<div class="category-desc">' +
-                  '<span class="category-freq-pill">' + (f.frequency === 'daily' ? 'รอบทุกวัน (Daily)' : 'ประจำเดือน (Monthly)') + '</span>' +
-                  '<span>• ' + f.category + '</span>' +
+                  '<span>' + f.category + '</span>' +
+                  '<span>•</span>' +
+                  '<span>' + (f.frequency === 'daily' ? 'รอบตรวจทุกวัน' : 'รอบตรวจประจำเดือน') + '</span>' +
                 '</div>' +
               '</div>' +
             '</div>' +
-            '<div style="display: flex; align-items: center; gap: 10px;">' +
-              '<span class="badge-status" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : '#eff6ff') + '; color: ' + (catAbnormal > 0 ? '#b91c1c' : '#1e40af') + '; border: 1px solid ' + (catAbnormal > 0 ? '#fca5a5' : '#bfdbfe') + '; font-size: 12px;">' + badgePillText + '</span>' +
+            '<div>' +
+              '<span class="badge-status" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : '#f8fafc') + '; color: ' + (catAbnormal > 0 ? '#b91c1c' : '#475569') + '; border: 1px solid ' + (catAbnormal > 0 ? '#fca5a5' : '#e2e8f0') + ';">' + badgePillText + '</span>' +
             '</div>' +
           '</div>' +
           '<div style="overflow-x: auto;">' +
             '<table class="device-table">' +
               '<thead>' +
                 '<tr>' +
-                  '<th style="width: 155px;">รหัสครุภัณฑ์</th>' +
-                  '<th>ชื่อเครื่องมือแพทย์ & รุ่น (Model)</th>' +
-                  '<th style="width: 170px;">แผนกประจำการ</th>' +
-                  '<th style="width: 170px; text-align: center;">สถานะวันนี้</th>' +
-                  '<th style="width: 160px;">เวลาตรวจ / ผู้ตรวจเช็ค</th>' +
+                  '<th style="width: 140px;">รหัสครุภัณฑ์</th>' +
+                  '<th>ชื่อเครื่องมือแพทย์ & รุ่น</th>' +
+                  '<th style="width: 150px;">แผนกประจำการ</th>' +
+                  '<th style="width: 150px; text-align: center;">สถานะวันนี้</th>' +
+                  '<th style="width: 140px;">เวลา / ผู้ตรวจ</th>' +
                   '<th>ผลการตรวจ / หมายเหตุ</th>' +
-                  '<th class="btn-action-col no-print" style="width: 120px; text-align: center;">การจัดการ</th>' +
+                  '<th class="btn-action-col no-print" style="width: 110px; text-align: center;">การจัดการ</th>' +
                 '</tr>' +
               '</thead>' +
               '<tbody>';
@@ -2129,49 +1898,50 @@
             var timeOnly = formatTimeOnly(ev.evaluatedAt);
             if (ev.result === 'abnormal') {
               statusBadge = '<span class="badge-status badge-status-abnormal"><span class="pulse-dot-red"></span><span class="material-icons-round" style="font-size: 14px;">warning</span> พบข้อบกพร่อง</span>';
-              evalInfo = '<div style="font-weight: 700; color: #b91c1c; font-size: 13px;">' + timeOnly + ' น.</div>' +
-                '<div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 3px; margin-top: 1px;">' +
-                  '<span class="material-icons-round" style="font-size: 12px; color: #94a3b8;">person</span>' + (ev.evaluatedBy || 'ไม่ระบุ') +
-                '</div>';
-              defectNote = '<div style="display: inline-flex; align-items: center; gap: 4px; background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 12px; border: 1px solid #fca5a5;">' +
-                '<span class="material-icons-round" style="font-size: 14px;">report_problem</span> ' + (ev.abnormalNote || 'พบความผิดปกติ') +
-              '</div>';
+              evalInfo = '<div style="font-weight: 700; color: #dc2626; font-size: 12.5px;">' + timeOnly + ' น.</div>' +
+                '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (ev.evaluatedBy || 'ไม่ระบุ') + '</div>';
+              defectNote = '<span style="color: #dc2626; font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">' +
+                '<span class="material-icons-round" style="font-size: 15px;">warning</span> ' + (ev.abnormalNote || 'พบความผิดปกติ') +
+              '</span>';
             } else {
-              statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 14px;">check_circle</span> พร้อมใช้งาน</span>';
-              evalInfo = '<div style="font-weight: 700; color: #059669; font-size: 13px;">' + timeOnly + ' น.</div>' +
-                '<div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 3px; margin-top: 1px;">' +
-                  '<span class="material-icons-round" style="font-size: 12px; color: #94a3b8;">person</span>' + (ev.evaluatedBy || 'ไม่ระบุ') +
-                '</div>';
-              defectNote = '<div style="display: inline-flex; align-items: center; gap: 4px; background: #ecfdf5; color: #047857; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11.5px; border: 1px solid #a7f3d0;">' +
-                '<span class="material-icons-round" style="font-size: 13px;">task_alt</span> ผ่านเกณฑ์มาตรฐาน 100%' +
-              '</div>';
+              statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 13px;">check_circle</span> พร้อมใช้งาน</span>';
+              evalInfo = '<div style="font-weight: 700; color: #0f172a; font-size: 12.5px;">' + timeOnly + ' น.</div>' +
+                '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (ev.evaluatedBy || 'ไม่ระบุ') + '</div>';
+              defectNote = '<span style="color: #059669; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 3px;">' +
+                '<span class="material-icons-round" style="font-size: 14px;">check</span> ปกติครบทุกข้อ' +
+              '</span>';
             }
             actionBtn = '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + eq.id + '\')" class="btn-table-slip">' +
-              '<span class="material-icons-round" style="font-size: 15px; color: #1e40af;">receipt_long</span><span>ดูสลิป</span></button>';
+              '<span class="material-icons-round" style="font-size: 14px; color: #1e40af;">receipt_long</span><span>สลิป</span></button>';
           } else {
-            statusBadge = '<span class="badge-status badge-status-pending"><span class="material-icons-round" style="font-size: 14px;">hourglass_top</span> รอตรวจวันนี้</span>';
-            evalInfo = '<span style="color: #94a3b8; font-style: italic; font-size: 12px;">ยังไม่ตรวจ</span>';
+            statusBadge = '<span class="badge-status badge-status-pending"><span class="material-icons-round" style="font-size: 13px;">schedule</span> รอตรวจ</span>';
+            evalInfo = '<span style="color: #94a3b8; font-size: 12px;">-</span>';
             defectNote = '<span style="color: #94a3b8; font-size: 12px;">-</span>';
             actionBtn = '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" class="btn-table-check">' +
-              '<span class="material-icons-round" style="font-size: 15px;">assignment</span><span>ตรวจเช็ค</span></a>';
+              '<span class="material-icons-round" style="font-size: 14px;">assignment</span><span>ตรวจเช็ค</span></a>';
           }
 
           var rowClass = (ev && ev.result === 'abnormal') ? 'row-abnormal' : '';
 
           html += '<tr class="' + rowClass + '">' +
-            '<td><span class="asset-badge"><span class="material-icons-round" style="font-size: 13px; color: #38bdf8;">qr_code_2</span>' + eq.assetCode + '</span></td>' +
+            '<td><span class="asset-code-clean">' + eq.assetCode + '</span></td>' +
             '<td>' +
-              '<div style="font-weight: 700; color: #0f172a; font-size: 13.5px; line-height: 1.3;">' + eq.name + '</div>' +
-              '<div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">' +
-                '<span style="background: #f1f5f9; padding: 1px 6px; border-radius: 4px; font-weight: 600;">รุ่น ' + (eq.model || '-') + '</span> ' +
-                '<span style="color: #94a3b8; font-family: monospace;">S/N: ' + (eq.serialNo || '-') + '</span>' +
+              '<div style="font-weight: 700; color: #0f172a; font-size: 13px; line-height: 1.3;">' + eq.name + '</div>' +
+              '<div style="font-size: 11px; color: #64748b; margin-top: 2px;">' +
+                '<span>รุ่น ' + (eq.model || '-') + '</span> ' +
+                '<span style="color: #94a3b8; margin-left: 4px;">S/N: ' + (eq.serialNo || '-') + '</span>' +
               '</div>' +
             '</td>' +
-            '<td><span class="dept-pill"><span class="material-icons-round" style="font-size: 14px; color: #1e40af;">business</span>' + deptName + '</span></td>' +
+            '<td>' +
+              '<div style="font-weight: 600; color: #334155; font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px;">' +
+                '<span class="material-icons-round" style="font-size: 14px; color: #94a3b8;">place</span>' +
+                '<span>' + deptName + '</span>' +
+              '</div>' +
+            '</td>' +
             '<td style="text-align: center;">' + statusBadge + '</td>' +
             '<td>' + evalInfo + '</td>' +
             '<td>' + defectNote + '</td>' +
-            '<td class="btn-action-col no-print" style="text-align: center;">' + actionBtn + '</td>' +
+            '<td class="btn-action-col no-print" style="text-align: center; white-space: nowrap;">' + actionBtn + '</td>' +
           '</tr>';
         });
 
