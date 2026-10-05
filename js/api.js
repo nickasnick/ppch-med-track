@@ -107,7 +107,7 @@
       });
     },
 
-    // Fetch Evaluations from Google Apps Script (Supports CORS & JSONP)
+    // Fetch Evaluations from Google Apps Script (Direct High-Speed JSONP)
     fetchEvaluations: function (callback) {
       var url = this.getEndpoint();
       if (!url) {
@@ -115,42 +115,36 @@
         return;
       }
 
-      var fullUrl = url + (url.indexOf('?') === -1 ? '?' : '&') + 'action=getEvaluations&t=' + Date.now();
-      fetch(fullUrl, { method: 'GET', mode: 'cors' })
-        .then(function (res) { return res.json(); })
-        .then(function (data) {
-          if (data && data.status === 'success' && Array.isArray(data.data)) {
-            callback({ success: true, data: data.data, serverTime: data.serverTime });
-          } else {
-            callback({ success: false, message: 'ข้อมูลไม่ถูกต้อง', data: [] });
-          }
-        })
-        .catch(function () {
-          // JSONP Fallback
-          var cbName = 'ppch_eval_cb_' + Date.now();
-          var script = document.createElement('script');
-          var jsonpUrl = url + (url.indexOf('?') === -1 ? '?' : '&') + 'action=getEvaluations&callback=' + cbName;
+      var cbName = 'ppch_eval_cb_' + Date.now();
+      var script = document.createElement('script');
+      var jsonpUrl = url + (url.indexOf('?') === -1 ? '?' : '&') + 'action=getEvaluations&callback=' + cbName + '&t=' + Date.now();
 
-          var timer = setTimeout(function () {
-            delete window[cbName];
-            if (script.parentNode) script.parentNode.removeChild(script);
-            callback({ success: false, message: 'หมดเวลาการเชื่อมต่อ (Timeout)', data: [] });
-          }, 8000);
+      var timer = setTimeout(function () {
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        if (callback) callback({ success: false, message: 'หมดเวลาการเชื่อมต่อ (Timeout)', data: [] });
+      }, 7000);
 
-          window[cbName] = function (data) {
-            clearTimeout(timer);
-            delete window[cbName];
-            if (script.parentNode) script.parentNode.removeChild(script);
-            if (data && data.status === 'success' && Array.isArray(data.data)) {
-              callback({ success: true, data: data.data, serverTime: data.serverTime });
-            } else {
-              callback({ success: false, message: 'เกิดข้อผิดพลาดในการรับข้อมูล', data: [] });
-            }
-          };
+      window[cbName] = function (data) {
+        clearTimeout(timer);
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        if (data && data.status === 'success' && Array.isArray(data.data)) {
+          if (callback) callback({ success: true, data: data.data, serverTime: data.serverTime });
+        } else {
+          if (callback) callback({ success: false, message: 'เกิดข้อผิดพลาดในการรับข้อมูล', data: [] });
+        }
+      };
 
-          script.src = jsonpUrl;
-          document.body.appendChild(script);
-        });
+      script.onerror = function () {
+        clearTimeout(timer);
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        if (callback) callback({ success: false, message: 'ไม่สามารถโหลดข้อมูลจาก Google Apps Script ได้', data: [] });
+      };
+
+      script.src = jsonpUrl;
+      document.body.appendChild(script);
     }
   };
 

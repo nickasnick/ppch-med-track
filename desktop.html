@@ -1128,23 +1128,43 @@
     }
 
     function loadData() {
+      // 1. Instantly load from local storage (0ms perceived time)
       allEquipment = window.PPCH_STORE.getEquipment() || [];
       allEvaluations = window.PPCH_STORE.getAll().evaluations || [];
 
+      // 2. Render UI IMMEDIATELY! Displays cards & table instantly without waiting
+      renderCurrentView();
+
+      // Hide page loader right away
+      var loader = document.getElementById('pageLoader');
+      if (loader) loader.classList.add('hidden');
+
+      // 3. Silently sync with Google Sheet in background
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
         updateSyncStatus('กำลังซิงค์กับ Google Sheet...', '#f59e0b');
         window.PPCH_API.fetchEvaluations(function (res) {
           if (res && res.success && Array.isArray(res.data)) {
-            allEvaluations = res.data;
+            var evalMap = {};
+            (window.PPCH_STORE.getAll().evaluations || []).forEach(function (ev) {
+              if (ev.id) evalMap[ev.id] = ev;
+            });
+            res.data.forEach(function (ev) {
+              if (ev.id) evalMap[ev.id] = ev;
+            });
+
+            allEvaluations = Object.values(evalMap);
+            allEvaluations.sort(function (a, b) {
+              return (b.evaluatedAt || '').localeCompare(a.evaluatedAt || '');
+            });
+
             updateSyncStatus('ซิงค์กับ Google Sheet สำเร็จ (' + new Date().toLocaleTimeString('th-TH') + ')', '#10b981');
+            renderCurrentView();
           } else {
             updateSyncStatus('ใช้งานข้อมูลระบบ (โหมด Offline / Cache)', '#64748b');
           }
-          renderCurrentView();
         });
       } else {
         updateSyncStatus('โหมดจัดเก็บข้อมูลท้องถิ่น', '#64748b');
-        renderCurrentView();
       }
     }
 
