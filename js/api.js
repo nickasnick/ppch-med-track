@@ -105,6 +105,52 @@
       this.postToGas({ action: 'testLine' }, function (res) {
         if (callback) callback(res);
       });
+    },
+
+    // Fetch Evaluations from Google Apps Script (Supports CORS & JSONP)
+    fetchEvaluations: function (callback) {
+      var url = this.getEndpoint();
+      if (!url) {
+        if (callback) callback({ success: false, message: 'ยังไม่ได้ระบุ Web App URL', data: [] });
+        return;
+      }
+
+      var fullUrl = url + (url.indexOf('?') === -1 ? '?' : '&') + 'action=getEvaluations&t=' + Date.now();
+      fetch(fullUrl, { method: 'GET', mode: 'cors' })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data && data.status === 'success' && Array.isArray(data.data)) {
+            callback({ success: true, data: data.data, serverTime: data.serverTime });
+          } else {
+            callback({ success: false, message: 'ข้อมูลไม่ถูกต้อง', data: [] });
+          }
+        })
+        .catch(function () {
+          // JSONP Fallback
+          var cbName = 'ppch_eval_cb_' + Date.now();
+          var script = document.createElement('script');
+          var jsonpUrl = url + (url.indexOf('?') === -1 ? '?' : '&') + 'action=getEvaluations&callback=' + cbName;
+
+          var timer = setTimeout(function () {
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            callback({ success: false, message: 'หมดเวลาการเชื่อมต่อ (Timeout)', data: [] });
+          }, 8000);
+
+          window[cbName] = function (data) {
+            clearTimeout(timer);
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            if (data && data.status === 'success' && Array.isArray(data.data)) {
+              callback({ success: true, data: data.data, serverTime: data.serverTime });
+            } else {
+              callback({ success: false, message: 'เกิดข้อผิดพลาดในการรับข้อมูล', data: [] });
+            }
+          };
+
+          script.src = jsonpUrl;
+          document.body.appendChild(script);
+        });
     }
   };
 

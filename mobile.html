@@ -86,10 +86,16 @@
           <p style="font-size: 10px; color: #94a3b8;">ตรวจเช็ค & ติดตามสถานที่ (Mobile)</p>
         </div>
       </div>
-      <button onclick="switchToDesktop()" class="btn-glass" style="padding: 5px 10px; font-size: 11px;">
-        <span class="material-icons-round" style="font-size: 14px;">desktop_windows</span>
-        <span>จอคอม</span>
-      </button>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <a href="reports.html" class="btn-glass" style="padding: 5px 10px; font-size: 11px; text-decoration: none;">
+          <span class="material-icons-round" style="font-size: 14px;">assessment</span>
+          <span>รายงาน</span>
+        </a>
+        <button onclick="switchToDesktop()" class="btn-glass" style="padding: 5px 10px; font-size: 11px;">
+          <span class="material-icons-round" style="font-size: 14px;">desktop_windows</span>
+          <span>จอคอม</span>
+        </button>
+      </div>
     </div>
 
     <!-- Frequency Filter Pills for Mobile -->
@@ -140,10 +146,14 @@
 
   <!-- Mobile Sticky Bottom Action Bar -->
   <div class="mobile-bottom-bar">
-    <button onclick="openRelocationSheet()" class="btn-ppch btn-ppch-teal" style="flex: 2; height: 46px; font-size: 13px;">
-      <span class="material-icons-round" style="font-size: 20px;">swap_horiz</span>
-      <span>ย้ายพิกัด / รับเครื่อง</span>
+    <button onclick="openRelocationSheet()" class="btn-ppch btn-ppch-teal" style="flex: 1.4; height: 46px; font-size: 12.5px;">
+      <span class="material-icons-round" style="font-size: 19px;">swap_horiz</span>
+      <span>ย้ายพิกัด</span>
     </button>
+    <a href="reports.html" class="btn-ppch btn-ppch-primary" style="flex: 1.4; height: 46px; font-size: 12.5px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px;">
+      <span class="material-icons-round" style="font-size: 18px;">assessment</span>
+      <span>ดูรายงาน</span>
+    </a>
     <button onclick="openAdminModal()" class="btn-ppch btn-ppch-outline" style="flex: 1; height: 46px; font-size: 12px;">
       <span class="material-icons-round" style="font-size: 18px;">admin_panel_settings</span>
       <span>Admin</span>
