@@ -518,11 +518,11 @@
             <span>ตัวกรองและเงื่อนไข</span>
           </div>
 
-          <!-- Date Picker -->
-          <div class="filter-item">
+          <!-- 1. Date Picker for Daily View -->
+          <div class="filter-item" id="filterDailyDateGroup">
             <label>
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">event</span>
-              วันที่ตรวจเช็ค
+              วันที่ตรวจเช็ค (Daily Date)
             </label>
             <input type="date" id="sidebarDateInput" onchange="onDateChanged()">
             <div class="quick-date-group">
@@ -531,8 +531,43 @@
             </div>
           </div>
 
-          <!-- Department Selector -->
-          <div class="filter-item">
+          <!-- 2. Date Range & Month Picker for History View (Lazy Loaded) -->
+          <div class="filter-item" id="filterHistoryRangeGroup" style="display: none;">
+            <label>
+              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">date_range</span>
+              ช่วงเวลาประวัติการตรวจ
+            </label>
+            <div class="quick-date-group" style="margin-bottom: 8px;">
+              <button type="button" onclick="setHistoryRangeMode('month')" id="btnHistModeMonth" class="quick-date-btn active" style="flex: 1; font-size: 11px;">ตามเดือน</button>
+              <button type="button" onclick="setHistoryRangeMode('range')" id="btnHistModeRange" class="quick-date-btn" style="flex: 1; font-size: 11px;">ระบุช่วง</button>
+              <button type="button" onclick="setHistoryRangeMode('all')" id="btnHistModeAll" class="quick-date-btn" style="flex: 0.8; font-size: 11px;">ทั้งหมด</button>
+            </div>
+
+            <!-- Month Picker -->
+            <div id="histMonthSubBlock">
+              <input type="month" id="historyMonthInput" onchange="onHistoryFilterChanged()" style="width: 100%;">
+            </div>
+
+            <!-- Custom Date Range -->
+            <div id="histRangeSubBlock" style="display: none; flex-direction: column; gap: 6px;">
+              <div style="font-size: 11px; color: #64748b;">จากวันที่:</div>
+              <input type="date" id="historyStartDate" onchange="onHistoryFilterChanged()">
+              <div style="font-size: 11px; color: #64748b;">ถึงวันที่:</div>
+              <input type="date" id="historyEndDate" onchange="onHistoryFilterChanged()">
+            </div>
+          </div>
+
+          <!-- 3. Monthly Selector (Visible only in Monthly view) -->
+          <div class="filter-item" id="filterMonthlyMonthGroup" style="display: none;">
+            <label>
+              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">calendar_month</span>
+              เลือกรอบประจำเดือน
+            </label>
+            <input type="month" id="monthlyMonthInput" onchange="onMonthlyMonthChanged()">
+          </div>
+
+          <!-- 4. Department Selector (Used in Daily, History, Monthly) -->
+          <div class="filter-item" id="filterDeptGroup">
             <label>
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">apartment</span>
               แผนกที่ใช้งาน / ผู้ถือครอง
@@ -542,8 +577,8 @@
             </select>
           </div>
 
-          <!-- Category Selector -->
-          <div class="filter-item">
+          <!-- 5. Category Selector (Used in Daily, History, Monthly) -->
+          <div class="filter-item" id="filterCategoryGroup">
             <label>
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">medical_services</span>
               ประเภทเครื่องมือแพทย์
@@ -553,11 +588,11 @@
             </select>
           </div>
 
-          <!-- Status Selector -->
-          <div class="filter-item">
+          <!-- 6. Daily Status Selector (Used only in Daily) -->
+          <div class="filter-item" id="filterDailyStatusGroup">
             <label>
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">flag</span>
-              สถานะการตรวจเช็ค
+              สถานะความพร้อมวันนี้
             </label>
             <select id="sidebarStatusSelect" onchange="applyFilters()">
               <option value="all">ทั้งหมด (All Status)</option>
@@ -567,8 +602,21 @@
             </select>
           </div>
 
-          <!-- Keyword Search -->
-          <div class="filter-item">
+          <!-- 7. History Status Selector (Used only in History) -->
+          <div class="filter-item" id="filterHistoryStatusGroup" style="display: none;">
+            <label>
+              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">fact_check</span>
+              ผลการตรวจเช็ค
+            </label>
+            <select id="historyResultSelect" onchange="onHistoryFilterChanged()">
+              <option value="all">ผลการตรวจทั้งหมด</option>
+              <option value="ready">✅ พร้อมใช้งาน (ปกติ)</option>
+              <option value="abnormal">⚠️ พบข้อบกพร่อง / ชำรุด</option>
+            </select>
+          </div>
+
+          <!-- 8. Keyword Search (Used in Daily, History, Monthly) -->
+          <div class="filter-item" id="filterSearchGroup">
             <label>
               <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">search</span>
               ค้นหาด่วน (รหัสครุภัณฑ์ / ชื่อเครื่อง)
@@ -578,7 +626,7 @@
 
           <button onclick="resetFilters()" class="quick-date-btn" style="width: 100%; padding: 7px; margin-top: 4px;">
             <span class="material-icons-round" style="font-size: 14px; vertical-align: -2px;">restart_alt</span>
-            <span>รีเซ็ตตัวกรองทั้งหมด</span>
+            <span>รีเซ็ตตัวกรอง</span>
           </button>
         </div>
 
@@ -885,6 +933,9 @@
     var selectedDateStr = ''; // YYYY-MM-DD
     var allEvaluations = [];
     var allEquipment = [];
+    var historyLoaded = false;
+    var historyLoading = false;
+    var historyRangeMode = 'month'; // 'month' | 'range' | 'all'
 
     var categoryMeta = {
       'defibrillator': { icon: 'flash_on', color: '#dc2626', bg: '#fee2e2' },
@@ -902,16 +953,27 @@
     });
 
     function initReports() {
-      // Set today's date as default
       var today = new Date();
       selectedDateStr = getLocalDateString(today);
       document.getElementById('sidebarDateInput').value = selectedDateStr;
 
-      // Print timestamp
+      var curMonth = selectedDateStr.slice(0, 7);
+      var histMonthEl = document.getElementById('historyMonthInput');
+      if (histMonthEl) histMonthEl.value = curMonth;
+
+      var histStartEl = document.getElementById('historyStartDate');
+      var histEndEl = document.getElementById('historyEndDate');
+      if (histStartEl) histStartEl.value = curMonth + '-01';
+      if (histEndEl) histEndEl.value = selectedDateStr;
+
+      var monthlyMonthEl = document.getElementById('monthlyMonthInput');
+      if (monthlyMonthEl) monthlyMonthEl.value = curMonth;
+
       var nowStr = today.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       document.getElementById('printTimestamp').innerText = nowStr;
 
       populateSidebarFilters();
+      updateFilterVisibility('daily');
       loadData();
 
       setTimeout(function () {
@@ -967,6 +1029,7 @@
       // Departments
       var depts = window.PPCH_CONFIG.departments;
       var deptSel = document.getElementById('sidebarDeptSelect');
+      deptSel.innerHTML = '<option value="all">ทุกแผนก (All Departments)</option>';
       depts.forEach(function (d) {
         deptSel.innerHTML += '<option value="' + d.id + '">' + d.name + '</option>';
       });
@@ -974,27 +1037,45 @@
       // Categories
       var forms = window.PPCH_CONFIG.forms;
       var catSel = document.getElementById('sidebarCategorySelect');
+      catSel.innerHTML = '<option value="all">ทุกประเภท (8 หมวด)</option>';
       forms.forEach(function (f) {
         catSel.innerHTML += '<option value="' + f.id + '">' + f.shortName + ' (' + f.category + ')</option>';
       });
     }
 
+    // Lazy load: Initial load uses local storage immediately (0ms wait)
     function loadData() {
-      // 1. Instantly load from local storage (0ms perceived time)
       allEquipment = window.PPCH_STORE.getEquipment() || [];
       allEvaluations = window.PPCH_STORE.getAll().evaluations || [];
 
-      // 2. Render UI IMMEDIATELY! Displays cards & table instantly without waiting
       renderCurrentView();
 
-      // Hide page loader right away
       var loader = document.getElementById('pageLoader');
       if (loader) loader.classList.add('hidden');
 
-      // 3. Silently sync with Google Sheet in background
+      updateSyncStatus('ระบบพร้อมใช้งาน • ประวัติโหลด On-Demand เมื่อเปิดดู', '#10b981');
+    }
+
+    // On-Demand History Fetch: Triggered ONLY when user navigates to History tab
+    function fetchHistoryOnDemand() {
+      if (historyLoading) return;
+      historyLoading = true;
+
+      var tbody = document.getElementById('historyTableBody');
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 36px 16px; color: #1e40af;">' +
+          '<div class="spinner" style="margin: 0 auto 12px; width: 30px; height: 30px; border-width: 3px; border-color: #2563eb; border-top-color: transparent;"></div>' +
+          '<div style="font-weight: 700; font-size: 13.5px;">กำลังโหลดประวัติการตรวจเช็คเครื่องมือแพทย์ทั้งหมดจาก Google Sheet...</div>' +
+          '<div style="font-size: 11.5px; color: #64748b; margin-top: 4px;">ระบบกำลังดึงข้อมูลประวัติย้อนหลังแบบ On-Demand</div>' +
+          '</td></tr>';
+      }
+      document.getElementById('filteredCountBadge').innerText = 'กำลังโหลดประวัติ...';
+      updateSyncStatus('กำลังโหลดประวัติจาก Google Sheet...', '#f59e0b');
+
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
-        updateSyncStatus('กำลังซิงค์กับ Google Sheet...', '#f59e0b');
         window.PPCH_API.fetchEvaluations(function (res) {
+          historyLoading = false;
+          historyLoaded = true;
           if (res && res.success && Array.isArray(res.data)) {
             var evalMap = {};
             (window.PPCH_STORE.getAll().evaluations || []).forEach(function (ev) {
@@ -1009,14 +1090,19 @@
               return (b.evaluatedAt || '').localeCompare(a.evaluatedAt || '');
             });
 
-            updateSyncStatus('ซิงค์กับ Google Sheet สำเร็จ (' + new Date().toLocaleTimeString('th-TH') + ')', '#10b981');
-            renderCurrentView();
+            updateSyncStatus('โหลดประวัติจาก Google Sheet สำเร็จ (' + new Date().toLocaleTimeString('th-TH') + ')', '#10b981');
+            showToast('ดึงข้อมูลประวัติย้อนหลังสำเร็จ ' + allEvaluations.length + ' รายการ', 'success');
           } else {
-            updateSyncStatus('ใช้งานข้อมูลระบบ (โหมด Offline / Cache)', '#64748b');
+            updateSyncStatus('ใช้งานข้อมูลท้องถิ่น (ไม่สามารถเชื่อมต่อ Sheet ได้)', '#64748b');
+            showToast('ใช้ข้อมูลประวัติในอุปกรณ์ (Offline/Cache)', 'warning');
           }
+          renderHistoryView();
         });
       } else {
+        historyLoading = false;
+        historyLoaded = true;
         updateSyncStatus('โหมดจัดเก็บข้อมูลท้องถิ่น', '#64748b');
+        renderHistoryView();
       }
     }
 
@@ -1030,9 +1116,21 @@
         btn.style.opacity = '1';
         btn.disabled = false;
         if (res && res.success && Array.isArray(res.data)) {
-          allEvaluations = res.data;
+          historyLoaded = true;
+          var evalMap = {};
+          (window.PPCH_STORE.getAll().evaluations || []).forEach(function (ev) {
+            if (ev.id) evalMap[ev.id] = ev;
+          });
+          res.data.forEach(function (ev) {
+            if (ev.id) evalMap[ev.id] = ev;
+          });
+          allEvaluations = Object.values(evalMap);
+          allEvaluations.sort(function (a, b) {
+            return (b.evaluatedAt || '').localeCompare(a.evaluatedAt || '');
+          });
           renderCurrentView();
           showToast('ดึงข้อมูลล่าสุดจาก Google Sheet สำเร็จ!', 'success');
+          updateSyncStatus('ซิงค์กับ Google Sheet สำเร็จ (' + new Date().toLocaleTimeString('th-TH') + ')', '#10b981');
         } else {
           showToast('ไม่สามารถเชื่อมต่อ Google Apps Script ได้ในขณะนี้', 'error');
         }
@@ -1044,14 +1142,43 @@
       document.getElementById('syncStatusText').innerText = text;
     }
 
+    // Toggle contextual filter groups in sidebar
+    function updateFilterVisibility(mode) {
+      var dailyDateGrp = document.getElementById('filterDailyDateGroup');
+      if (dailyDateGrp) dailyDateGrp.style.display = (mode === 'daily') ? 'block' : 'none';
+
+      var histRangeGrp = document.getElementById('filterHistoryRangeGroup');
+      if (histRangeGrp) histRangeGrp.style.display = (mode === 'history') ? 'block' : 'none';
+
+      var monthlyMonthGrp = document.getElementById('filterMonthlyMonthGroup');
+      if (monthlyMonthGrp) monthlyMonthGrp.style.display = (mode === 'monthly') ? 'block' : 'none';
+
+      var deptGrp = document.getElementById('filterDeptGroup');
+      if (deptGrp) deptGrp.style.display = 'block';
+
+      var catGrp = document.getElementById('filterCategoryGroup');
+      if (catGrp) catGrp.style.display = 'block';
+
+      var dailyStatusGrp = document.getElementById('filterDailyStatusGroup');
+      if (dailyStatusGrp) dailyStatusGrp.style.display = (mode === 'daily') ? 'block' : 'none';
+
+      var histStatusGrp = document.getElementById('filterHistoryStatusGroup');
+      if (histStatusGrp) histStatusGrp.style.display = (mode === 'history') ? 'block' : 'none';
+
+      var searchGrp = document.getElementById('filterSearchGroup');
+      if (searchGrp) searchGrp.style.display = 'block';
+
+      var kpiBlock = document.querySelector('.kpi-row');
+      if (kpiBlock) kpiBlock.style.display = (mode === 'daily') ? '' : 'none';
+    }
+
     function setViewMode(mode) {
       currentViewMode = mode;
       ['daily', 'monthly', 'history'].forEach(function (m) {
         var btn = document.getElementById('navView_' + m);
-        if (m === mode) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
+        if (btn) {
+          if (m === mode) btn.classList.add('active');
+          else btn.classList.remove('active');
         }
       });
 
@@ -1059,7 +1186,17 @@
       document.getElementById('viewMonthlyContainer').style.display = (mode === 'monthly') ? 'block' : 'none';
       document.getElementById('viewHistoryContainer').style.display = (mode === 'history') ? 'block' : 'none';
 
-      renderCurrentView();
+      updateFilterVisibility(mode);
+
+      if (mode === 'history') {
+        if (!historyLoaded) {
+          fetchHistoryOnDemand();
+        } else {
+          renderHistoryView();
+        }
+      } else {
+        renderCurrentView();
+      }
     }
 
     function onDateChanged() {
@@ -1088,20 +1225,72 @@
       var btnT = document.getElementById('btnDateToday');
       var btnY = document.getElementById('btnDateYesterday');
 
-      btnT.className = 'quick-date-btn' + (selectedDateStr === todayStr ? ' active' : '');
-      btnY.className = 'quick-date-btn' + (selectedDateStr === yestStr ? ' active' : '');
+      if (btnT) btnT.className = 'quick-date-btn' + (selectedDateStr === todayStr ? ' active' : '');
+      if (btnY) btnY.className = 'quick-date-btn' + (selectedDateStr === yestStr ? ' active' : '');
+    }
+
+    function setHistoryRangeMode(mode) {
+      historyRangeMode = mode;
+      var btnMonth = document.getElementById('btnHistModeMonth');
+      var btnRange = document.getElementById('btnHistModeRange');
+      var btnAll = document.getElementById('btnHistModeAll');
+
+      if (btnMonth) btnMonth.className = 'quick-date-btn' + (mode === 'month' ? ' active' : '');
+      if (btnRange) btnRange.className = 'quick-date-btn' + (mode === 'range' ? ' active' : '');
+      if (btnAll) btnAll.className = 'quick-date-btn' + (mode === 'all' ? ' active' : '');
+
+      var monthBlock = document.getElementById('histMonthSubBlock');
+      var rangeBlock = document.getElementById('histRangeSubBlock');
+
+      if (monthBlock) monthBlock.style.display = (mode === 'month') ? 'block' : 'none';
+      if (rangeBlock) rangeBlock.style.display = (mode === 'range') ? 'flex' : 'none';
+
+      renderHistoryView();
+    }
+
+    function onHistoryFilterChanged() {
+      renderHistoryView();
+    }
+
+    function onMonthlyMonthChanged() {
+      var val = document.getElementById('monthlyMonthInput').value;
+      if (val) {
+        selectedDateStr = val + '-01';
+        renderMonthlyView();
+      }
     }
 
     function resetFilters() {
       document.getElementById('sidebarDeptSelect').value = 'all';
       document.getElementById('sidebarCategorySelect').value = 'all';
-      document.getElementById('sidebarStatusSelect').value = 'all';
       document.getElementById('sidebarSearchInput').value = '';
-      setQuickDate('today');
+
+      if (currentViewMode === 'daily') {
+        document.getElementById('sidebarStatusSelect').value = 'all';
+        setQuickDate('today');
+      } else if (currentViewMode === 'history') {
+        var histRes = document.getElementById('historyResultSelect');
+        if (histRes) histRes.value = 'all';
+        var curMonth = getLocalDateString(new Date()).slice(0, 7);
+        var histMonth = document.getElementById('historyMonthInput');
+        if (histMonth) histMonth.value = curMonth;
+        setHistoryRangeMode('month');
+      } else if (currentViewMode === 'monthly') {
+        var curMonth = getLocalDateString(new Date()).slice(0, 7);
+        var mInput = document.getElementById('monthlyMonthInput');
+        if (mInput) mInput.value = curMonth;
+        renderMonthlyView();
+      } else {
+        renderCurrentView();
+      }
     }
 
     function applyFilters() {
-      renderCurrentView();
+      if (currentViewMode === 'history') {
+        renderHistoryView();
+      } else {
+        renderCurrentView();
+      }
     }
 
     function renderCurrentView() {
@@ -1304,27 +1493,86 @@
     // ==================== 2. HISTORY VIEW (ALL PAST LOGS) ====================
     function renderHistoryView() {
       document.getElementById('mainHeadingTitle').innerText = 'ประวัติการตรวจเช็คเครื่องมือแพทย์ทั้งหมด';
-      document.getElementById('mainHeadingDate').innerText = 'บันทึกประวัติการตรวจเช็คย้อนหลังทั้งหมดในระบบ';
 
       var deptFilter = document.getElementById('sidebarDeptSelect').value;
-      var statusFilter = document.getElementById('sidebarStatusSelect').value;
+      var catFilter = document.getElementById('sidebarCategorySelect').value;
+      var resFilter = document.getElementById('historyResultSelect') ? document.getElementById('historyResultSelect').value : 'all';
       var search = (document.getElementById('sidebarSearchInput').value || '').trim().toLowerCase();
 
+      var dateSubtitle = '';
+      var histMonthVal = (document.getElementById('historyMonthInput') ? document.getElementById('historyMonthInput').value : '') || selectedDateStr.slice(0, 7);
+      var startDateVal = document.getElementById('historyStartDate') ? document.getElementById('historyStartDate').value : '';
+      var endDateVal = document.getElementById('historyEndDate') ? document.getElementById('historyEndDate').value : '';
+
+      if (historyRangeMode === 'month') {
+        if (histMonthVal) {
+          var parts = histMonthVal.split('-');
+          var ymDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
+          var monthThai = ymDate.toLocaleDateString('th-TH', { month: 'long', year: 'numeric' });
+          dateSubtitle = 'ประจำเดือน ' + monthThai;
+        } else {
+          dateSubtitle = 'ตามเดือนที่เลือก';
+        }
+      } else if (historyRangeMode === 'range') {
+        if (startDateVal && endDateVal) {
+          dateSubtitle = 'ช่วงวันที่ ' + startDateVal + ' ถึง ' + endDateVal;
+        } else if (startDateVal) {
+          dateSubtitle = 'ตั้งแต่วันที่ ' + startDateVal;
+        } else if (endDateVal) {
+          dateSubtitle = 'ถึงวันที่ ' + endDateVal;
+        } else {
+          dateSubtitle = 'ช่วงวันที่ระบุ';
+        }
+      } else {
+        dateSubtitle = 'ประวัติทั้งหมดตลอดกาล';
+      }
+
+      document.getElementById('mainHeadingDate').innerText = 'บันทึกประวัติการตรวจเช็คย้อนหลัง (' + dateSubtitle + ')';
+
       var filtered = allEvaluations.filter(function (item) {
+        var evDate = parseEvalDateStr(item.evaluatedAt);
+
+        // 1. Date Filter
+        if (historyRangeMode === 'month') {
+          if (histMonthVal && (!evDate || evDate.indexOf(histMonthVal) !== 0)) return false;
+        } else if (historyRangeMode === 'range') {
+          if (startDateVal && evDate && evDate < startDateVal) return false;
+          if (endDateVal && evDate && evDate > endDateVal) return false;
+          if (!startDateVal && !endDateVal) {
+            // unrestricted
+          } else if (!evDate) {
+            return false;
+          }
+        }
+        // 'all' mode: unrestricted
+
+        // 2. Department
         if (deptFilter !== 'all' && item.department !== deptFilter) return false;
-        if (statusFilter === 'ready' && item.result !== 'normal') return false;
-        if (statusFilter === 'abnormal' && item.result !== 'abnormal') return false;
+
+        // 3. Category
+        if (catFilter !== 'all') {
+          var eq = window.PPCH_STORE.getEquipmentById(item.deviceId || item.deviceAsset);
+          var fId = item.formId || (eq ? eq.formId : '');
+          if (fId !== catFilter) return false;
+        }
+
+        // 4. Result filter
+        if (resFilter === 'ready' && item.result !== 'normal') return false;
+        if (resFilter === 'abnormal' && item.result !== 'abnormal') return false;
+
+        // 5. Search
         if (search) {
-          var mAsset = (item.deviceAsset || '').toLowerCase().indexOf(search) !== -1;
+          var mAsset = (item.deviceAsset || item.deviceId || '').toLowerCase().indexOf(search) !== -1;
           var mName = (item.deviceName || '').toLowerCase().indexOf(search) !== -1;
           var mBy = (item.evaluatedBy || '').toLowerCase().indexOf(search) !== -1;
-          if (!mAsset && !mName && !mBy) return false;
+          var mNote = (item.abnormalNote || '').toLowerCase().indexOf(search) !== -1;
+          if (!mAsset && !mName && !mBy && !mNote) return false;
         }
         return true;
       });
 
       document.getElementById('filteredCountBadge').innerText = 'แสดง ' + filtered.length + ' รายการ';
-      document.getElementById('historyLogCount').innerText = 'รวม ' + filtered.length + ' รายการ';
+      document.getElementById('historyLogCount').innerText = 'รวม ' + filtered.length + ' รายการ (' + dateSubtitle + ')';
 
       var tbody = document.getElementById('historyTableBody');
       var emptyState = document.getElementById('emptyState');
@@ -1357,7 +1605,7 @@
           '<td>' + findings + '</td>' +
           '<td>' + (ev.evaluatedBy || '-') + '</td>' +
           '<td class="btn-action-col no-print" style="text-align: center;">' +
-            '<button onclick="openDetailSlip(\'' + ev.id + '\', \'' + ev.deviceId + '\')" class="btn-ppch btn-ppch-outline" style="padding: 4px 8px; font-size: 11px;">ดูสลิป</button>' +
+            '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + (ev.deviceId || '') + '\')" class="btn-ppch btn-ppch-outline" style="padding: 4px 8px; font-size: 11px;">ดูสลิป</button>' +
           '</td>' +
         '</tr>';
       });
@@ -1367,18 +1615,37 @@
 
     // ==================== 3. MONTHLY VIEW ====================
     function renderMonthlyView() {
-      var dObj = new Date(selectedDateStr + 'T00:00:00');
+      var mVal = (document.getElementById('monthlyMonthInput') ? document.getElementById('monthlyMonthInput').value : '') || selectedDateStr.slice(0, 7);
+      var parts = mVal.split('-');
+      var dObj = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
       var monthYearThai = dObj.toLocaleDateString('th-TH', { month: 'long', year: 'numeric' });
-      var monthPrefix = selectedDateStr.slice(0, 7); // YYYY-MM
+      var monthPrefix = mVal;
 
       document.getElementById('mainHeadingTitle').innerText = 'รายงานสรุปผลการประเมินประจำเดือน';
       document.getElementById('mainHeadingDate').innerText = 'ประจำเดือน' + monthYearThai;
       document.getElementById('monthlySubtitle').innerText = 'รอบประจำเดือน: ' + monthYearThai;
 
+      var deptFilter = document.getElementById('sidebarDeptSelect').value;
+      var catFilter = document.getElementById('sidebarCategorySelect').value;
+      var search = (document.getElementById('sidebarSearchInput').value || '').trim().toLowerCase();
+
+      var filteredEq = allEquipment.filter(function (eq) {
+        if (deptFilter !== 'all' && eq.currentDept !== deptFilter) return false;
+        if (catFilter !== 'all' && eq.formId !== catFilter) return false;
+        if (search) {
+          var mAsset = (eq.assetCode || '').toLowerCase().indexOf(search) !== -1;
+          var mName = (eq.name || '').toLowerCase().indexOf(search) !== -1;
+          if (!mAsset && !mName) return false;
+        }
+        return true;
+      });
+
+      document.getElementById('filteredCountBadge').innerText = 'แสดง ' + filteredEq.length + ' เครื่อง';
+
       var tbody = document.getElementById('monthlyTableBody');
       var html = '';
 
-      allEquipment.forEach(function (eq) {
+      filteredEq.forEach(function (eq) {
         var evalsInMonth = allEvaluations.filter(function (ev) {
           return (ev.deviceId === eq.id || ev.deviceAsset === eq.assetCode) && ev.evaluatedAt && parseEvalDateStr(ev.evaluatedAt).indexOf(monthPrefix) === 0;
         });
