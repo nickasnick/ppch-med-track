@@ -178,6 +178,21 @@
               return tr.id && tr.id.indexOf('TR-20260929') === -1;
             });
           }
+
+          // Ensure any new equipment from PPCH_CONFIG.initialEquipment is merged
+          var existingEqMap = {};
+          parsed.equipment.forEach(function (eq) { existingEqMap[eq.id] = true; });
+          var hasNewEq = false;
+          (window.PPCH_CONFIG.initialEquipment || []).forEach(function (eq) {
+            if (!existingEqMap[eq.id]) {
+              parsed.equipment.push(eq);
+              hasNewEq = true;
+            }
+          });
+          if (hasNewEq) {
+            saveData(parsed);
+          }
+
           return parsed;
         }
       }

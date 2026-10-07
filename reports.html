@@ -1233,7 +1233,7 @@
               ประเภทเครื่องมือแพทย์
             </label>
             <select id="sidebarCategorySelect" onchange="applyFilters()">
-              <option value="all">ทุกประเภท (8 หมวด)</option>
+              <option value="all">ทุกประเภท</option>
             </select>
           </div>
 
@@ -1700,7 +1700,15 @@
       'vital_signs': { icon: 'monitor_heart', color: '#059669', bg: '#dcfce7' },
       'anesthesia': { icon: 'healing', color: '#7c3aed', bg: '#f5f3ff' },
       'ekg_monitor': { icon: 'show_chart', color: '#0d9488', bg: '#ccfbf1' },
-      'ultrasound': { icon: 'radar', color: '#4f46e5', bg: '#e0e7ff' }
+      'ultrasound': { icon: 'radar', color: '#4f46e5', bg: '#e0e7ff' },
+      'lab_ups': { icon: 'battery_charging_full', color: '#b45309', bg: '#fef3c7' },
+      'lab_cobas_h232': { icon: 'biotech', color: '#2563eb', bg: '#eff6ff' },
+      'lab_room_temp': { icon: 'thermostat', color: '#0d9488', bg: '#ccfbf1' },
+      'lab_freezer': { icon: 'ac_unit', color: '#0284c7', bg: '#e0f2fe' },
+      'lab_waterbath': { icon: 'water', color: '#059669', bg: '#dcfce7' },
+      'lab_refrigerator': { icon: 'kitchen', color: '#4f46e5', bg: '#e0e7ff' },
+      'lab_bsc': { icon: 'shield', color: '#7c3aed', bg: '#f5f3ff' },
+      'lab_mindray_bs600m': { icon: 'science', color: '#e11d48', bg: '#ffe4e6' }
     };
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -1792,7 +1800,7 @@
       // Categories
       var forms = window.PPCH_CONFIG.forms;
       var catSel = document.getElementById('sidebarCategorySelect');
-      catSel.innerHTML = '<option value="all">ทุกประเภท (8 หมวด)</option>';
+      catSel.innerHTML = '<option value="all">ทุกประเภท (' + forms.length + ' หมวด)</option>';
       forms.forEach(function (f) {
         catSel.innerHTML += '<option value="' + f.id + '">' + f.shortName + ' (' + f.category + ')</option>';
       });
