@@ -181,144 +181,134 @@ window.PPCH_CONFIG = {
       ]
     },
     // ===== แผนกห้องปฏิบัติการทางการแพทย์ (Laboratory Forms) =====
+    // 1. FM-PPCH-LAB-019 แบบบันทึกปฏิบัติทดสอบเครื่องสำรองไฟห้องปฏิบัติการ UPS.xlsx
     {
       id: 'lab_ups',
-      name: 'แบบบันทึกปฏิบัติการทดสอบเครื่องสำรองไฟห้องปฏิบัติการ (FM-PPCH-LAB-019)',
+      name: 'แบบบันทึกปฏิบัติทดสอบ เครื่องสำรองไฟห้องปฏิบัติการ UPS (FM-PPCH-LAB-019)',
       shortName: 'UPS Lab (สำรองไฟ)',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'quarterly',
-      frequencyLabel: 'ประเมินทุก 3 เดือน (Quarterly)',
+      frequencyLabel: 'ทดสอบทุก 3 เดือน (Quarterly)',
       icon: 'zap',
       badgeColor: 'amber',
-      description: 'ทดสอบการจ่ายไฟสำรองของเครื่องสำรองไฟห้องปฏิบัติการ (UPS) โดยการดึงปลั๊กออกทุก 3 เดือน',
+      description: 'ทดสอบโดยการดึงปลั๊กออก ทดสอบทุก 3 เดือน',
       items: [
-        'ทดสอบการตัดเข้าสู่ระบบไฟสำรองโดยการดึงปลั๊กไฟหลักออก (Discharge / Unplug Test)',
-        'เครื่องสำรองไฟ (UPS) จ่ายกระแสไฟฟ้าต่อเนื่องให้อุปกรณ์ห้องปฏิบัติการได้ตามปกติ ไม่ดับ',
-        'สัญญาณเสียงแจ้งเตือนและไฟสถานะของ UPS ทำงานปกติ',
-        'เสียบปลั๊กไฟหลักกลับเข้าเต้ารับ เครื่องกลับสู่สถานะประจุไฟฟ้า (Charging Mode) ปกติ'
+        'ทดสอบโดยการดึงปลั๊กออก ทดสอบทุก 3 เดือน (ผลการทดสอบ: ผ่าน)'
       ]
     },
+    // 2. FM-PPCH-LAB-049 Maintenance Checklist เครื่อง Cobas h232.docx
     {
       id: 'lab_cobas_h232',
       name: 'Maintenance Checklist เครื่อง Cobas h232 (FM-PPCH-LAB-049)',
       shortName: 'Cobas h232 (POC)',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'daily',
-      frequencyLabel: 'ประเมินทุกวัน (Daily)',
+      frequencyLabel: 'ประจำวัน (Daily Maintenance)',
       icon: 'activity',
       badgeColor: 'blue',
-      description: 'ตรวจเช็คและบำรุงรักษาเครื่องวิเคราะห์ Cardiac Marker เครื่อง Cobas h232 รายวัน',
+      description: 'Daily Maintenance: Instrument cleaning',
       items: [
-        'ทำความสะอาดตัวเครื่องภายนอก (Instrument cleaning)',
-        'สภาพสายไฟ ปลั๊กไฟ และแท่นชาร์จไฟ/ระดับแบตเตอรี่พร้อมใช้งาน',
-        'ช่องใส่แผ่นทดสอบ (Test Strip Tray / Optical Guide) สะอาด ปราศจากคราบสิ่งสกปรกหรือน้ำยาตกค้าง',
-        'หน้าจอแสดงผลและระบบตรวจวัดแสง (Optical System) ทำงานปกติ พร้อมใช้งาน'
+        'Instrument cleaning (ทำความสะอาดตัวเครื่อง)'
       ]
     },
+    // 3. FM-PPCH-LAB-057 แบบบันทึกอุณหภูมิห้องปฏิบัติการ.docx
     {
       id: 'lab_room_temp',
-      name: 'แบบบันทึกอุณหภูมิและความชื้นห้องปฏิบัติการ (FM-PPCH-LAB-057)',
+      name: 'แบบบันทึกอุณหภูมิห้องปฏิบัติการ (FM-PPCH-LAB-057)',
       shortName: 'อุณหภูมิห้อง Lab',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'daily',
-      frequencyLabel: 'ประเมินทุกวัน (วันละ 3 ครั้ง)',
+      frequencyLabel: 'ประจำวัน (วันละ 3 ครั้ง)',
       icon: 'thermometer',
       badgeColor: 'teal',
-      description: 'ควบคุมอุณหภูมิห้องให้อยู่ในช่วง 24 - 28 °C และความชื้นสัมพัทธ์ไม่เกิน 60% วันละ 3 ครั้ง',
+      description: 'ห้องที่จัดเก็บน้ำยา/ห้องตรวจวิเคราะห์ ควบคุมอุณหภูมิ 24-28 °C และควบคุมความชื้นไม่เกิน 60 % (วันละ 3 ครั้ง)',
       items: [
-        'อุณหภูมิห้องควบคุมอยู่ในช่วง 24 - 28 องศาเซลเซียส',
-        'ความชื้นสัมพัทธ์ในห้องควบคุมไม่เกิน 60 %',
-        'เทอร์โมมิเตอร์/ไฮโกรมิเตอร์สะอาด อ่านค่าได้ชัดเจนและแม่นยำ',
-        'ประตูห้องปิดสนิท เครื่องปรับอากาศทำงานปกติ ไม่มีความชื้นรั่วซึม'
+        'ควบคุมอุณหภูมิ ในช่วง 24-28 องศาเซลเซียส',
+        'ควบคุมความชื้นไม่เกิน 60 %'
       ]
     },
+    // 4. FM-PPCH-LAB-060 แบบบันทึกอุณหภูมิตู้แช่แข็ง.docx
     {
       id: 'lab_freezer',
       name: 'แบบบันทึกอุณหภูมิตู้แช่แข็ง (FM-PPCH-LAB-060)',
       shortName: 'ตู้แช่แข็ง (≤ -18°C)',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'daily',
-      frequencyLabel: 'ประเมินทุกวัน (วันละ 3 ครั้ง)',
+      frequencyLabel: 'ประจำวัน (วันละ 3 ครั้ง)',
       icon: 'snowflake',
       badgeColor: 'cyan',
-      description: 'ควบคุมอุณหภูมิตู้แช่แข็งไม่เกิน -18 องศาเซลเซียส (≤ -18 °C) วันละ 3 ครั้ง',
+      description: 'ตู้แช่แข็งกำหนดให้ควบคุมอุณหภูมิไม่เกิน -18 องศาเซลเซียส (วันละ 3 ครั้ง)',
       items: [
-        'อุณหภูมิตู้แช่แข็งควบคุมไม่เกิน -18 องศาเซลเซียส (≤ -18 °C)',
-        'ขอบยางประตูแนบสนิท ประตูปิดสนิท ไม่มีการเปิดค้างไว้',
-        'เทอร์โมมิเตอร์หรือจอแสดงผลดิจิทัลอ่านค่าได้ชัดเจน',
-        'สภาพภายในตู้เป็นระเบียบ ไม่มีน้ำแข็งเกาะหนาผิดปกติ'
+        'ควบคุมอุณหภูมิไม่เกิน -18 องศาเซลเซียส'
       ]
     },
+    // 5. FM-PPCH-LAB-061 แบบบันทึกอุณหภูมิ Waterbath.docx
     {
       id: 'lab_waterbath',
       name: 'แบบบันทึกอุณหภูมิ Waterbath (FM-PPCH-LAB-061)',
       shortName: 'Water bath (37°C)',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'daily',
-      frequencyLabel: 'ประเมินทุกวัน (วันละ 3 ครั้ง)',
+      frequencyLabel: 'ประจำวัน (วันละ 3 ครั้ง)',
       icon: 'droplet',
       badgeColor: 'emerald',
-      description: 'ควบคุมอุณหภูมิน้ำใน Water bath อยู่ที่ 37 องศาเซลเซียส (37 ± 1 °C) วันละ 3 ครั้ง',
+      description: 'อุณหภูมิห้อง Waterbath กำหนดให้ควบคุมอุณหภูมิอยู่ที่ 37 องศาเซลเซียส (วันละ 3 ครั้ง)',
       items: [
-        'อุณหภูมิน้ำใน Water bath ควบคุมอยู่ที่ 37 องศาเซลเซียส (37 ± 1 °C)',
-        'ระดับน้ำในอ่างอยู่ในเกณฑ์ที่กำหนด (ไม่แห้งและไม่ล้นเกินขอบ)',
-        'น้ำในอ่างสะอาด ปราศจากตะกรัน สนิม หรือการปนเปื้อน',
-        'ฝาครอบปิดสนิท และระบบทำความร้อน (Heater/Thermostat) ควบคุมอุณหภูมิสม่ำเสมอ'
+        'ควบคุมอุณหภูมิอยู่ที่ 37 องศาเซลเซียส'
       ]
     },
+    // 6. FM-PPCH-LAB-062 แบบบันทึกอุณหภูมิตู้เย็น.docx
     {
       id: 'lab_refrigerator',
-      name: 'แบบบันทึกอุณหภูมิตู้เย็นเก็บน้ำยาและสิ่งส่งตรวจ (FM-PPCH-LAB-062)',
+      name: 'แบบบันทึกอุณหภูมิตู้เย็นเก็บน้ำยา (FM-PPCH-LAB-062)',
       shortName: 'ตู้เย็นเก็บน้ำยา (2-8°C)',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'daily',
-      frequencyLabel: 'ประเมินทุกวัน (วันละ 3 ครั้ง)',
+      frequencyLabel: 'ประจำวัน (วันละ 3 ครั้ง)',
       icon: 'box',
       badgeColor: 'indigo',
-      description: 'ควบคุมอุณหภูมิตู้เย็นเก็บน้ำยาและสิ่งส่งตรวจให้อยู่ในช่วง 2 - 8 องศาเซลเซียส วันละ 3 ครั้ง',
+      description: 'ตู้เย็นที่จัดเก็บน้ำยากำหนดให้ควบคุมอุณหภูมิ ในช่วง 2-8 องศาเซลเซียส (วันละ 3 ครั้ง)',
       items: [
-        'อุณหภูมิตู้เย็นควบคุมอยู่ในช่วง 2 - 8 องศาเซลเซียส',
-        'ขอบยางประตูแนบสนิท ประตูปิดสนิท ไม่มีการเปิดค้างไว้',
-        'เทอร์โมมิเตอร์แสดงค่าชัดเจน แม่นยำ',
-        'การจัดเก็บแยกสัดส่วนชัดเจน เป็นระเบียบ ไม่ขวางทางลมหมุนเวียน'
+        'ควบคุมอุณหภูมิ ในช่วง 2-8 องศาเซลเซียส'
       ]
     },
+    // 7. FM-PPCH-LAB-091 BSC Class II (MICRO TECH).docx
     {
       id: 'lab_bsc',
-      name: 'แบบตรวจเช็คและบำรุงรักษาตู้ BSC Class II (FM-PPCH-LAB-091)',
-      shortName: 'ตู้ BSC Class II',
+      name: 'Maintenance BSC Class II (MICRO TECH) (FM-PPCH-LAB-091)',
+      shortName: 'BSC Class II',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'daily',
-      frequencyLabel: 'ประเมินประจำวัน & สัปดาห์',
+      frequencyLabel: 'ประจำวัน & สัปดาห์',
       icon: 'shield',
       badgeColor: 'purple',
-      description: 'ตรวจเช็คแรงดัน Water Column, เปิด Blower 15 น., ฆ่าเชื้อ UVC/UVH, และทำ Smoke Test สัปดาห์ละครั้ง',
+      description: 'Maintenance BSC Class II (MICRO TECH) โรงพยาบาลพิษณุเวช พิจิตร รายวันและรายสัปดาห์',
       items: [
-        '[ก่อนใช้งาน] ตรวจสอบ Volume of water column อยู่ที่ 0.5 ไม่เกิน 1',
-        '[หลังใช้งาน] เปิด Blower ทิ้งไว้ 15 นาที และเช็ดทำความสะอาดด้วย 70% Alcohol ภายในตู้',
-        '[หลังใช้งาน] เปิดหลอด UVC ฆ่าเชื้อประมาณ 30 นาที และเปิด UVH เป็นเวลา 2 ชั่วโมง',
-        '[ประจำสัปดาห์] ทำความสะอาดภายใน-ภายนอกตู้ด้วย Disinfectant Towelettes',
-        '[ประจำสัปดาห์] ทำ Smoke Test (ควันธูป 7-8 ดอก 5 นาที) ตรวจสอบการไหลเวียนของอากาศทำงานปกติ',
-        'ตรวจสอบความสมบูรณ์ของแผ่นกรอง HEPA Filter (พร้อมสำหรับการสอบเทียบทุก 12 เดือน)'
+        '[รายวัน ก่อนใช้งาน] Check Volume - of water column อยู่ควรที่ 0.5 ไม่เกิน 1',
+        '[รายวัน หลังใช้งาน] 1. หลังใช้งานควรเปิด Brower ทิ้งไว้ 15 นาทีและเช็ดทำความสะอาดด้วย 70 % alc. ภายในตู้',
+        '[รายวัน หลังใช้งาน] 2. เปิด UVC. เพื่อฆ่าเชื้อประมาณ 30 นาที + เปิด UVH เป็นเวลา 2 ชั่วโมง',
+        '[รายวัน หลังใช้งาน] 3. HEPA Filter ไม่สามารถทำความสะอาดได้เอง ควรทำการสอบเทียบ (Calibration) ทุก 12 เดือน**',
+        '[รายสัปดาห์] 1. ทำความสะอาดภายใน-นอกตู้ด้วย Disinfectant Towerlettes',
+        '[รายสัปดาห์] 2. ทำ Smoke Test เพื่อเช็คว่าการไหลเวียนของอากาศยังทำงานได้ดี'
       ]
     },
+    // 8. FM-PPCH-LAB-099 ใบรายการตรวจสอบความพร้อมใช้ และบํารุงรักษาเครื่องมือหรืออุปกรณ์ เครื่อง BS600M.pdf
     {
       id: 'lab_mindray_bs600m',
-      name: 'แบบตรวจเช็คและบำรุงรักษาเครื่อง Chemistry Mindray (FM-PPCH-LAB-099)',
+      name: 'เครื่อง Chemistry Mindray (BS600M) (FM-PPCH-LAB-099)',
       shortName: 'Chemistry Mindray',
       category: 'แผนกห้องปฏิบัติการ (Lab)',
       frequency: 'daily',
-      frequencyLabel: 'ประเมินประจำวัน & สัปดาห์',
+      frequencyLabel: 'ประจำวัน & สัปดาห์ (D/W)',
       icon: 'cpu',
       badgeColor: 'rose',
-      description: 'ตรวจเช็คความพร้อมใช้และบำรุงรักษาเครื่องตรวจวิเคราะห์ทางเคมีคลินิกอัตโนมัติ Chemistry Mindray BS-600M',
+      description: 'ใบรายการตรวจสอบความพร้อมใช้ และบำรุงรักษาเครื่องมือหรืออุปกรณ์ เครื่อง BS600M',
       items: [
-        '[Daily (1)] ตรวจสอบ Concentrated Wash Solution มีเพียงพอต่อการใช้งาน',
-        '[Daily (2)] ล้างทำความสะอาด Clean Electrode Tubes (Automatic by analyzer - กรณีมี Electrolyte)',
-        '[Daily (3)] ทำความสะอาด Special wash probe / Mixer (Automatic by analyzer)',
-        '[Weekly (1)] ทำความสะอาดภายนอก Clean Sample Probe / Reagent Probe / Mixer Exterior',
-        '[Weekly (2)] ทำ Weekly Special Wash & Cuvette Check (Automatic by analyzer)',
-        'ตรวจสอบระบบจ่ายน้ำปราศจากไอออน ระบบน้ำทิ้ง และตัวเครื่องพร้อมวิเคราะห์ 100% ไม่มี Error Code'
+        '[Daily (1)] Check Conc. Wash Solution (เกณฑ์: มีเพียงพอต่อการใช้งาน)',
+        '[Daily (2)] Clean Electrode Tubes (Automatic by analyzer *ทำในกรณีมี Electrolyte*)',
+        '[Daily (3)] Special wash probe/Mixer (Automatic by analyzer)',
+        '[Weekly (1)] Clean sample probe/reagent probe/Mixer Exterior (Automatic by analyzer)',
+        '[Weekly (2)] Weekly Special Wash & Cuvette check (Automatic by analyzer)'
       ]
     }
   ],

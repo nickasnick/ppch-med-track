@@ -479,9 +479,11 @@
         var abnormalCount = matchingEq.filter(function (eq) { return eq.status === 'abnormal'; }).length;
         var colorClass = squircleColorMap[f.id] || (f.frequency === 'daily' ? 'blue' : 'purple');
 
-        var freqBadge = f.frequency === 'daily'
-          ? '<span class="glass-pill" style="font-size: 10.5px; background: rgba(239, 246, 255, 0.9); color: #1d4ed8; border-color: rgba(191, 219, 254, 0.85);"><span class="material-icons-round" style="font-size: 12px;">today</span>ทุกวัน (Daily)</span>'
-          : '<span class="glass-pill" style="font-size: 10.5px; background: rgba(245, 243, 255, 0.9); color: #7c3aed; border-color: rgba(221, 214, 254, 0.85);"><span class="material-icons-round" style="font-size: 12px;">event_note</span>รายเดือน (Monthly)</span>';
+        var freqBadge = f.frequency === 'quarterly'
+          ? '<span class="glass-pill" style="font-size: 10.5px; background: rgba(254, 243, 199, 0.9); color: #b45309; border-color: rgba(253, 230, 138, 0.85);"><span class="material-icons-round" style="font-size: 12px;">event_repeat</span>ทุก 3 เดือน</span>'
+          : (f.frequency === 'daily'
+            ? '<span class="glass-pill" style="font-size: 10.5px; background: rgba(239, 246, 255, 0.9); color: #1d4ed8; border-color: rgba(191, 219, 254, 0.85);"><span class="material-icons-round" style="font-size: 12px;">today</span>ทุกวัน (Daily)</span>'
+            : '<span class="glass-pill" style="font-size: 10.5px; background: rgba(245, 243, 255, 0.9); color: #7c3aed; border-color: rgba(221, 214, 254, 0.85);"><span class="material-icons-round" style="font-size: 12px;">event_note</span>รายเดือน (Monthly)</span>');
 
         var alertBadge = abnormalCount > 0
           ? '<span class="status-badge-glass abnormal" style="font-size: 10.5px; margin-left: 6px;"><span class="material-icons-round" style="font-size: 12px;">warning</span>ผิดปกติ ' + abnormalCount + '</span>'

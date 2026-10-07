@@ -2249,9 +2249,11 @@
         var meta = categoryMeta[f.id] || { icon: 'medical_services', color: '#1e40af', bg: '#eff6ff' };
         var eqCount = allEquipment.filter(function (eq) { return eq.formId === f.id; }).length;
 
-        var freqBadge = f.frequency === 'daily'
-          ? '<span class="badge-pill glass-pill daily"><span class="material-icons-round" style="font-size: 13px;">schedule</span> ทุกวัน (Daily)</span>'
-          : '<span class="badge-pill glass-pill monthly"><span class="material-icons-round" style="font-size: 13px;">event</span> ประจำเดือน (Monthly)</span>';
+        var freqBadge = f.frequency === 'quarterly'
+          ? '<span class="badge-pill glass-pill" style="color: #b45309; background: #fef3c7; border: 1px solid #fde68a;"><span class="material-icons-round" style="font-size: 13px;">event_repeat</span> ทุก 3 เดือน</span>'
+          : (f.frequency === 'daily'
+            ? '<span class="badge-pill glass-pill daily"><span class="material-icons-round" style="font-size: 13px;">schedule</span> ทุกวัน (Daily)</span>'
+            : '<span class="badge-pill glass-pill monthly"><span class="material-icons-round" style="font-size: 13px;">event</span> ประจำเดือน (Monthly)</span>');
 
         html += '<div class="form-item-card glass-card">' +
           '<div>' +

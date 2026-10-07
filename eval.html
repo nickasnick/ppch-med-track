@@ -469,12 +469,18 @@
       document.getElementById('categoryLabel').innerText = currentForm.category;
 
       var freqBadge = document.getElementById('badgeFrequency');
-      if (currentForm.frequency === 'daily') {
+      if (currentForm.frequency === 'quarterly') {
+        freqBadge.className = 'glass-pill';
+        freqBadge.style.color = '#b45309';
+        freqBadge.style.borderColor = 'rgba(253, 230, 138, 0.85)';
+        freqBadge.style.background = 'rgba(254, 243, 199, 0.9)';
+        freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">event_repeat</span> ทุก 3 เดือน (Quarterly)';
+      } else if (currentForm.frequency === 'daily') {
         freqBadge.className = 'glass-pill';
         freqBadge.style.color = '#b91c1c';
         freqBadge.style.borderColor = 'rgba(254, 202, 202, 0.85)';
         freqBadge.style.background = 'rgba(254, 242, 242, 0.9)';
-        freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">schedule</span> ทุกวัน (Daily)';
+        freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">schedule</span> ' + (currentForm.frequencyLabel || 'ทุกวัน (Daily)');
       } else {
         freqBadge.className = 'glass-pill';
         freqBadge.style.color = '#1e40af';
@@ -489,20 +495,33 @@
       var now = new Date();
       document.getElementById('evalDateDisplay').value = now.toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
 
-      // Check Battery UPS inspection rule: Mandatory on 1st and 16th of each month
-      var day = now.getDate();
-      var is1stOr16th = (day === 1 || day === 16);
-      var urlBatteryCheck = (urlParams.get('batteryCheck') === '1');
-
-      var shouldEnforceBattery = is1stOr16th || urlBatteryCheck;
-      var simChk = document.getElementById('simulateBatteryCycleCheckbox');
-      if (simChk) simChk.checked = shouldEnforceBattery;
-      setBatteryMandatoryMode(shouldEnforceBattery);
+      updateBatteryCardVisibility();
 
       setTimeout(function () {
         var loader = document.getElementById('pageLoader');
         if (loader) loader.classList.add('hidden');
       }, 350);
+    }
+
+    function updateBatteryCardVisibility() {
+      var isLab = (currentForm && currentForm.id && currentForm.id.indexOf('lab_') === 0) || 
+                  (selectedDevice && (selectedDevice.homeDept === 'LAB' || selectedDevice.currentDept === 'LAB'));
+      var batteryCard = document.getElementById('upsBatteryCard');
+
+      if (isLab) {
+        if (batteryCard) batteryCard.style.display = 'none';
+        isBatteryCheckActive = false;
+        lockChecklist(false);
+      } else {
+        if (batteryCard) batteryCard.style.display = 'block';
+        var day = new Date().getDate();
+        var is1stOr16th = (day === 1 || day === 16);
+        var urlBatteryCheck = (urlParams.get('batteryCheck') === '1');
+        var simChk = document.getElementById('simulateBatteryCycleCheckbox');
+        var shouldEnforceBattery = (simChk && simChk.checked) || is1stOr16th || urlBatteryCheck;
+        if (simChk) simChk.checked = shouldEnforceBattery;
+        setBatteryMandatoryMode(shouldEnforceBattery);
+      }
     }
 
     function setBatteryMandatoryMode(isMandatory) {
@@ -668,6 +687,7 @@
         locText.innerText = 'เลือกเครื่องเพื่อดูสถานที่และผู้ถือครอง';
         badge.style.display = 'none';
         selectedDevice = null;
+        updateBatteryCardVisibility();
         return;
       }
 
@@ -685,6 +705,7 @@
           badge.innerText = 'พร้อมใช้งาน';
         }
       }
+      updateBatteryCardVisibility();
     }
 
     function renderChecklist(items) {
@@ -787,8 +808,11 @@
         return;
       }
 
-      // Check mandatory battery UPS rule (Mandatory on 1st and 16th, or test mode)
-      if (isBatteryCheckActive && batteryRuntimeMinutes <= 0) {
+      var isLab = (currentForm && currentForm.id && currentForm.id.indexOf('lab_') === 0) || 
+                  (selectedDevice && (selectedDevice.homeDept === 'LAB' || selectedDevice.currentDept === 'LAB'));
+
+      // Check mandatory battery UPS rule (Mandatory on 1st and 16th, or test mode) - ONLY for non-Lab devices
+      if (!isLab && isBatteryCheckActive && batteryRuntimeMinutes <= 0) {
         showToast('กรุณาระบุระยะเวลาการใช้งานจริงของแบตเตอรี่ UPS (ชั่วโมง : นาที) ก่อนทำการประเมินค่ะ', 'error');
         var bHours = document.getElementById('batteryHoursInput');
         if (bHours) {
@@ -824,7 +848,7 @@
           var m = parseInt(document.getElementById('batteryMinutesInput').value, 10) || 0;
           var upsBatteryData = null;
 
-          if (isBatteryCheckActive || batteryRuntimeMinutes > 0) {
+          if (!isLab && (isBatteryCheckActive || batteryRuntimeMinutes > 0)) {
             var cycleDateStr = (new Date().getDate() === 16 ? '16' : '1');
             upsBatteryData = {
               tested: true,
