@@ -13,697 +13,716 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css?v=20261005_1315">
   <style>
-    /* ==================== PPCH MODERN TACTILE GLASSMORHPISM DESIGN SYSTEM ==================== */
+    /* ==================== PRINC GROUP HEALTHCARE ENTERPRISE THEME ==================== */
     :root {
-      --bg-slate: var(--glass-canvas);
-      --surface-white: var(--glass-surface-base);
-      --border-subtle: var(--glass-border-subtle);
-      --border-card: var(--glass-border-frosted);
-      --navy-950: #090d16;
-      --navy-900: #0f172a;
-      --navy-800: #1e293b;
-      --blue-600: #2563eb;
-      --blue-700: #1d4ed8;
-      --blue-800: var(--glass-primary);
-      --teal-600: var(--glass-teal);
-      --emerald-600: var(--glass-success);
-      --crimson-600: var(--glass-danger);
-      --amber-600: var(--glass-warning);
-      --shadow-ambient: var(--glass-shadow-ambient);
-      --shadow-card: var(--glass-shadow-card);
-      --shadow-hover: var(--glass-shadow-hover);
+      --princ-blue: #0284c7;
+      --princ-navy: #1e3a8a;
+      --princ-primary: #1e40af;
+      --princ-bg: #f8fafc;
+      --princ-surface: #ffffff;
+      --princ-border: #e2e8f0;
+      --princ-border-subtle: #f1f5f9;
+      --princ-text-main: #0f172a;
+      --princ-text-muted: #475569;
+      --princ-text-sub: #64748b;
+      --princ-amber: #d97706;
+      --princ-gold: #f59e0b;
+      --princ-green: #059669;
+      --princ-red: #dc2626;
+      --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Inter', monospace;
     }
 
-    /* Layout & Canvas */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background-color: var(--glass-canvas);
-      background-image: var(--glass-canvas-mesh);
-      background-attachment: fixed;
-      color: var(--glass-text-main);
+      background-color: var(--princ-bg);
+      color: var(--princ-text-main);
       font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    .workstation-layout {
+    /* Overall Layout Wrapper */
+    .princ-app-wrapper {
       display: flex;
+      flex-direction: column;
       min-height: 100vh;
-      background-color: var(--glass-canvas);
-      background-image: var(--glass-canvas-mesh);
-      background-attachment: fixed;
     }
 
-    /* Left Sidebar (Tactical Dark Slate Command Rail) */
-    .app-sidebar {
-      width: 255px;
-      min-width: 255px;
-      background: linear-gradient(180deg, #090d16 0%, #0f172a 55%, #1e293b 100%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      flex-direction: column;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      z-index: 50;
-      box-shadow: 4px 0 28px rgba(0, 0, 0, 0.28);
-      transition: width 0.25s var(--ease-tactile);
-      color: #f1f5f9;
-    }
-
-    .sidebar-header {
-      padding: 16px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: transparent;
-      color: #ffffff;
-    }
-
-    .sidebar-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: #ffffff;
-    }
-
-    .brand-logo-squircle {
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      border-radius: 11px;
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.35), inset 0 1px 0 rgba(255, 255, 255, 1);
-      flex-shrink: 0;
-      transition: transform 0.2s var(--ease-tactile);
-    }
-
-    .sidebar-brand:hover .brand-logo-squircle {
-      transform: scale(1.04);
-    }
-
-    .sidebar-body {
-      padding: 14px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      flex: 1;
-    }
-
-    .sidebar-section-title {
-      font-size: 10.5px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: #94a3b8;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Nav View Buttons (Tactile Command Rail Pills) */
-    .view-nav-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .view-nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 9.5px 12px;
-      border-radius: 10px;
-      border: 1px solid transparent;
-      background: transparent;
-      color: #cbd5e1;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.2s var(--ease-tactile);
-      width: 100%;
-      position: relative;
-    }
-
-    .view-nav-btn:hover {
-      background: rgba(255, 255, 255, 0.07);
-      color: #ffffff;
-      transform: translateX(2px);
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .view-nav-btn.active {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.22) !important;
-      color: #ffffff !important;
-      font-weight: 700;
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-      transform: translateX(3px);
-    }
-
-    .view-nav-btn.active .material-icons-round {
-      color: #ffffff !important;
-    }
-
-    .view-nav-btn .material-icons-round {
-      font-size: 19px;
-      color: #94a3b8;
-      transition: color 0.2s ease;
-    }
-
-    /* Filter Controls in Sidebar (Frosted Glass Surfaces) */
-    /* Filter Controls in Sidebar (Dark Frosted Inputs) */
-    .filter-item {
-      margin-bottom: 12px;
-    }
-
-    .filter-item label {
-      display: block;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #94a3b8;
-      margin-bottom: 5px;
-    }
-
-    .filter-item input,
-    .filter-item select {
-      width: 100%;
-      padding: 8px 11px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 500;
-      color: #f8fafc;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
-      outline: none;
-      transition: all 0.2s var(--ease-tactile);
-      font-family: inherit;
-    }
-
-    .filter-item input:hover,
-    .filter-item select:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-      background: rgba(15, 23, 42, 0.85);
-    }
-
-    .filter-item input:focus,
-    .filter-item select:focus {
-      background: #0f172a;
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.4);
-    }
-
-    .quick-date-group {
-      display: flex;
-      gap: 5px;
-      margin-top: 6px;
-    }
-
-    .quick-date-btn {
-      flex: 1;
-      padding: 6px 8px;
-      font-size: 11px;
-      font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 7px;
-      cursor: pointer;
-      color: #cbd5e1;
-      backdrop-filter: blur(8px);
-      transition: all 0.18s var(--ease-tactile);
-      text-align: center;
-    }
-
-    .quick-date-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-    }
-
-    .quick-date-btn.active {
-      background: #2563eb;
-      border-color: transparent;
-      color: #ffffff;
-      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
-      font-weight: 700;
-    }
-
-    /* Sidebar Action Tools */
-    .sidebar-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .sidebar-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 9px 12px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      border: 1px solid transparent;
-      transition: all 0.2s var(--ease-tactile);
-    }
-
-    .sidebar-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .sidebar-btn:active {
-      transform: scale(0.98);
-    }
-
-    .sidebar-btn-primary {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
-    }
-    .sidebar-btn-primary:hover {
-      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
-      color: #ffffff;
-    }
-
-    .sidebar-btn-teal {
-      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
-    }
-    .sidebar-btn-teal:hover {
-      background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
-      box-shadow: 0 6px 18px rgba(13, 148, 136, 0.45);
-      color: #ffffff;
-    }
-
-    .sidebar-btn-outline {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
-    }
-    .sidebar-btn-outline:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    }
-
-    .sidebar-status-pill {
-      padding: 9px 12px;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 9px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 11.5px;
-      color: #94a3b8;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Main Workstation View */
-    .workstation-main {
-      flex: 1;
-      padding: 22px 28px;
-      overflow-y: auto;
-      max-width: calc(100% - 255px);
-    }
-
-    @media (max-width: 1024px) {
-      .workstation-layout {
-        flex-direction: column;
-      }
-      .app-sidebar {
-        width: 100%;
-        min-width: 100%;
-        height: auto;
-        position: relative;
-      }
-      .workstation-main {
-        max-width: 100%;
-        padding: 16px;
-      }
-    }
-
-    /* ==================== MODERN TACTILE HERO HEADER ==================== */
-    .command-hero-clean {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(248, 250, 252, 0.80) 100%);
-      backdrop-filter: var(--glass-blur-md);
-      -webkit-backdrop-filter: var(--glass-blur-md);
-      border: 1px solid var(--glass-border-light);
-      border-radius: var(--radius-xl);
-      padding: 18px 24px;
-      margin-bottom: 20px;
+    /* ==================== 1. TOP HEADER (WHITE, 56PX, FULL WIDTH) ==================== */
+    .princ-topbar {
+      height: 56px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--princ-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      box-shadow: var(--glass-shadow-card);
-      flex-wrap: wrap;
-      transition: var(--transition-tactile);
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }
 
-    .command-hero-left {
+    .princ-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .princ-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    /* 9-dot motif matching PRINC logo */
+    .princ-logo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 5px);
+      grid-template-rows: repeat(3, 5px);
+      gap: 3px;
+      padding: 2px;
+    }
+    .princ-logo-grid span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #0284c7;
+    }
+    .princ-logo-grid span:nth-child(2),
+    .princ-logo-grid span:nth-child(4),
+    .princ-logo-grid span:nth-child(5),
+    .princ-logo-grid span:nth-child(6),
+    .princ-logo-grid span:nth-child(8) {
+      background: #1e40af;
+    }
+
+    .princ-logo-titles {
       display: flex;
       flex-direction: column;
-      gap: 4px;
     }
-
-    .command-meta-bar {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #047857;
-      background: rgba(236, 253, 245, 0.88);
-      border: 1px solid rgba(167, 243, 208, 0.85);
-      padding: 3px 10px;
-      border-radius: var(--radius-full);
-      box-shadow: 0 1px 3px rgba(5, 150, 105, 0.08);
-      align-self: flex-start;
-    }
-
-    .live-pulse-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      animation: pulseDotLive 2s infinite;
-      display: inline-block;
-    }
-
-    @keyframes pulseDotLive {
-      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-
-    .command-title-clean {
-      font-size: 20px;
+    .princ-logo-main {
+      font-size: 15px;
       font-weight: 800;
-      color: var(--glass-text-main);
-      line-height: 1.25;
-      letter-spacing: -0.015em;
-      margin: 0;
+      color: #0f172a;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+    .princ-logo-sub {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 1px;
     }
 
-    .command-subtitle-clean {
+    .princ-divider-v {
+      width: 1px;
+      height: 22px;
+      background: var(--princ-border);
+    }
+
+    .princ-app-subtitle {
       font-size: 12.5px;
-      color: var(--glass-text-muted);
-      margin: 0;
+      font-weight: 600;
+      color: #475569;
     }
 
-    .command-hero-right {
+    .princ-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--princ-text-muted);
+    }
+    .princ-bread-parent {
+      color: #64748b;
+    }
+    .princ-bread-arrow {
+      color: #94a3b8;
+      font-size: 12px;
+    }
+    .princ-bread-active {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Topbar Right Controls */
+    .princ-topbar-right {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .stat-badge-clean {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      background: rgba(255, 255, 255, 0.90);
-      backdrop-filter: var(--glass-blur-sm);
-      border: 1px solid var(--glass-border-light);
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--glass-primary);
-      box-shadow: var(--glass-shadow-ambient);
-    }
-
-    .btn-print-clean {
+    .princ-scope-chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 16px;
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.90);
-      color: var(--glass-primary);
-      border: 1px solid rgba(30, 64, 175, 0.35);
-      backdrop-filter: var(--glass-blur-sm);
-      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
-      transition: var(--transition-tactile);
-      white-space: nowrap;
-    }
-
-    .btn-print-clean:hover {
-      background: var(--glass-primary);
-      color: #ffffff;
-      border-color: var(--glass-primary);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
-    }
-
-    /* ==================== EXECUTIVE SINGLE-ROW KPI STRIP ==================== */
-    .kpi-strip,
-    .kpi-strip.kpi-grid-5 {
-      display: grid !important;
-      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-      gap: 12px !important;
-      margin-bottom: 16px !important;
-      width: 100% !important;
-    }
-
-    @media (max-width: 992px) {
-      .kpi-strip,
-      .kpi-strip.kpi-grid-5 {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .kpi-strip,
-      .kpi-strip.kpi-grid-5 {
-        grid-template-columns: 1fr !important;
-      }
-    }
-
-    .kpi-mini-card {
-      background: #ffffff;
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.03);
-      transition: transform 0.22s var(--ease-tactile),
-                  box-shadow 0.22s var(--ease-tactile),
-                  border-color 0.22s var(--ease-tactile);
-      min-width: 0;
-    }
-
-    .kpi-mini-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-      border-color: #cbd5e1;
-    }
-
-    .kpi-mini-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
-    }
-
-    .icon-blue { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
-    .icon-teal { background: #f0fdfa; color: #0d9488; border: 1px solid #99f6e4; }
-    .icon-green { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-    .icon-red { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-    .icon-amber { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
-
-    .kpi-mini-num {
-      font-size: 21px;
-      font-weight: 800;
-      line-height: 1.15;
-      color: #0f172a;
-      letter-spacing: -0.02em;
-      font-family: 'Inter', var(--font-sans);
-    }
-
-    .kpi-mini-lbl {
-      font-size: 11px;
-      font-weight: 600;
-      color: #64748b;
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* ==================== INTERACTIVE WARD QUICK SWITCHER BAR ==================== */
-    .ward-filter-bar {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      overflow-x: auto;
-      padding: 2px 2px 14px 2px;
-      margin-bottom: 6px;
-      scrollbar-width: thin;
-    }
-
-    .ward-pill-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6.5px 14px;
+      padding: 5px 12px;
+      border: 1px solid var(--princ-border);
       border-radius: 9999px;
+      background: #ffffff;
       font-size: 12px;
       font-weight: 600;
-      color: #475569;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
+      color: #334155;
       cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-      user-select: none;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }
-
-    .ward-pill-btn:hover {
+    .princ-scope-chip:hover {
       background: #f8fafc;
       border-color: #cbd5e1;
-      color: #0f172a;
-      transform: translateY(-1px);
     }
 
-    .ward-pill-btn.active {
-      background: #0f172a !important;
-      color: #ffffff !important;
-      border-color: #0f172a !important;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.22) !important;
+    .princ-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border: 1px solid #bae6fd;
+      background: #f0f9ff;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #0369a1;
     }
 
-    .ward-badge-dot {
+    .princ-pulse-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      flex-shrink: 0;
+      background: #0284c7;
+      animation: pulsePrincLive 2s infinite;
+    }
+    @keyframes pulsePrincLive {
+      0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(2, 132, 199, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
     }
 
+    /* User Profile Chip (Golden-Yellow Avatar like screenshot) */
+    .princ-user-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 12px 3px 4px;
+      border: 1px solid #fef08a;
+      background: #fefce8;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .princ-user-chip:hover {
+      background: #fef9c3;
+      border-color: #fde047;
+    }
+
+    .princ-avatar-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #eab308;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .princ-user-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .princ-user-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #854d0e;
+      line-height: 1.1;
+    }
+    .princ-user-role {
+      font-size: 10px;
+      color: #a16207;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    /* ==================== 2. BODY LAYOUT (SIDEBAR + MAIN) ==================== */
+    .princ-layout-body {
+      display: flex;
+      flex: 1;
+    }
+
+    /* Left Sidebar (Solid White, 240px) */
+    .princ-sidebar {
+      width: 240px;
+      min-width: 240px;
+      background: #ffffff;
+      border-right: 1px solid var(--princ-border);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      padding: 12px 10px;
+      z-index: 40;
+    }
+
+    /* Top Switcher Card (Matches screenshot's "ตั้งค่าระบบ Admin Portal ⇅") */
+    .princ-portal-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 1px solid var(--princ-border);
+      border-radius: 8px;
+      background: #f8fafc;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .princ-portal-box:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .princ-portal-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .princ-portal-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .princ-portal-sub {
+      font-size: 10.5px;
+      color: #64748b;
+    }
+    .princ-portal-caret {
+      margin-left: auto;
+      color: #94a3b8;
+      font-size: 16px;
+    }
+
+    /* Nav Item Sections */
+    .princ-nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 12px;
+    }
+    .princ-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 10px 4px 6px;
+    }
+
+    .princ-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7.5px 10px;
+      border-radius: 6px;
+      color: #475569;
+      font-size: 12.5px;
+      font-weight: 500;
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .princ-nav-link:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .princ-nav-link.active {
+      background: #eff6ff !important;
+      color: #1d4ed8 !important;
+      font-weight: 700 !important;
+    }
+    .princ-nav-link .material-icons-round {
+      font-size: 18px;
+      color: #64748b;
+    }
+    .princ-nav-link.active .material-icons-round {
+      color: #1d4ed8;
+    }
+
+    /* Filter Items in Sidebar */
+    .princ-filter-item {
+      margin-bottom: 10px;
+    }
+    .princ-filter-item label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+    .princ-input {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid var(--princ-border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #0f172a;
+      background: #ffffff;
+      outline: none;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .princ-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+    }
+
+    .princ-quick-date-row {
+      display: flex;
+      gap: 4px;
+      margin-top: 5px;
+    }
+    .princ-quick-date-btn {
+      flex: 1;
+      padding: 4px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--princ-border);
+      background: #f8fafc;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #475569;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .princ-quick-date-btn:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .princ-quick-date-btn.active {
+      background: #1e40af;
+      border-color: #1e40af;
+      color: #ffffff;
+    }
+
+    /* Sidebar Footer Pinned */
+    .princ-sidebar-bottom {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid var(--princ-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .princ-footer-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: 700;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .princ-footer-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .princ-footer-sub {
+      font-size: 10px;
+      color: #64748b;
+    }
+    .princ-footer-exit {
+      margin-left: auto;
+      color: #94a3b8;
+      text-decoration: none;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+    }
+    .princ-footer-exit:hover {
+      color: #ef4444;
+      background: #fef2f2;
+    }
+
+    /* ==================== 3. MAIN WORKSTATION CONTENT ==================== */
+    .princ-main-content {
+      flex: 1;
+      padding: 16px 22px;
+      overflow-y: auto;
+      max-width: calc(100% - 240px);
+    }
+
+    /* Multi-Tiered Action Toolbar (Matches screenshot's white rounded buttons) */
+    .princ-toolbar-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .princ-toolbar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .princ-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.15s;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+    }
+    .princ-btn:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+      color: #111827;
+    }
+    .princ-btn-primary {
+      background: #1e40af;
+      border-color: #1e40af;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .princ-btn-primary:hover {
+      background: #1d4ed8;
+      color: #ffffff;
+    }
+
+    .princ-toolbar-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-right: 2px;
+    }
+
+    /* Notice / Helper Banner (Matches screenshot's light gray banner) */
+    .princ-notice-banner {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #4b5563;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    /* Single-Row Executive KPI Strip */
+    .princ-kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+    @media (max-width: 1024px) {
+      .princ-kpi-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 640px) {
+      .princ-kpi-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .princ-kpi-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+      transition: all 0.15s;
+    }
+    .princ-kpi-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 3px 8px rgba(15, 23, 42, 0.05);
+    }
+
+    .princ-kpi-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .icon-blue { background: #eff6ff; color: #2563eb; }
+    .icon-teal { background: #f0fdfa; color: #0d9488; }
+    .icon-green { background: #ecfdf5; color: #059669; }
+    .icon-red { background: #fef2f2; color: #dc2626; }
+    .icon-amber { background: #fffbeb; color: #d97706; }
+
+    .princ-kpi-num {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.1;
+      font-family: var(--font-mono);
+    }
+    .princ-kpi-lbl {
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* Ward Switcher Pills */
+    .ward-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 2px 0 10px 0;
+      margin-bottom: 6px;
+    }
+    .ward-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .ward-pill-btn:hover {
+      background: #f8fafc;
+      border-color: #9ca3af;
+      color: #0f172a;
+    }
+    .ward-pill-btn.active {
+      background: #1e40af !important;
+      color: #ffffff !important;
+      border-color: #1e40af !important;
+    }
+    .ward-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
     .dot-er { background: #ef4444; }
     .dot-icu { background: #3b82f6; }
     .dot-or { background: #10b981; }
 
-    /* Category Header Mini Progress Bar */
-    .cat-progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .cat-progress-track {
-      width: 90px;
-      height: 6px;
-      background: #e2e8f0;
-      border-radius: 9999px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .cat-progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #10b981, #059669);
-      border-radius: 9999px;
-      transition: width 0.3s ease;
-    }
-
-    /* ==================== CATEGORY CARDS & DATA TABLES ==================== */
+    /* Category Cards & Tables (PRINC High-Density Grid) */
     .category-card {
-      background: var(--glass-surface-base);
-      backdrop-filter: var(--glass-blur-md);
-      -webkit-backdrop-filter: var(--glass-blur-md);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--glass-border-light);
-      box-shadow: var(--glass-shadow-card);
-      margin-bottom: 22px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 16px;
       overflow: hidden;
-      page-break-inside: auto;
-      transition: var(--transition-tactile);
-    }
-
-    .category-card:hover {
-      box-shadow: var(--glass-shadow-hover);
-      border-color: rgba(147, 197, 253, 0.85);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
     .category-header {
-      padding: 14px 20px;
-      background: rgba(248, 250, 252, 0.82);
-      backdrop-filter: var(--glass-blur-sm);
-      -webkit-backdrop-filter: var(--glass-blur-sm);
-      border-bottom: 1px solid var(--glass-border-frosted);
+      padding: 10px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
 
     .category-title-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .category-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-md);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 18px;
       flex-shrink: 0;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
     }
 
     .category-name {
-      font-size: 15.5px;
+      font-size: 14px;
       font-weight: 700;
-      color: var(--glass-text-main);
-      line-height: 1.25;
-      letter-spacing: -0.01em;
+      color: #0f172a;
+      line-height: 1.2;
     }
-
     .category-desc {
-      font-size: 11.5px;
-      color: var(--glass-text-dim);
-      margin-top: 2px;
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 1px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
+    }
+
+    .cat-progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cat-progress-track {
+      width: 80px;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .cat-progress-fill {
+      height: 100%;
+      background: #059669;
+      border-radius: 9999px;
     }
 
     /* Device Table */
@@ -712,257 +731,103 @@
       border-collapse: collapse;
       text-align: left;
     }
-
     .device-table th {
-      background: rgba(248, 250, 252, 0.85);
-      color: var(--glass-text-muted);
-      font-size: 11px;
+      background: #ffffff;
+      color: #475569;
+      font-size: 11.5px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 12px 18px;
-      border-bottom: 1px solid var(--glass-border-frosted);
+      padding: 10px 14px;
+      border-bottom: 1px solid #e2e8f0;
       white-space: nowrap;
     }
-
     .device-table td {
-      padding: 13px 18px;
-      border-bottom: 1px solid rgba(226, 232, 240, 0.65);
-      font-size: 13px;
+      padding: 11px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 12.5px;
+      color: #1e293b;
       vertical-align: middle;
-      transition: background 0.15s ease;
+      transition: background 0.1s;
     }
-
     .device-table tbody tr:hover td {
-      background: rgba(241, 245, 249, 0.70);
+      background: #f8fafc;
     }
-
-    .device-table tbody tr.row-abnormal td {
-      background: rgba(254, 242, 242, 0.65);
-    }
-
-    .device-table tbody tr.row-abnormal:hover td {
-      background: rgba(254, 226, 226, 0.85);
-    }
-
     .device-table tbody tr:last-child td {
       border-bottom: none;
     }
 
-    /* Clean Monospace Asset Code */
     .asset-code-clean {
       display: inline-block;
       font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      color: #1e293b;
-      background: rgba(241, 245, 249, 0.85);
-      border: 1px solid rgba(203, 213, 225, 0.8);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 2px 6px;
+      border-radius: 4px;
     }
 
-    /* Status Badges - The Single Focal Pill */
     .badge-status {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 4px 11px;
-      border-radius: var(--radius-full);
-      font-size: 11.5px;
-      font-weight: 700;
-      white-space: nowrap;
-      backdrop-filter: var(--glass-blur-sm);
-      -webkit-backdrop-filter: var(--glass-blur-sm);
-      transition: var(--transition-tactile);
-    }
-
-    .badge-status-ready {
-      background: rgba(236, 253, 245, 0.92);
-      color: #047857;
-      border: 1px solid rgba(167, 243, 208, 0.85);
-      box-shadow: 0 1px 4px rgba(5, 150, 105, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-    }
-
-    .badge-status-abnormal {
-      background: rgba(254, 242, 242, 0.95);
-      color: #b91c1c;
-      border: 1px solid rgba(254, 202, 202, 0.90);
-      box-shadow: 0 0 10px rgba(220, 38, 38, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-      animation: pulseBadgeAlert 1.6s infinite ease-in-out;
-    }
-
-    .badge-status-pending {
-      background: rgba(255, 251, 235, 0.92);
-      color: #b45309;
-      border: 1px solid rgba(253, 230, 138, 0.85);
-      box-shadow: 0 1px 4px rgba(217, 119, 6, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-    }
-
-    .pulse-dot-red {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #dc2626;
-      animation: pulseDotRed 1.5s infinite;
-      display: inline-block;
-    }
-
-    @keyframes pulseDotRed {
-      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-      70% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-    }
-
-    /* Table Action Buttons */
-    .btn-table-slip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 5px 12px;
-      border-radius: var(--radius-sm);
       font-size: 12px;
       font-weight: 600;
-      color: var(--glass-text-main);
-      background: rgba(255, 255, 255, 0.90);
-      border: 1px solid var(--glass-border-frosted);
-      cursor: pointer;
       white-space: nowrap;
-      transition: all 0.18s var(--ease-tactile);
-      box-shadow: var(--glass-shadow-ambient);
     }
-
-    .btn-table-slip:hover {
-      background: #ffffff;
-      border-color: #94a3b8;
-      color: var(--glass-primary);
-      transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
-    }
+    .badge-status-ready { color: #059669; }
+    .badge-status-pending { color: #d97706; }
+    .badge-status-abnormal { color: #dc2626; }
 
     .btn-table-check {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 5px 14px;
-      border-radius: var(--radius-sm);
       font-size: 12px;
-      font-weight: 700;
-      color: #ffffff;
-      background: var(--glass-primary-gradient);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      cursor: pointer;
+      font-weight: 600;
+      color: #2563eb;
       text-decoration: none;
-      white-space: nowrap;
-      transition: all 0.18s var(--ease-tactile);
-      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
-
     .btn-table-check:hover {
-      background: linear-gradient(135deg, #172554 0%, #1d4ed8 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);
-      color: #ffffff;
+      text-decoration: underline;
     }
 
-    /* Forms 8 Cards Grid (For View 2) */
+    .btn-table-slip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #334155;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+    }
+    .btn-table-slip:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    /* Forms Grid */
     .forms-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
     }
 
-    /* Print Only */
-    .print-only {
-      display: none;
-    }
-
+    /* Print View */
+    .print-only { display: none; }
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 10mm 10mm 12mm 10mm;
-      }
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-      }
-      .no-print,
-      .app-sidebar,
-      .css-loader-overlay,
-      .modal-overlay,
-      .btn-action-col {
+      body { background: #ffffff !important; }
+      .no-print, .princ-topbar, .princ-sidebar, .css-loader-overlay, .modal-overlay, .btn-action-col {
         display: none !important;
       }
-      .workstation-layout {
-        display: block !important;
-      }
-      .workstation-main {
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      .category-card {
-        box-shadow: none !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 6px !important;
-        margin-bottom: 12px !important;
-        page-break-inside: auto !important;
-        break-inside: auto !important;
-      }
-      .category-header {
-        background: #f8fafc !important;
-        border-bottom: 1px solid #cbd5e1 !important;
-        padding: 6px 12px !important;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-      }
-      .device-table {
-        width: 100% !important;
-        border-collapse: collapse !important;
-        page-break-inside: auto !important;
-      }
-      .device-table thead {
-        display: table-header-group !important;
-      }
-      .device-table tr {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-      .device-table th,
-      .device-table td {
-        padding: 5px 6px !important;
-        font-size: 10px !important;
-        line-height: 1.3 !important;
-      }
-      .device-table th {
-        background: #f1f5f9 !important;
-        color: #0f172a !important;
-        border-bottom: 1.5px solid #64748b !important;
-      }
-      .device-table td {
-        border-bottom: 1px solid #e2e8f0 !important;
-      }
-      .asset-code-clean {
-        background: transparent !important;
-        border: 1px solid #cbd5e1 !important;
-        padding: 1px 4px !important;
-        font-size: 9.5px !important;
-        white-space: nowrap !important;
-      }
-      .badge-status {
-        padding: 2px 6px !important;
-        font-size: 9px !important;
-        white-space: nowrap !important;
-      }
-      .print-only {
-        display: block !important;
-        margin-bottom: 10px !important;
-        border-bottom: 2px solid #0f172a !important;
-        padding-bottom: 8px !important;
-      }
+      .princ-layout-body { display: block !important; }
+      .princ-main-content { max-width: 100% !important; padding: 0 !important; }
+      .print-only { display: block !important; margin-bottom: 12px; }
+      .category-card { box-shadow: none !important; border: 1px solid #cbd5e1 !important; margin-bottom: 10px !important; }
     }
   </style>
 </head>
@@ -974,396 +839,426 @@
       <div class="cross-v"></div>
       <div class="cross-h"></div>
     </div>
-    <div class="loader-title">โรงพยาบาลพิษณุเวช • PPCH Medical Hub</div>
+    <div class="loader-title">PRINC GROUP • โรงพยาบาลพิษณุเวช</div>
     <div class="loader-subtitle">กำลังโหลดหน้าควบคุมและรายงานเครื่องมือแพทย์...</div>
   </div>
 
-  <div class="workstation-layout">
+  <div class="princ-app-wrapper">
 
-    <!-- ==================== LEFT SIDEBAR ==================== -->
-    <aside class="app-sidebar glass-panel no-print" id="appSidebar">
-      <!-- Sidebar Header -->
-      <div class="sidebar-header">
-        <a href="desktop.html" class="sidebar-brand">
-          <div class="brand-logo-squircle">
-            <img src="logo.png" alt="PPCH" style="max-height: 100%; max-width: 100%; object-fit: contain;" onerror="this.src='https://placehold.co/80x40/ffffff/1e40af?text=PPCH'">
+    <!-- ==================== 1. TOP HEADER BAR (PRINC GROUP STYLE) ==================== -->
+    <header class="princ-topbar no-print">
+      <div class="princ-topbar-left">
+        <!-- Logo: 9-dot motif + PRINC GROUP -->
+        <a href="desktop.html" class="princ-logo-group">
+          <div class="princ-logo-grid">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
           </div>
-          <div>
-            <h1 style="font-size: 15px; font-weight: 800; line-height: 1.2;">PPCH Medical Hub</h1>
-            <p style="font-size: 11px; opacity: 0.85; margin-top: 2px;">ศูนย์ควบคุมและรายงานความพร้อม</p>
+          <div class="princ-logo-titles">
+            <span class="princ-logo-main">PRINC GROUP</span>
+            <span class="princ-logo-sub">โรงพยาบาลพิษณุเวช</span>
           </div>
         </a>
+
+        <div class="princ-divider-v"></div>
+        <div class="princ-app-subtitle">Biomedical Equipment Track</div>
+
+        <div class="princ-divider-v"></div>
+        <!-- Breadcrumbs like "ตั้งค่าระบบ > assignment" in screenshot -->
+        <div class="princ-breadcrumbs">
+          <span class="princ-bread-parent">ระบบเครื่องมือแพทย์</span>
+          <span class="princ-bread-arrow">&gt;</span>
+          <span class="princ-bread-active" id="princBreadCurrent">รายงานความพร้อมใช้ประจำวัน (Daily Inspection)</span>
+        </div>
       </div>
 
-      <!-- Sidebar Body -->
-      <div class="sidebar-body">
-
-        <!-- 1. Navigation View Modes -->
-        <div>
-          <div class="sidebar-section-title">
-            <span class="material-icons-round" style="font-size: 14px;">dashboard</span>
-            <span>รูปแบบการแสดงผล</span>
-          </div>
-          <div class="view-nav-group">
-            <button onclick="setViewMode('daily')" id="navView_daily" class="view-nav-btn glass-pill active">
-              <span class="material-icons-round">calendar_today</span>
-              <span>รายงานประจำวัน (Daily)</span>
-            </button>
-            <button onclick="setViewMode('battery')" id="navView_battery" class="view-nav-btn glass-pill">
-              <span class="material-icons-round">battery_charging_full</span>
-              <span>สรุปตรวจแบตเตอรี่ UPS (1 & 16)</span>
-            </button>
-            <button onclick="setViewMode('forms')" id="navView_forms" class="view-nav-btn glass-pill">
-              <span class="material-icons-round">apps</span>
-              <span>แบบตรวจเช็คตามหมวดหมู่</span>
-            </button>
-            <button onclick="setViewMode('history')" id="navView_history" class="view-nav-btn glass-pill">
-              <span class="material-icons-round">history</span>
-              <span>ประวัติการตรวจเช็คทั้งหมด</span>
-            </button>
-            <button onclick="setViewMode('monthly')" id="navView_monthly" class="view-nav-btn glass-pill">
-              <span class="material-icons-round">date_range</span>
-              <span>รายงานประจำเดือน (Monthly)</span>
-            </button>
-          </div>
+      <div class="princ-topbar-right">
+        <!-- Scope pill like "PRINH ทั้งกลุ่ม 4,054 คน ⌄" in screenshot -->
+        <div class="princ-scope-chip" title="ขอบเขตหน่วยงานและจำนวนเครื่อง">
+          <span class="material-icons-round" style="font-size: 15px; color: #0284c7;">domain</span>
+          <span>PPCH พิษณุเวช (32 เครื่อง)</span>
+          <span class="material-icons-round" style="font-size: 16px; color: #9ca3af;">keyboard_arrow_down</span>
         </div>
 
-        <!-- Dedicated Link: แผนก Laboratory -->
-        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed rgba(255, 255, 255, 0.15);">
-          <div class="sidebar-section-title" style="color: #67e8f9;">
-            <span class="material-icons-round" style="font-size: 14px; color: #38bdf8;">biotech</span>
-            <span>ระบบงานเฉพาะแผนก</span>
+        <!-- Realtime status cycle pill like "ประเมินประจำปี 2026..." in screenshot -->
+        <div class="princ-status-pill">
+          <span class="princ-pulse-dot"></span>
+          <span id="princTopStatusText">ตรวจเช็คประจำวัน 7 ต.ค. 2569 • รอบเวรปกติ</span>
+        </div>
+
+        <!-- User profile chip with golden-yellow avatar like screenshot -->
+        <div class="princ-user-chip" onclick="openAdminModal()" title="คลิกเพื่อเข้าสู่ระบบ Admin">
+          <div class="princ-avatar-circle">ชก</div>
+          <div class="princ-user-info">
+            <span class="princ-user-name">ทีมวิศวกรรมชีวการแพทย์</span>
+            <span class="princ-user-role"><span class="material-icons-round" style="font-size: 11px;">visibility</span> ผู้ดูแลระบบ ⌄</span>
           </div>
-          <a href="lab.html" target="_blank" class="view-nav-btn glass-pill" style="background: linear-gradient(135deg, rgba(8, 145, 178, 0.22) 0%, rgba(14, 116, 144, 0.4) 100%); border: 1px solid rgba(56, 189, 248, 0.35); color: #e0f2fe; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: 6px;" title="เปิดระบบติดตามและประเมินเครื่องมือแพทย์ แผนก Laboratory (ลิงก์แยกเฉพาะ)">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="material-icons-round" style="color: #38bdf8; font-size: 18px;">science</span>
-              <span style="font-weight: 700; font-size: 12.5px;">แผนก Laboratory (LAB)</span>
-            </div>
-            <span class="material-icons-round" style="font-size: 16px; opacity: 0.85;">open_in_new</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hidden compatibility text holders for existing scripts -->
+    <span id="mainHeadingTitle" style="display: none;">รายงานการตรวจเช็คความพร้อมเครื่องมือแพทย์ประจำวัน</span>
+    <span id="mainHeadingDate" style="display: none;">ประจำวัน</span>
+    <span id="filteredCountBadge" style="display: none;">32 เครื่อง</span>
+
+    <!-- ==================== 2. BODY LAYOUT (SIDEBAR + MAIN) ==================== -->
+    <div class="princ-layout-body">
+
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="princ-sidebar no-print" id="appSidebar">
+        <!-- Top Switcher Card (Matches screenshot's "ตั้งค่าระบบ Admin Portal ⇅") -->
+        <div class="princ-portal-box" onclick="setViewMode('daily')" title="สลับพื้นที่ควบคุม">
+          <div class="princ-portal-icon">
+            <span class="material-icons-round">speed</span>
+          </div>
+          <div>
+            <div class="princ-portal-title">ศูนย์ควบคุมเครื่องมือ</div>
+            <div class="princ-portal-sub">Workstation Portal</div>
+          </div>
+          <span class="material-icons-round princ-portal-caret">unfold_more</span>
+        </div>
+
+        <!-- Section 1: เมนูหลัก -->
+        <div class="princ-nav-group">
+          <div class="princ-section-label">เมนูหลัก</div>
+          <button onclick="setViewMode('daily')" id="navView_daily" class="princ-nav-link active">
+            <span class="material-icons-round">home</span>
+            <span>หน้าแรก (Daily Hub)</span>
+          </button>
+          <button onclick="setViewMode('battery')" id="navView_battery" class="princ-nav-link">
+            <span class="material-icons-round">battery_charging_full</span>
+            <span>ตรวจแบตเตอรี่ UPS (1 & 16)</span>
+          </button>
+          <button onclick="setViewMode('forms')" id="navView_forms" class="princ-nav-link">
+            <span class="material-icons-round">assignment</span>
+            <span>แบบตรวจตามหมวด (8 หมวด)</span>
+          </button>
+          <button onclick="setViewMode('history')" id="navView_history" class="princ-nav-link">
+            <span class="material-icons-round">history</span>
+            <span>ประวัติการตรวจเช็ค</span>
+          </button>
+          <button onclick="setViewMode('monthly')" id="navView_monthly" class="princ-nav-link">
+            <span class="material-icons-round">calendar_month</span>
+            <span>รายงานประจำเดือน</span>
+          </button>
+        </div>
+
+        <!-- Section 2: ADMIN PORTAL -->
+        <div class="princ-nav-group">
+          <div class="princ-section-label">ADMIN PORTAL</div>
+          <a href="lab.html" target="_blank" class="princ-nav-link" style="color: #0284c7;" title="เปิดระบบติดตามและประเมินเครื่องมือแพทย์ แผนก Laboratory (ลิงก์แยกเฉพาะ)">
+            <span class="material-icons-round" style="color: #0284c7;">science</span>
+            <span style="font-weight: 600;">แผนก Laboratory (LAB)</span>
+            <span class="material-icons-round" style="font-size: 14px; margin-left: auto; color: #9ca3af;">open_in_new</span>
           </a>
-        </div>
-
-        <!-- 2. Filters & Selectors -->
-        <div>
-          <div class="sidebar-section-title">
-            <span class="material-icons-round" style="font-size: 14px;">tune</span>
-            <span>ตัวกรองและเงื่อนไข</span>
-          </div>
-
-          <!-- 1. Daily Date Selector (Visible only in Daily view) -->
-          <div class="filter-item" id="filterDailyDateGroup">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">event</span>
-              วันที่ตรวจเช็ค (Date)
-            </label>
-            <input type="date" id="sidebarDateInput" class="frosted-input" onchange="onDateChanged()">
-            <div class="quick-date-group">
-              <button onclick="setQuickDate('today')" id="btnDateToday" class="quick-date-btn active">วันนี้</button>
-              <button onclick="setQuickDate('yesterday')" id="btnDateYesterday" class="quick-date-btn">เมื่อวาน</button>
-            </div>
-          </div>
-
-          <!-- 2. History Range Selector (Visible only in History view) -->
-          <div class="filter-item" id="filterHistoryRangeGroup" style="display: none;">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">date_range</span>
-              ช่วงเวลาประวัติการตรวจ
-            </label>
-            <div class="quick-date-group" style="margin-bottom: 8px;">
-              <button type="button" onclick="setHistoryRangeMode('month')" id="btnHistModeMonth" class="quick-date-btn active" style="flex: 1; font-size: 11px;">ตามเดือน</button>
-              <button type="button" onclick="setHistoryRangeMode('range')" id="btnHistModeRange" class="quick-date-btn" style="flex: 1; font-size: 11px;">ระบุช่วง</button>
-              <button type="button" onclick="setHistoryRangeMode('all')" id="btnHistModeAll" class="quick-date-btn" style="flex: 0.8; font-size: 11px;">ทั้งหมด</button>
-            </div>
-
-            <!-- Month Picker -->
-            <div id="histMonthSubBlock">
-              <input type="month" id="historyMonthInput" class="frosted-input" onchange="onHistoryFilterChanged()" style="width: 100%;">
-            </div>
-
-            <!-- Custom Date Range -->
-            <div id="histRangeSubBlock" style="display: none; flex-direction: column; gap: 6px;">
-              <div style="font-size: 11px; color: #64748b;">จากวันที่:</div>
-              <input type="date" id="historyStartDate" class="frosted-input" onchange="onHistoryFilterChanged()">
-              <div style="font-size: 11px; color: #64748b;">ถึงวันที่:</div>
-              <input type="date" id="historyEndDate" class="frosted-input" onchange="onHistoryFilterChanged()">
-            </div>
-          </div>
-
-          <!-- 3. Monthly Selector (Visible only in Monthly view) -->
-          <div class="filter-item" id="filterMonthlyMonthGroup" style="display: none;">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">calendar_month</span>
-              เลือกรอบประจำเดือน
-            </label>
-            <input type="month" id="monthlyMonthInput" class="frosted-input" onchange="onMonthlyMonthChanged()">
-          </div>
-
-          <!-- 4. Battery Cycle Selector (Visible only in Battery view) -->
-          <div class="filter-item" id="filterBatteryCycleGroup" style="display: none;">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">event_repeat</span>
-              เลือกรอบตรวจแบตเตอรี่ UPS (1 & 16)
-            </label>
-            <select id="sidebarBatteryCycleSelect" class="frosted-select" onchange="onBatteryFilterChanged()">
-              <option value="latest">รอบล่าสุด (วันที่ 1 ต.ค. 2569)</option>
-              <option value="2026-10-01">รอบวันที่ 1 ต.ค. 2569</option>
-              <option value="2026-09-16">รอบวันที่ 16 ก.ย. 2569</option>
-              <option value="all">ทุกรอบประวัติ (All Cycles)</option>
-            </select>
-          </div>
-
-          <!-- 5. Department Selector (Used in Daily, History, Monthly, Battery) -->
-          <div class="filter-item" id="filterDeptGroup">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">apartment</span>
-              แผนกที่ใช้งาน / ผู้ถือครอง
-            </label>
-            <select id="sidebarDeptSelect" class="frosted-select" onchange="applyFilters()">
-              <option value="all">ทุกแผนก (All Departments)</option>
-            </select>
-          </div>
-
-          <!-- 5. Category Selector (Used in Daily, Forms, History, Monthly) -->
-          <div class="filter-item" id="filterCategoryGroup">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">medical_services</span>
-              ประเภทเครื่องมือแพทย์
-            </label>
-            <select id="sidebarCategorySelect" class="frosted-select" onchange="applyFilters()">
-              <option value="all">ทุกประเภท</option>
-            </select>
-          </div>
-
-          <!-- 6. Daily Status Selector (Used only in Daily) -->
-          <div class="filter-item" id="filterDailyStatusGroup">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">flag</span>
-              สถานะความพร้อมวันนี้
-            </label>
-            <select id="sidebarStatusSelect" class="frosted-select" onchange="applyFilters()">
-              <option value="all">ทั้งหมด (All Status)</option>
-              <option value="ready">✅ ตรวจแล้ว - พร้อมใช้งาน</option>
-              <option value="abnormal">⚠️ ตรวจแล้ว - พบข้อบกพร่อง</option>
-              <option value="pending">⏳ ยังไม่ได้รับการตรวจเช็ค</option>
-            </select>
-          </div>
-
-          <!-- 7. History Status Selector (Used only in History) -->
-          <div class="filter-item" id="filterHistoryStatusGroup" style="display: none;">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">fact_check</span>
-              ผลการตรวจเช็ค
-            </label>
-            <select id="historyResultSelect" class="frosted-select" onchange="onHistoryFilterChanged()">
-              <option value="all">ผลการตรวจทั้งหมด</option>
-              <option value="ready">✅ พร้อมใช้งาน (ปกติ)</option>
-              <option value="abnormal">⚠️ พบข้อบกพร่อง / ชำรุด</option>
-            </select>
-          </div>
-
-          <!-- 8. Keyword Search (Used in Daily, Forms, History, Monthly) -->
-          <div class="filter-item" id="filterSearchGroup">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">search</span>
-              ค้นหาด่วน (รหัสครุภัณฑ์ / ชื่อเครื่อง)
-            </label>
-            <input type="text" id="sidebarSearchInput" class="frosted-input" oninput="applyFilters()" placeholder="พิมพ์ค้นหา...">
-          </div>
-
-          <button onclick="resetFilters()" class="quick-date-btn" style="width: 100%; padding: 7px; margin-top: 4px;">
-            <span class="material-icons-round" style="font-size: 14px; vertical-align: -2px;">restart_alt</span>
-            <span>รีเซ็ตตัวกรอง</span>
+          <button onclick="openRelocationModal()" class="princ-nav-link">
+            <span class="material-icons-round">swap_horiz</span>
+            <span>ย้ายพิกัด / รับเครื่อง</span>
           </button>
-        </div>
-
-        <!-- 3. Action Tools & Management -->
-        <div class="sidebar-actions">
-          <button onclick="openRelocationModal()" class="sidebar-btn sidebar-btn-teal">
-            <span class="material-icons-round" style="font-size: 18px;">swap_horiz</span>
-            <span>ย้ายพิกัด / รับเครื่องข้ามแผนก</span>
+          <button onclick="openAdminModal()" class="princ-nav-link">
+            <span class="material-icons-round">settings</span>
+            <span>ตั้งค่าระบบ (Admin PIN)</span>
           </button>
-
-          <button onclick="window.print()" class="sidebar-btn sidebar-btn-primary">
-            <span class="material-icons-round" style="font-size: 18px;">print</span>
-            <span>พิมพ์รายงาน A4</span>
-          </button>
-
-          <button onclick="exportToCsv()" class="sidebar-btn sidebar-btn-outline" style="color: #059669; border-color: #a7f3d0; background: #ecfdf5;">
-            <span class="material-icons-round" style="font-size: 18px;">download</span>
-            <span>ส่งออก Excel / CSV</span>
-          </button>
-
-          <button onclick="refreshData()" class="sidebar-btn sidebar-btn-outline" id="btnSync">
-            <span class="material-icons-round" style="font-size: 18px;">sync</span>
-            <span>ซิงค์ข้อมูล Google Sheet</span>
-          </button>
-
-          <button onclick="openAdminModal()" class="sidebar-btn sidebar-btn-outline">
-            <span class="material-icons-round" style="font-size: 18px;">admin_panel_settings</span>
-            <span>เข้าสู่ระบบ Admin</span>
-          </button>
-
-          <button onclick="switchToMobile()" class="sidebar-btn sidebar-btn-outline">
-            <span class="material-icons-round" style="font-size: 18px;">smartphone</span>
+          <button onclick="switchToMobile()" class="princ-nav-link">
+            <span class="material-icons-round">smartphone</span>
             <span>มุมมองมือถือ (Mobile)</span>
           </button>
-
-          <a href="https://docs.google.com/spreadsheets/d/1UuVtt0rxfXHI65Xd5C5V7LtePkemgEhYum3yw3mGiuM/edit" target="_blank" class="sidebar-btn sidebar-btn-outline">
-            <span class="material-icons-round" style="font-size: 18px;">table_chart</span>
+          <a href="https://docs.google.com/spreadsheets/d/1UuVtt0rxfXHI65Xd5C5V7LtePkemgEhYum3yw3mGiuM/edit" target="_blank" class="princ-nav-link">
+            <span class="material-icons-round">table_chart</span>
             <span>เปิด Google Sheet จริง</span>
           </a>
         </div>
 
-        <!-- Live Status Pill in Sidebar -->
-        <div class="sidebar-status-pill glass-card">
-          <span id="syncDot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; flex-shrink: 0;"></span>
-          <span id="syncStatusText">เชื่อมต่อ Google Sheet เรียบร้อย</span>
-        </div>
+        <!-- Section 3: ตัวกรองและเงื่อนไข -->
+        <div class="princ-nav-group" style="padding-top: 6px; border-top: 1px solid var(--princ-border-subtle);">
+          <div class="princ-section-label">ตัวกรอง & ค้นหา</div>
 
-      </div>
-    </aside>
-
-    <!-- ==================== MAIN CONTENT AREA ==================== -->
-    <main class="workstation-main">
-
-      <!-- Official Print Header -->
-      <div class="print-only">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-          <div>
-            <h1 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 0 0 4px;">โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital)</h1>
-            <h2 style="font-size: 15px; font-weight: 700; color: #1e40af; margin: 0 0 4px;" id="printReportTitle">แบบรายงานผลการตรวจเช็คความพร้อมเครื่องมือแพทย์ประจำวัน (Daily Inspection Log)</h2>
-            <p style="font-size: 11px; color: #64748b; margin: 0;" id="printDateSubtitle">ข้อมูล ณ วันที่: - | ฝ่ายวิศวกรรมชีวการแพทย์ และงานบริหารคุณภาพ HA & JCI</p>
+          <!-- Date Selector -->
+          <div class="princ-filter-item" id="filterDailyDateGroup">
+            <label>
+              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">event</span>
+              วันที่ตรวจเช็ค
+            </label>
+            <input type="date" id="sidebarDateInput" class="princ-input" onchange="onDateChanged()">
+            <div class="princ-quick-date-row">
+              <button onclick="setQuickDate('today')" id="btnDateToday" class="princ-quick-date-btn active">วันนี้</button>
+              <button onclick="setQuickDate('yesterday')" id="btnDateYesterday" class="princ-quick-date-btn">เมื่อวาน</button>
+            </div>
           </div>
-          <div style="text-align: right; font-size: 11px; color: #64748b;">
-            <div>วันที่พิมพ์: <strong id="printTimestamp"></strong></div>
-            <div>สถานะ: <strong>ข้อมูลประเมินทางการ</strong></div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Executive Minimal Header -->
-      <div class="command-hero-clean glass-card no-print">
-        <div class="command-hero-left">
-          <div class="command-meta-bar">
-            <span class="live-pulse-dot"></span>
-            <span style="font-weight: 700; color: #059669; letter-spacing: 0.03em;">REALTIME READY</span>
-            <span>•</span>
-            <span>โรงพยาบาลพิษณุเวช</span>
+          <!-- History Range Selector -->
+          <div class="princ-filter-item" id="filterHistoryRangeGroup" style="display: none;">
+            <label>ช่วงเวลาประวัติ</label>
+            <div class="princ-quick-date-row" style="margin-bottom: 6px;">
+              <button type="button" onclick="setHistoryRangeMode('month')" id="btnHistModeMonth" class="princ-quick-date-btn active">ตามเดือน</button>
+              <button type="button" onclick="setHistoryRangeMode('range')" id="btnHistModeRange" class="princ-quick-date-btn">ระบุช่วง</button>
+              <button type="button" onclick="setHistoryRangeMode('all')" id="btnHistModeAll" class="princ-quick-date-btn">ทั้งหมด</button>
+            </div>
+            <div id="histMonthSubBlock">
+              <input type="month" id="historyMonthInput" class="princ-input" onchange="onHistoryFilterChanged()">
+            </div>
+            <div id="histRangeSubBlock" style="display: none; flex-direction: column; gap: 4px;">
+              <input type="date" id="historyStartDate" class="princ-input" onchange="onHistoryFilterChanged()">
+              <input type="date" id="historyEndDate" class="princ-input" onchange="onHistoryFilterChanged()">
+            </div>
           </div>
-          <h2 id="mainHeadingTitle" class="command-title-clean">
-            รายงานการตรวจเช็คความพร้อมเครื่องมือแพทย์ประจำวัน
-          </h2>
-          <p id="mainHeadingDate" class="command-subtitle-clean">
-            กำลังโหลดข้อมูลประจำวัน...
-          </p>
-        </div>
 
-        <div class="command-hero-right">
-          <div class="stat-badge-clean glass-pill">
-            <span class="material-icons-round" style="color: #1e40af; font-size: 18px;">inventory_2</span>
-            <span id="filteredCountBadge">กำลังประมวลผล...</span>
+          <!-- Monthly Selector -->
+          <div class="princ-filter-item" id="filterMonthlyMonthGroup" style="display: none;">
+            <label>เลือกรอบเดือน</label>
+            <input type="month" id="monthlyMonthInput" class="princ-input" onchange="onMonthlyMonthChanged()">
           </div>
-          <button onclick="window.print()" class="btn-print-clean btn-glass-secondary" title="พิมพ์รายงาน A4">
-            <span class="material-icons-round" style="font-size: 16px;">print</span>
-            <span>พิมพ์ A4</span>
+
+          <!-- Battery Cycle Selector -->
+          <div class="princ-filter-item" id="filterBatteryCycleGroup" style="display: none;">
+            <label>รอบตรวจ UPS (1 & 16)</label>
+            <select id="sidebarBatteryCycleSelect" class="princ-input" onchange="onBatteryFilterChanged()">
+              <option value="latest">รอบล่าสุด (1 ต.ค. 2569)</option>
+              <option value="2026-10-01">1 ต.ค. 2569</option>
+              <option value="2026-09-16">16 ก.ย. 2569</option>
+              <option value="all">ทุกรอบประวัติ</option>
+            </select>
+          </div>
+
+          <!-- Department Selector -->
+          <div class="princ-filter-item" id="filterDeptGroup">
+            <label>แผนกประจำการ</label>
+            <select id="sidebarDeptSelect" class="princ-input" onchange="applyFilters()">
+              <option value="all">ทุกแผนก (All Depts)</option>
+            </select>
+          </div>
+
+          <!-- Category Selector -->
+          <div class="princ-filter-item" id="filterCategoryGroup">
+            <label>ประเภทเครื่องมือ</label>
+            <select id="sidebarCategorySelect" class="princ-input" onchange="applyFilters()">
+              <option value="all">ทุกประเภท</option>
+            </select>
+          </div>
+
+          <!-- Daily Status Selector -->
+          <div class="princ-filter-item" id="filterDailyStatusGroup">
+            <label>สถานะความพร้อม</label>
+            <select id="sidebarStatusSelect" class="princ-input" onchange="applyFilters()">
+              <option value="all">ทั้งหมด</option>
+              <option value="ready">✅ ตรวจแล้ว - พร้อมใช้</option>
+              <option value="abnormal">⚠️ ตรวจแล้ว - มีข้อบกพร่อง</option>
+              <option value="pending">⏳ ยังไม่ตรวจเช็ค</option>
+            </select>
+          </div>
+
+          <!-- History Status Selector -->
+          <div class="princ-filter-item" id="filterHistoryStatusGroup" style="display: none;">
+            <label>ผลการตรวจ</label>
+            <select id="historyResultSelect" class="princ-input" onchange="onHistoryFilterChanged()">
+              <option value="all">ผลตรวจทั้งหมด</option>
+              <option value="ready">✅ พร้อมใช้งาน (ปกติ)</option>
+              <option value="abnormal">⚠️ พบข้อบกพร่อง</option>
+            </select>
+          </div>
+
+          <!-- Search Input -->
+          <div class="princ-filter-item" id="filterSearchGroup">
+            <label>ค้นหาด่วน</label>
+            <input type="text" id="sidebarSearchInput" class="princ-input" oninput="applyFilters()" placeholder="รหัส / ชื่อเครื่อง...">
+          </div>
+
+          <button onclick="resetFilters()" class="princ-quick-date-btn" style="width: 100%; padding: 6px; margin-top: 4px;">
+            <span class="material-icons-round" style="font-size: 13px; vertical-align: -2px;">restart_alt</span>
+            <span>รีเซ็ตตัวกรอง</span>
           </button>
-          <a href="lab.html" target="_blank" class="btn-print-clean btn-glass-secondary" style="background: rgba(8, 145, 178, 0.12); border-color: rgba(8, 145, 178, 0.35); color: #0891b2; text-decoration: none;" title="เปิดระบบติดตามและประเมินเครื่องมือแพทย์ แผนก Laboratory (ลิงก์เฉพาะ)">
-            <span class="material-icons-round" style="font-size: 16px;">biotech</span>
-            <span>แผนก Laboratory ↗</span>
+        </div>
+
+        <!-- Connection Dot in Sidebar -->
+        <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 6px; padding: 6px 4px; margin-top: 4px;">
+          <span id="syncDot" style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; flex-shrink: 0;"></span>
+          <span id="syncStatusText">เชื่อมต่อ Google Sheet</span>
+        </div>
+
+        <!-- Bottom Pinned User Profile (Matches screenshot's user bar at bottom) -->
+        <div class="princ-sidebar-bottom">
+          <div class="princ-footer-avatar">PP</div>
+          <div style="display: flex; flex-direction: column;">
+            <div class="princ-footer-name">โรงพยาบาลพิษณุเวช</div>
+            <div class="princ-footer-sub">Biomedical Team</div>
+          </div>
+          <a href="index.html" class="princ-footer-exit" title="ออกจากระบบ Workstation">
+            <span class="material-icons-round" style="font-size: 18px;">logout</span>
           </a>
         </div>
-      </div>
+      </aside>
 
-      <!-- Minimalist KPI Strip -->
-      <div id="kpiStripContainer" class="kpi-strip kpi-grid-5 no-print">
-        <!-- 1: Total Devices -->
-        <div class="kpi-mini-card glass-card">
-          <div class="kpi-mini-icon squircle-icon icon-blue">
-            <span class="material-icons-round">medical_services</span>
-          </div>
-          <div>
-            <div class="kpi-mini-num" id="kpiTotalDevices">0</div>
-            <div class="kpi-mini-lbl">เครื่องมือแพทย์ทั้งหมด</div>
+      <!-- ==================== MAIN CONTENT AREA ==================== -->
+      <main class="princ-main-content">
+
+        <!-- Official Print Header -->
+        <div class="print-only">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <h1 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 0 0 4px;">โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital - PRINC GROUP)</h1>
+              <h2 style="font-size: 15px; font-weight: 700; color: #1e40af; margin: 0 0 4px;" id="printReportTitle">แบบรายงานผลการตรวจเช็คความพร้อมเครื่องมือแพทย์ประจำวัน</h2>
+              <p style="font-size: 11px; color: #64748b; margin: 0;" id="printDateSubtitle">ข้อมูล ณ วันที่: - | ฝ่ายวิศวกรรมชีวการแพทย์</p>
+            </div>
+            <div style="text-align: right; font-size: 11px; color: #64748b;">
+              <div>วันที่พิมพ์: <strong id="printTimestamp"></strong></div>
+              <div>สถานะ: <strong>ข้อมูลประเมินทางการ</strong></div>
+            </div>
           </div>
         </div>
 
-        <!-- 2: Checked Today -->
-        <div class="kpi-mini-card glass-card">
-          <div class="kpi-mini-icon squircle-icon icon-teal">
-            <span class="material-icons-round">fact_check</span>
+        <!-- Single-Row Executive KPI Strip -->
+        <div id="kpiStripContainer" class="princ-kpi-strip no-print">
+          <!-- 1: Total Devices -->
+          <div class="princ-kpi-card">
+            <div class="princ-kpi-icon icon-blue">
+              <span class="material-icons-round">medical_services</span>
+            </div>
+            <div>
+              <div class="princ-kpi-num" id="kpiTotalDevices">0</div>
+              <div class="princ-kpi-lbl">เครื่องมือแพทย์ทั้งหมด</div>
+            </div>
           </div>
-          <div>
-            <div class="kpi-mini-num" id="kpiCheckedDevices">0</div>
-            <div class="kpi-mini-lbl">ตรวจเช็คแล้ววันนี้</div>
+
+          <!-- 2: Checked Today -->
+          <div class="princ-kpi-card">
+            <div class="princ-kpi-icon icon-teal">
+              <span class="material-icons-round">fact_check</span>
+            </div>
+            <div>
+              <div class="princ-kpi-num" id="kpiCheckedDevices">0</div>
+              <div class="princ-kpi-lbl">ตรวจเช็คแล้ววันนี้</div>
+            </div>
+          </div>
+
+          <!-- 3: Ready Devices -->
+          <div class="princ-kpi-card">
+            <div class="princ-kpi-icon icon-green">
+              <span class="material-icons-round">check_circle</span>
+            </div>
+            <div>
+              <div class="princ-kpi-num" id="kpiReadyDevices" style="color: #059669;">0</div>
+              <div class="princ-kpi-lbl">พร้อมใช้งานปกติ</div>
+            </div>
+          </div>
+
+          <!-- 4: Abnormal Devices -->
+          <div class="princ-kpi-card" id="kpiCardAbnormal">
+            <div class="princ-kpi-icon icon-red">
+              <span class="material-icons-round">error</span>
+            </div>
+            <div>
+              <div class="princ-kpi-num" id="kpiAbnormalDevices" style="color: #dc2626;">0</div>
+              <div class="princ-kpi-lbl">พบข้อบกพร่อง/ชำรุด</div>
+            </div>
+          </div>
+
+          <!-- 5: Pending Devices -->
+          <div class="princ-kpi-card">
+            <div class="princ-kpi-icon icon-amber">
+              <span class="material-icons-round">schedule</span>
+            </div>
+            <div>
+              <div class="princ-kpi-num" id="kpiPendingDevices" style="color: #d97706;">0</div>
+              <div class="princ-kpi-lbl">ยังไม่ตรวจเช็ค</div>
+            </div>
           </div>
         </div>
 
-        <!-- 3: Ready Devices -->
-        <div class="kpi-mini-card glass-card">
-          <div class="kpi-mini-icon squircle-icon icon-green">
-            <span class="material-icons-round">check_circle</span>
+        <!-- Multi-Tiered Action Toolbar (Matches screenshot's white rounded buttons) -->
+        <div class="princ-toolbar-box no-print">
+          <!-- Tier 1: Primary Operation Buttons (Like "🪄 เติมจากสายบังคับบัญชา..." in screenshot) -->
+          <div class="princ-toolbar-row">
+            <button onclick="document.getElementById('sidebarStatusSelect').value='ready'; applyFilters();" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 16px; color: #0284c7;">auto_fix_high</span>
+              <span>กรองเครื่องพร้อมใช้ทั้งหมด</span>
+            </button>
+            <button onclick="setViewMode('battery')" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 16px; color: #1e40af;">battery_charging_full</span>
+              <span>ตรวจสอบแบตเตอรี่ UPS (รอบ 1 & 16)</span>
+            </button>
+            <button onclick="window.print()" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 16px;">print</span>
+              <span>พิมพ์รายงาน A4</span>
+            </button>
           </div>
-          <div>
-            <div class="kpi-mini-num" id="kpiReadyDevices" style="color: #059669;">0</div>
-            <div class="kpi-mini-lbl">พร้อมใช้งานปกติ</div>
+
+          <!-- Tier 2: Export & Extraction Buttons (Like "⬆ นำเข้าไฟล์", "📄 โหลดแม่แบบ", "📥 ดึงออก Excel" in screenshot) -->
+          <div class="princ-toolbar-row">
+            <button onclick="setViewMode('forms')" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 16px;">description</span>
+              <span>โหลดแม่แบบ (8 หมวด)</span>
+            </button>
+            <button onclick="exportToCsv()" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 16px; color: #059669;">download</span>
+              <span>ดึงออก Excel / CSV</span>
+            </button>
+            <button onclick="document.getElementById('sidebarStatusSelect').value='pending'; applyFilters();" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 16px; color: #d97706;">person_search</span>
+              <span>ดึงเครื่องที่ยังไม่ตรวจ • ประจำวัน</span>
+            </button>
+            <button onclick="document.getElementById('sidebarStatusSelect').value='abnormal'; applyFilters();" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 16px; color: #dc2626;">warning</span>
+              <span>ดึงเครื่องที่พบข้อบกพร่อง</span>
+            </button>
+            <a href="lab.html" target="_blank" class="princ-btn" style="border-color: #bae6fd; background: #f0f9ff; color: #0284c7; text-decoration: none;">
+              <span class="material-icons-round" style="font-size: 16px;">science</span>
+              <span>เปิดระบบเฉพาะแผนก LAB ↗</span>
+            </a>
+          </div>
+
+          <!-- Tier 3: Batch Operations (Like "ซ่อมข้อมูลเป็นชุด..." in screenshot) -->
+          <div class="princ-toolbar-row">
+            <span class="princ-toolbar-label">การจัดการข้อมูลด่วน:</span>
+            <button onclick="resetFilters()" class="princ-btn">
+              <span class="material-icons-round" style="font-size: 15px;">cleaning_services</span>
+              <span>ล้างสถานะ / รีเซ็ตตัวกรอง</span>
+            </button>
+            <button onclick="refreshData()" class="princ-btn" id="btnSync">
+              <span class="material-icons-round" style="font-size: 15px;">sync</span>
+              <span>ซิงค์ข้อมูลกับ Google Sheet</span>
+            </button>
+          </div>
+
+          <!-- Tier 4: Ward Switcher Pills -->
+          <div class="ward-filter-bar" id="wardFilterBar">
+            <button class="ward-pill-btn active" data-ward="all" onclick="selectWardFilter('all')">
+              <span class="material-icons-round" style="font-size: 14px;">apps</span>
+              <span>ทุกแผนก (32)</span>
+            </button>
+            <button class="ward-pill-btn" data-ward="ER" onclick="selectWardFilter('ER')">
+              <span class="ward-badge-dot dot-er"></span>
+              <span>🚨 แผนกอุบัติเหตุฉุกเฉิน (ER)</span>
+            </button>
+            <button class="ward-pill-btn" data-ward="ICU" onclick="selectWardFilter('ICU')">
+              <span class="ward-badge-dot dot-icu"></span>
+              <span>🩺 หอผู้ป่วยวิกฤต (ICU)</span>
+            </button>
+            <button class="ward-pill-btn" data-ward="OR" onclick="selectWardFilter('OR')">
+              <span class="ward-badge-dot dot-or"></span>
+              <span>🏥 ห้องผ่าตัด (OR)</span>
+            </button>
+            <button class="ward-pill-btn" data-ward="WARD23" onclick="selectWardFilter('WARD23')">
+              <span>🛏️ หอผู้ป่วย 2-3 (Ward 2-3)</span>
+            </button>
+            <button class="ward-pill-btn" data-ward="WARD45" onclick="selectWardFilter('WARD45')">
+              <span>🛏️ หอผู้ป่วย 4-5 (Ward 4-5)</span>
+            </button>
+            <button class="ward-pill-btn" data-ward="OPD" onclick="selectWardFilter('OPD')">
+              <span>🏢 แผนกผู้ป่วยนอก (OPD)</span>
+            </button>
           </div>
         </div>
 
-        <!-- 4: Abnormal Devices -->
-        <div class="kpi-mini-card glass-card" id="kpiCardAbnormal">
-          <div class="kpi-mini-icon squircle-icon icon-red">
-            <span class="material-icons-round">error</span>
-          </div>
-          <div>
-            <div class="kpi-mini-num" id="kpiAbnormalDevices" style="color: #dc2626;">0</div>
-            <div class="kpi-mini-lbl">พบข้อบกพร่อง/ชำรุด</div>
-          </div>
+        <!-- Notice / Helper Banner (Matches screenshot's light gray banner) -->
+        <div class="princ-notice-banner no-print">
+          หนึ่งบรรทัดคือเครื่องมือแพทย์หนึ่งเครื่อง — ระบบติดตามความพร้อมใช้งานประจำวันตามมาตรฐาน HA & JCI • บันทึกผลผ่านปุ่มตรวจเช็คหรือสแกน QR Code ประจำเครื่อง • เครื่องที่พบข้อบกพร่องจะแจ้งเตือนฝ่ายซ่อมบำรุงทันที • ปรับเปลี่ยนแผนกถือครองผ่านเมนูย้ายพิกัด
         </div>
 
-        <!-- 5: Pending Devices -->
-        <div class="kpi-mini-card glass-card">
-          <div class="kpi-mini-icon squircle-icon icon-amber">
-            <span class="material-icons-round">schedule</span>
-          </div>
-          <div>
-            <div class="kpi-mini-num" id="kpiPendingDevices" style="color: #d97706;">0</div>
-            <div class="kpi-mini-lbl">ยังไม่ตรวจเช็ค</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Interactive Ward / Department Quick Switcher Bar -->
-      <div class="ward-filter-bar no-print" id="wardFilterBar">
-        <button class="ward-pill-btn active" data-ward="all" onclick="selectWardFilter('all')">
-          <span class="material-icons-round" style="font-size: 15px;">apps</span>
-          <span>ทุกแผนก (32)</span>
-        </button>
-        <button class="ward-pill-btn" data-ward="ER" onclick="selectWardFilter('ER')">
-          <span class="ward-badge-dot dot-er"></span>
-          <span>🚨 แผนกอุบัติเหตุฉุกเฉิน (ER)</span>
-        </button>
-        <button class="ward-pill-btn" data-ward="ICU" onclick="selectWardFilter('ICU')">
-          <span class="ward-badge-dot dot-icu"></span>
-          <span>🩺 หอผู้ป่วยวิกฤต (ICU)</span>
-        </button>
-        <button class="ward-pill-btn" data-ward="OR" onclick="selectWardFilter('OR')">
-          <span class="ward-badge-dot dot-or"></span>
-          <span>🏥 ห้องผ่าตัด (OR)</span>
-        </button>
-        <button class="ward-pill-btn" data-ward="WARD23" onclick="selectWardFilter('WARD23')">
-          <span>🛏️ หอผู้ป่วย 2-3 (Ward 2-3)</span>
-        </button>
-        <button class="ward-pill-btn" data-ward="WARD45" onclick="selectWardFilter('WARD45')">
-          <span>🛏️ หอผู้ป่วย 4-5 (Ward 4-5)</span>
-        </button>
-        <button class="ward-pill-btn" data-ward="OPD" onclick="selectWardFilter('OPD')">
-          <span>🏢 แผนกผู้ป่วยนอก (OPD)</span>
-        </button>
-      </div>
-
-      <!-- ==================== VIEW 1: DAILY INSPECTION REPORT (DEFAULT) ==================== -->
-      <!-- Grouped by Category & Listed by Individual Machine -->
-      <div id="viewDailyContainer">
+        <!-- ==================== VIEW 1: DAILY INSPECTION REPORT (DEFAULT) ==================== -->
+        <!-- Grouped by Category & Listed by Individual Machine -->
+        <div id="viewDailyContainer">
         <!-- Injected Dynamically by Categories -->
       </div>
 
@@ -2014,6 +1909,18 @@
 
     function setViewMode(mode) {
       currentViewMode = mode;
+      var bread = document.getElementById('princBreadCurrent');
+      if (bread) {
+        var breadMap = {
+          daily: 'รายงานความพร้อมใช้ประจำวัน (Daily Inspection)',
+          battery: 'สรุปผลตรวจเช็คแบตเตอรี่ UPS (รอบวันที่ 1 & 16)',
+          forms: 'แบบประเมินความพร้อมใช้งานตามหมวด (8 หมวด)',
+          history: 'ประวัติการบันทึกผลการตรวจเช็คทั้งหมด',
+          monthly: 'รายงานสรุปผลการประเมินประจำเดือน (Monthly Compliance)'
+        };
+        bread.innerText = breadMap[mode] || mode;
+      }
+
       ['daily', 'battery', 'forms', 'history', 'monthly'].forEach(function (m) {
         var btn = document.getElementById('navView_' + m);
         if (btn) {
@@ -2238,6 +2145,11 @@
       document.getElementById('kpiAbnormalDevices').innerText = abnormalTodayCount;
       document.getElementById('kpiPendingDevices').innerText = pendingTodayCount;
 
+      var topStatus = document.getElementById('princTopStatusText');
+      if (topStatus) {
+        topStatus.innerText = 'ตรวจเช็คประจำวัน ' + thaiDateFormatted + ' • พร้อมใช้ ' + readyTodayCount + '/' + totalDevices + ' เครื่อง (' + pct + '%)';
+      }
+
       // Update Ward Quick Switcher counts
       var deptCounts = {};
       allEquipment.forEach(function (eq) {
@@ -2330,13 +2242,11 @@
             '<table class="device-table">' +
               '<thead>' +
                 '<tr>' +
-                  '<th style="width: 140px;">รหัสครุภัณฑ์</th>' +
-                  '<th>ชื่อเครื่องมือแพทย์ & รุ่น</th>' +
-                  '<th style="width: 150px;">แผนกประจำการ</th>' +
-                  '<th style="width: 150px; text-align: center;">สถานะวันนี้</th>' +
-                  '<th style="width: 140px;">เวลา / ผู้ตรวจ</th>' +
-                  '<th>ผลการตรวจ / หมายเหตุ</th>' +
-                  '<th class="btn-action-col no-print" style="width: 110px; text-align: center;">การจัดการ</th>' +
+                  '<th style="width: 270px;">ผู้ถูกประเมิน (ชื่อเครื่อง & รหัสครุภัณฑ์)</th>' +
+                  '<th style="width: 220px;">แผนก • ตำแหน่งประจำการ</th>' +
+                  '<th style="width: 200px;">ประเภท • รอบการตรวจ</th>' +
+                  '<th>ผู้ประเมิน • สถานะความพร้อมวันนี้</th>' +
+                  '<th class="btn-action-col no-print" style="width: 100px; text-align: center;">การจัดการ</th>' +
                 '</tr>' +
               '</thead>' +
               '<tbody>';
@@ -2345,58 +2255,71 @@
           var ev = evalMapByDevice[eq.id] || evalMapByDevice[eq.assetCode];
           var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
 
-          var statusBadge = '';
-          var evalInfo = '';
-          var defectNote = '';
+          var evalCell = '';
           var actionBtn = '';
 
           if (ev) {
             var timeOnly = formatTimeOnly(ev.evaluatedAt);
             if (ev.result === 'abnormal') {
-              statusBadge = '<span class="badge-status badge-status-abnormal glass-pill"><span class="pulse-dot-red"></span><span class="material-icons-round" style="font-size: 14px;">warning</span> พบข้อบกพร่อง</span>';
-              evalInfo = '<div style="font-weight: 700; color: #dc2626; font-size: 12.5px;">' + timeOnly + ' น.</div>' +
-                '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (ev.evaluatedBy || 'ไม่ระบุ') + '</div>';
-              defectNote = '<span style="color: #dc2626; font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">' +
-                '<span class="material-icons-round" style="font-size: 15px;">warning</span> ' + (ev.abnormalNote || 'พบความผิดปกติ') +
-              '</span>';
+              evalCell = '<div>' +
+                '<div style="color: #dc2626; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 5px;">' +
+                  '<span class="material-icons-round" style="font-size: 15px;">warning</span> พบข้อบกพร่อง/ชำรุด' +
+                '</div>' +
+                '<span style="font-size: 11px; color: #b91c1c; background: #fef2f2; padding: 2px 6px; border-radius: 4px; border: 1px solid #fecaca; margin-left: 8px; font-family: var(--font-mono);">' + timeOnly + ' น.</span>' +
+                '<div style="font-size: 11.5px; color: #dc2626; margin-top: 2px;">' +
+                  '⚠️ ' + (ev.abnormalNote || 'พบความผิดปกติ') + ' • โดย <strong style="color: #991b1b;">' + (ev.evaluatedBy || '-') + '</strong>' +
+                '</div>' +
+              '</div>';
             } else {
-              statusBadge = '<span class="badge-status badge-status-ready glass-pill"><span class="material-icons-round" style="font-size: 13px;">check_circle</span> พร้อมใช้งาน</span>';
-              evalInfo = '<div style="font-weight: 700; color: #0f172a; font-size: 12.5px;">' + timeOnly + ' น.</div>' +
-                '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (ev.evaluatedBy || 'ไม่ระบุ') + '</div>';
-              defectNote = '<span style="color: #059669; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 3px;">' +
-                '<span class="material-icons-round" style="font-size: 14px;">check</span> ปกติครบทุกข้อ' +
-              '</span>';
+              evalCell = '<div>' +
+                '<div style="display: flex; align-items: center; gap: 8px;">' +
+                  '<div style="color: #059669; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 4px;">' +
+                    '<span class="material-icons-round" style="font-size: 15px;">check_circle</span> พร้อมใช้งานปกติ' +
+                  '</div>' +
+                  '<span style="font-size: 11px; color: #475569; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; border: 1px solid #e2e8f0; font-family: var(--font-mono);">' + timeOnly + ' น.</span>' +
+                '</div>' +
+                '<div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">' +
+                  'ผู้ประเมิน: <strong style="color: #334155;">' + (ev.evaluatedBy || 'เจ้าหน้าที่ประจำเวร') + '</strong>' +
+                '</div>' +
+              '</div>';
             }
-            actionBtn = '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + eq.id + '\')" class="btn-table-slip">' +
-              '<span class="material-icons-round" style="font-size: 14px; color: #1e40af;">receipt_long</span><span>สลิป</span></button>';
+            actionBtn = '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + eq.id + '\')" class="btn-table-slip" title="ดูสลิปผลประเมิน">' +
+              '<span class="material-icons-round" style="font-size: 14px; color: #1e40af;">receipt_long</span><span>สลิป</span>' +
+            '</button>';
           } else {
-            statusBadge = '<span class="badge-status badge-status-pending glass-pill"><span class="material-icons-round" style="font-size: 13px;">schedule</span> รอตรวจ</span>';
-            evalInfo = '<span style="color: #94a3b8; font-size: 12px;">-</span>';
-            defectNote = '<span style="color: #94a3b8; font-size: 12px;">-</span>';
-            actionBtn = '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" class="btn-table-check">' +
-              '<span class="material-icons-round" style="font-size: 14px;">assignment</span><span>ตรวจเช็ค</span></a>';
+            // Pending State (Matches screenshot's "ยังไม่มีผู้ประเมิน" in amber + "+ เพิ่มผู้ประเมิน" in blue link)
+            evalCell = '<div>' +
+              '<div style="color: #d97706; font-weight: 600; font-size: 13px;">ยังไม่มีผลตรวจวันนี้</div>' +
+              '<div style="margin-top: 2px;">' +
+                '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" style="color: #2563eb; font-weight: 600; font-size: 12.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 3px;">' +
+                  '<span class="material-icons-round" style="font-size: 14px;">add</span> ตรวจเช็คเครื่องนี้' +
+                '</a>' +
+              '</div>' +
+            '</div>';
+            actionBtn = '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" class="btn-table-slip" style="text-decoration: none; color: #2563eb; border-color: #bfdbfe; background: #eff6ff;" title="เปิดแบบประเมิน">' +
+              '<span class="material-icons-round" style="font-size: 14px;">assignment</span><span>ตรวจ</span>' +
+            '</a>';
           }
 
           var rowClass = (ev && ev.result === 'abnormal') ? 'row-abnormal' : '';
 
           html += '<tr class="' + rowClass + '">' +
-            '<td><span class="asset-code-clean">' + eq.assetCode + '</span></td>' +
             '<td>' +
-              '<div style="font-weight: 700; color: #0f172a; font-size: 13px; line-height: 1.3;">' + eq.name + '</div>' +
-              '<div style="font-size: 11px; color: #64748b; margin-top: 2px;">' +
-                '<span>รุ่น ' + (eq.model || '-') + '</span> ' +
-                '<span style="color: #94a3b8; margin-left: 4px;">S/N: ' + (eq.serialNo || '-') + '</span>' +
+              '<div style="font-weight: 700; color: #0f172a; font-size: 13.5px; line-height: 1.3;">' + eq.name + '</div>' +
+              '<div style="display: flex; align-items: center; gap: 6px; margin-top: 3px;">' +
+                '<span class="asset-code-clean">' + eq.assetCode + '</span>' +
+                '<span style="font-size: 11.5px; color: #64748b;">รุ่น ' + (eq.model || '-') + '</span>' +
               '</div>' +
             '</td>' +
             '<td>' +
-              '<div style="font-weight: 600; color: #334155; font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px;">' +
-                '<span class="material-icons-round" style="font-size: 14px; color: #94a3b8;">place</span>' +
-                '<span>' + deptName + '</span>' +
-              '</div>' +
+              '<div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">' + deptName + '</div>' +
+              '<div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">' + (eq.location || 'ประจำจุดบริการ') + '</div>' +
             '</td>' +
-            '<td style="text-align: center;">' + statusBadge + '</td>' +
-            '<td>' + evalInfo + '</td>' +
-            '<td>' + defectNote + '</td>' +
+            '<td>' +
+              '<div style="font-weight: 500; color: #334155; font-size: 12.5px;">' + (f.shortName || f.name) + '</div>' +
+              '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (f.frequency === 'daily' ? 'รอบตรวจทุกวัน' : 'รอบตรวจประจำเดือน') + '</div>' +
+            '</td>' +
+            '<td>' + evalCell + '</td>' +
             '<td class="btn-action-col no-print" style="text-align: center; white-space: nowrap;">' + actionBtn + '</td>' +
           '</tr>';
         });
