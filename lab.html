@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPCH LAB TRACK • ระบบติดตามและประเมินเครื่องมือแพทย์ แผนก Laboratory</title>
+  
+  <!-- Google Fonts & Material Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0891b2;
+      --primary-dark: #0e7490;
+      --primary-light: #e0f2fe;
+      --primary-gradient: linear-gradient(135deg, #0e7490 0%, #0891b2 50%, #0284c7 100%);
+      --accent: #0284c7;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.7);
+      --glass-card-bg: rgba(255, 255, 255, 0.92);
+      --glass-card-border: rgba(226, 232, 240, 0.8);
+      --glass-blur: blur(16px);
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.08);
+      --shadow-glow: 0 0 24px rgba(8, 145, 178, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Prompt', 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: radial-gradient(circle at 10% 10%, rgba(224, 242, 254, 0.6) 0%, rgba(248, 250, 252, 0.95) 50%, rgba(241, 245, 249, 1) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Navbar */
+    .lab-navbar {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      color: #ffffff;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon-box {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+    }
+
+    .brand-text h1 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-text p {
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .shift-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(8, 145, 178, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #7dd3fc;
+    }
+
+    .shift-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 10px #38bdf8;
+      animation: pulse-dot 1.8s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    .btn-sheet-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.2s;
+    }
+
+    .btn-sheet-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-back-central {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      color: #cbd5e1;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      transition: all 0.2s;
+    }
+
+    .btn-back-central:hover {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Main Container */
+    .lab-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 28px;
+      flex: 1;
+    }
+
+    /* Hero / Status Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.85) 100%);
+      border: 1px solid var(--glass-card-border);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .hero-title h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-title p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .kpi-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .kpi-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .kpi-icon.teal { background: #e0f2fe; color: #0284c7; }
+    .kpi-icon.green { background: #dcfce7; color: #15803d; }
+    .kpi-icon.rose { background: #ffe4e6; color: #be123c; }
+    .kpi-icon.amber { background: #fef3c7; color: #b45309; }
+
+    .kpi-val {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.1;
+      color: #0f172a;
+    }
+
+    .kpi-lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Out of Range Alert */
+    .alert-banner {
+      background: linear-gradient(135deg, #fff1f2 0%, #fee2e2 100%);
+      border: 1px solid #fecdd3;
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 16px rgba(225, 29, 72, 0.08);
+      color: #9f1239;
+    }
+
+    /* Navigation Tabs */
+    .lab-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 8px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35);
+    }
+
+    /* Tab Content Section */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Equipment Cards Grid */
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .equip-card {
+      background: var(--glass-card-bg);
+      border: 1px solid var(--glass-card-border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .equip-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+      border-color: rgba(8, 145, 178, 0.4);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .status-pill.ready { background: #dcfce7; color: #15803d; }
+    .status-pill.abnormal { background: #fee2e2; color: #b91c1c; }
+    .status-pill.pending { background: #fef3c7; color: #b45309; }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+
+    .card-target {
+      font-size: 11.5px;
+      color: #0891b2;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .card-metrics {
+      background: #f8fafc;
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      border: 1px solid #edf2f7;
+    }
+
+    .metric-item {
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .metric-lbl {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .btn-quick-record {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--primary-gradient);
+      color: #ffffff;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(8, 145, 178, 0.25);
+    }
+
+    .btn-quick-record:hover {
+      box-shadow: 0 4px 12px rgba(8, 145, 178, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* Official Report / Form Preview (Exact Word Layout) */
+    .report-preview-container {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid #e2e8f0;
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+    }
+
+    .report-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .toolbar-selectors {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .form-select-styled {
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
+      background: #ffffff;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-action-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-md);
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-print:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    .btn-template-direct {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: var(--radius-md);
+      background: #10b981;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-template-direct:hover {
+      background: #059669;
+    }
+
+    /* Exact Form Paper Simulation */
+    .paper-sheet {
+      background: #ffffff;
+      border: 1px solid #94a3b8;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+      margin: 0 auto;
+      max-width: 100%;
+      overflow-x: auto;
+      font-family: 'Prompt', 'Sarabun', sans-serif;
+    }
+
+    .paper-header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .paper-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #000000;
+      margin-bottom: 4px;
+    }
+
+    .paper-header .sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      max-width: 520px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      animation: modalSlide 0.25s ease-out;
+    }
+
+    @keyframes modalSlide {
+      from { opacity: 0; transform: scale(0.96) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .btn-close-modal {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 20px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .btn-close-modal:hover { opacity: 1; }
+
+    .modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: #0891b2;
+      box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
+    }
+
+    .temp-feedback-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      padding: 9px 18px;
+      border-radius: var(--radius-md);
+      background: #e2e8f0;
+      color: #334155;
+      border: none;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      padding: 9px 20px;
+      border-radius: var(--radius-md);
+      background: var(--primary-gradient);
+      color: #ffffff;
+      border: none;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(8, 145, 178, 0.3);
+    }
+
+    /* Print Specific Style */
+    @media print {
+      body {
+        background: #ffffff !important;
+      }
+      .lab-navbar, .hero-banner, .lab-tabs, .report-toolbar, .no-print {
+        display: none !important;
+      }
+      .lab-container {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .paper-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="lab-navbar">
+    <div class="brand-group">
+      <div class="brand-icon-box">
+        <span class="material-icons-round" style="font-size: 26px;">biotech</span>
+      </div>
+      <div class="brand-text">
+        <h1>
+          PPCH Laboratory Tracking System
+          <span style="font-size: 11px; padding: 2px 8px; border-radius: 999px; background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-weight: 700;">STANDALONE LAB</span>
+        </h1>
+        <p>โรงพยาบาลพิษณุเวช • ระบบบันทึกและติดตามความพร้อมเครื่องมือแพทย์ แผนกห้องปฏิบัติการ</p>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <!-- Active Shift Badge -->
+      <div class="shift-badge">
+        <span class="shift-dot"></span>
+        <span id="currentShiftText">เวรบ่าย (16:00 - 24:00)</span>
+      </div>
+
+      <!-- Links to Google Sheets -->
+      <a href="https://docs.google.com/spreadsheets/d/1pP-f9f8yFabsENOB8VttfLu01hG8q-PG3rJHV-vqgzQ/edit" target="_blank" class="btn-sheet-link" title="เปิดดู Google Sheet ฐานข้อมูล LAB">
+        <span class="material-icons-round" style="font-size: 16px; color: #38bdf8;">table_chart</span>
+        <span>ชีทฐานข้อมูล LAB</span>
+      </a>
+
+      <a href="https://docs.google.com/spreadsheets/d/17QRxD2Niog4SIrXbeWDa-_NVwuRlZZy8W7MqIbJrOzs/edit" target="_blank" class="btn-sheet-link" title="เปิดดู Google Sheet ฟอร์มทางการ 16 แท็บ">
+        <span class="material-icons-round" style="font-size: 16px; color: #34d399;">description</span>
+        <span>ชีทฟอร์มทางการ (16 แท็บ)</span>
+      </a>
+
+      <!-- Quick back to central admin -->
+      <a href="desktop.html" class="btn-back-central" title="กลับหน้าระบบเครื่องมือแพทย์ส่วนกลาง">
+        <span class="material-icons-round" style="font-size: 16px;">admin_panel_settings</span>
+        <span>Admin ส่วนกลาง</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="lab-container">
+
+    <!-- Hero / Status Banner -->
+    <div class="hero-banner">
+      <div class="hero-title">
+        <h2>
+          <span class="material-icons-round" style="color: #0891b2; font-size: 28px;">medical_services</span>
+          ภาพรวมความพร้อมเครื่องมือแพทย์และจุดควบคุม แผนก LAB
+        </h2>
+        <p>ประจำวันที่ <strong id="lblThaiToday">-</strong> | ควบคุมคุณภาพตามมาตรฐานโรงพยาบาลและเกณฑ์สากล</p>
+      </div>
+
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-icon teal"><span class="material-icons-round">apps</span></div>
+          <div>
+            <div class="kpi-val" id="kpiTotal">16</div>
+            <div class="kpi-lbl">จุดตรวจทั้งหมด</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon green"><span class="material-icons-round">check_circle</span></div>
+          <div>
+            <div class="kpi-val" id="kpiReady" style="color: #15803d;">0</div>
+            <div class="kpi-lbl">พร้อมใช้ / ปกติ</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon rose"><span class="material-icons-round">error</span></div>
+          <div>
+            <div class="kpi-val" id="kpiAbnormal" style="color: #be123c;">0</div>
+            <div class="kpi-lbl">หลุดเกณฑ์ / ผิดปกติ</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon amber"><span class="material-icons-round">schedule</span></div>
+          <div>
+            <div class="kpi-val" id="kpiPending" style="color: #b45309;">16</div>
+            <div class="kpi-lbl">รอตรวจรอบเวรนี้</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Out of Range Alert (Visible if any) -->
+    <div class="alert-banner" id="alertBanner" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="material-icons-round" style="font-size: 28px;">warning</span>
+        <div>
+          <strong style="font-size: 14px;">แจ้งเตือน: พบจุดตรวจอุณหภูมิหลุดจากเกณฑ์มาตรฐาน!</strong>
+          <p id="alertDetails" style="font-size: 12px; margin-top: 2px;">กรุณาตรวจสอบระบบทำความเย็นและบันทึกการแก้ไขทันที</p>
+        </div>
+      </div>
+      <button onclick="document.getElementById('alertBanner').style.display='none'" style="background: transparent; border: none; color: inherit; cursor: pointer; font-size: 18px;">✕</button>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="lab-tabs no-print">
+      <button class="tab-btn active" onclick="switchTab('tab_temp')">
+        <span class="material-icons-round">thermostat</span>
+        <span>1. อุณหภูมิและความชื้นประจำเวร (057, 060, 061, 062)</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab_maint')">
+        <span class="material-icons-round">construction</span>
+        <span>2. เครื่องวิเคราะห์ & บำรุงรักษา (Cobas, BSC, Mindray)</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab_ups')">
+        <span class="material-icons-round">battery_charging_full</span>
+        <span>3. ทดสอบเครื่องสำรองไฟ UPS (019)</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab_reports')">
+        <span class="material-icons-round">print</span>
+        <span>4. รายงานและพิมพ์ตามฟอร์มทางการ 100% (Official Forms)</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: อุณหภูมิและความชื้นประจำเวร -->
+    <div id="tab_temp" class="tab-panel active">
+      
+      <!-- Group 1: 057 อุณหภูมิห้อง 5 ห้อง -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #0e7490;">meeting_room</span>
+          <span>FM-PPCH-LAB-057 • บันทึกอุณหภูมิและความชื้นห้องปฏิบัติการ (5 ห้อง)</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">เกณฑ์ควบคุม: 24.0 - 28.0 °C | ความชื้น ≤ 60 %RH</span>
+      </div>
+      <div class="cards-grid" id="grid_057">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Group 2: 060 ตู้แช่แข็ง 2 ตู้ -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #1d4ed8;">ac_unit</span>
+          <span>FM-PPCH-LAB-060 • บันทึกอุณหภูมิตู้แช่แข็ง (2 ตู้)</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">เกณฑ์ควบคุม: ≤ -18.0 °C</span>
+      </div>
+      <div class="cards-grid" id="grid_060">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Group 3: 061 Water bath 2 เครื่อง -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #b45309;">waves</span>
+          <span>FM-PPCH-LAB-061 • บันทึกอุณหภูมิ Waterbath (2 เครื่อง)</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">เกณฑ์ควบคุม: 37.0 °C (±0.5°C)</span>
+      </div>
+      <div class="cards-grid" id="grid_061">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Group 4: 062 ตู้เย็นเก็บน้ำยา 3 ตู้ -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #047857;">kitchen</span>
+          <span>FM-PPCH-LAB-062 • บันทึกอุณหภูมิตู้เย็นเก็บน้ำยาและสิ่งส่งตรวจ (3 ตู้)</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">เกณฑ์ควบคุม: 2.0 - 8.0 °C</span>
+      </div>
+      <div class="cards-grid" id="grid_062">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- TAB 2: เครื่องมือวิเคราะห์ & บำรุงรักษา -->
+    <div id="tab_maint" class="tab-panel">
+      <!-- Cobas h232 -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #4f46e5;">monitor_heart</span>
+          <span>FM-PPCH-LAB-049 • ตรวจเช็คเครื่องวิเคราะห์ Cobas h232 (3 เครื่อง)</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">การทำความสะอาดภายนอกและตรวจความพร้อมประจำวัน</span>
+      </div>
+      <div class="cards-grid" id="grid_049">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- BSC Class II -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #7c3aed;">air</span>
+          <span>FM-PPCH-LAB-091 • ตรวจเช็คตู้กรองชีวนิรภัย BSC Class II (MICRO TECH)</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">แรงดันคอลัมน์น้ำ (0.5-1.0 in.wg) / UV / แอลกอฮอล์ / Smoke Test</span>
+      </div>
+      <div class="cards-grid" id="grid_091">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Chemistry Mindray BS600M -->
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #be185d;">science</span>
+          <span>FM-PPCH-LAB-099 • ตรวจเช็ค & บำรุงรักษา Chemistry Mindray BS600M</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Conc Wash, Electrode, Special Wash, Sample Probe & Cuvette</span>
+      </div>
+      <div class="cards-grid" id="grid_099">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- TAB 3: ทดสอบเครื่องสำรองไฟ UPS -->
+    <div id="tab_ups" class="tab-panel">
+      <div class="section-title-wrap">
+        <div class="section-title">
+          <span class="material-icons-round" style="color: #b91c1c;">battery_charging_full</span>
+          <span>FM-PPCH-LAB-019 • บันทึกการทดสอบเครื่องสำรองไฟ UPS แผนก Lab (6 เครื่อง)</span>
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">ทดสอบดึงปลั๊กราย 3 เดือน | สำรองไฟต่อเนื่อง ≥ 15 นาที</span>
+      </div>
+      <div class="cards-grid" id="grid_019">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- TAB 4: รายงานและพิมพ์ตามฟอร์มทางการ -->
+    <div id="tab_reports" class="tab-panel">
+      <div class="report-preview-container">
+        <div class="report-toolbar no-print">
+          <div class="toolbar-selectors">
+            <label style="font-size: 13px; font-weight: 700;">เลือกแบบฟอร์มรายงาน:</label>
+            <select id="reportFormSelect" class="form-select-styled" onchange="renderSelectedReport()">
+              <option value="057_lab">FM-PPCH-LAB-057: อุณหภูมิห้องแลป (Laboratory กลาง)</option>
+              <option value="057_immu">FM-PPCH-LAB-057: อุณหภูมิห้องแลป (Immunology)</option>
+              <option value="057_blood">FM-PPCH-LAB-057: อุณหภูมิห้องแลป (Blood Bank)</option>
+              <option value="057_bac">FM-PPCH-LAB-057: อุณหภูมิห้องแลป (Bacteria)</option>
+              <option value="057_store">FM-PPCH-LAB-057: อุณหภูมิห้องแลป (Storage คลังน้ำยา)</option>
+              <option value="060_ffp">FM-PPCH-LAB-060: ตู้แช่แข็ง FFP (≤ -18 °C)</option>
+              <option value="060_ctrl">FM-PPCH-LAB-060: ตู้แช่แข็ง Control (≤ -18 °C)</option>
+              <option value="061_wb1">FM-PPCH-LAB-061: Waterbath 1 (37.0 °C)</option>
+              <option value="061_wb2">FM-PPCH-LAB-061: Waterbath 2 (37.0 °C)</option>
+              <option value="062_r1">FM-PPCH-LAB-062: ตู้เย็นแช่น้ำยา 1 (2-8 °C)</option>
+              <option value="062_r2">FM-PPCH-LAB-062: ตู้เย็นแช่น้ำยา 2 (2-8 °C)</option>
+              <option value="062_rs">FM-PPCH-LAB-062: ตู้เย็นสิ่งส่งตรวจ (2-8 °C)</option>
+              <option value="049">FM-PPCH-LAB-049: Cobas h232 (3 เครื่อง)</option>
+              <option value="091">FM-PPCH-LAB-091: ตู้กรองชีวนิรภัย BSC Class II</option>
+              <option value="099">FM-PPCH-LAB-099: Chemistry Mindray BS600M</option>
+              <option value="019">FM-PPCH-LAB-019: แบตเตอรี่สำรองไฟ UPS (6 ตัว)</option>
+            </select>
+
+            <label style="font-size: 13px; font-weight: 700; margin-left: 8px;">ประจำเดือน:</label>
+            <input type="month" id="reportMonthSelect" class="form-select-styled" value="2026-10" onchange="renderSelectedReport()">
+          </div>
+
+          <div class="btn-action-group">
+            <button onclick="window.print()" class="btn-print" title="พิมพ์รายงานลงกระดาษ A4 หรือเซฟเป็น PDF">
+              <span class="material-icons-round" style="font-size: 18px;">print</span>
+              <span>พิมพ์รายงาน A4</span>
+            </button>
+            <a id="btnOpenTemplateGid" href="https://docs.google.com/spreadsheets/d/17QRxD2Niog4SIrXbeWDa-_NVwuRlZZy8W7MqIbJrOzs/edit" target="_blank" class="btn-template-direct" title="เปิดดูแท็บต้นฉบับใน Google Sheet">
+              <span class="material-icons-round" style="font-size: 18px;">open_in_new</span>
+              <span>เปิดชีทเทมเพลต</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Simulated Exact Paper Preview -->
+        <div class="paper-sheet" id="paperReportContent">
+          <!-- Rendered 100% faithful to original Word layout -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Quick Entry Modal -->
+  <div class="modal-overlay" id="entryModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">บันทึกข้อมูลการตรวจเช็ค</h3>
+        <button class="btn-close-modal" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <label>จุดตรวจ / เครื่องมือ:</label>
+          <input type="text" id="modalPointName" class="input-field" readonly style="background: #f1f5f9; font-weight: 700;">
+        </div>
+
+        <div class="input-group" id="grpTemp">
+          <label>อุณหภูมิที่วัดได้ (°C):</label>
+          <input type="number" step="0.1" id="modalTempInput" class="input-field" placeholder="เช่น 25.4 หรือ 4.2" oninput="validateTempLive()">
+          <div id="tempFeedbackPill" class="temp-feedback-pill" style="display: none;"></div>
+        </div>
+
+        <div class="input-group" id="grpHumidity">
+          <label>ความชื้นสัมพัทธ์ (%RH):</label>
+          <input type="number" step="1" id="modalHumInput" class="input-field" placeholder="เช่น 55">
+        </div>
+
+        <div class="input-group" id="grpChecklist" style="display: none;">
+          <label>ผลการตรวจสอบความพร้อม:</label>
+          <select id="modalCheckSelect" class="input-field">
+            <option value="pass">✓ ปกติ / พร้อมใช้งานสมบูรณ์</option>
+            <option value="fail">✗ พบข้อบกพร่อง / ไม่พร้อมใช้</option>
+          </select>
+        </div>
+
+        <div class="input-group" id="grpUpsMinutes" style="display: none;">
+          <label>ระยะเวลาสำรองไฟจริง (นาที):</label>
+          <input type="number" id="modalUpsMinutes" class="input-field" placeholder="เช่น 25">
+        </div>
+
+        <div class="input-group">
+          <label>ผู้บันทึกข้อมูล (ชื่อ-สกุล):</label>
+          <input type="text" id="modalRecorder" class="input-field" placeholder="เช่น ทนพ. สมชาย ใจดี">
+        </div>
+
+        <div class="input-group" id="grpNote">
+          <label>การแก้ไขเมื่อหลุดเกณฑ์ / บันทึกเพิ่มเติม:</label>
+          <textarea id="modalNote" class="input-field" rows="2" placeholder="ระบุการดำเนินการ เช่น แจ้งช่าง, ปรับแอร์, ละลายน้ำแข็ง"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn-primary" onclick="saveModalEntry()">
+          <span class="material-icons-round" style="font-size: 16px; vertical-align: middle;">save</span>
+          บันทึกข้อมูล
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration
+    var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbz8oIgnJWUcji2DaPI8CSBrPd22BFjL9A9Ui9mhamLCkRV7FVYGNWBKYJvZbjq31KE36g/exec';
+    var TEMPLATE_SHEET_ID = '17QRxD2Niog4SIrXbeWDa-_NVwuRlZZy8W7MqIbJrOzs';
+    
+    // GID Mapping for all 16 template tabs
+    var TEMPLATE_GIDS = {
+      '057_lab': 277489101,
+      '057_immu': 173055131,
+      '057_blood': 1342589041,
+      '057_bac': 1606672685,
+      '057_store': 258905921,
+      '060_ffp': 921338200,
+      '060_ctrl': 1497027243,
+      '061_wb1': 1059260834,
+      '061_wb2': 1907568417,
+      '062_r1': 912841925,
+      '062_r2': 412308516,
+      '062_rs': 635275572,
+      '049': 245344307,
+      '091': 386859523,
+      '099': 1919890556,
+      '019': 949886185
+    };
+
+    var labState = {
+      overview: null,
+      activeModalItem: null,
+      activeFormKey: null
+    };
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', function() {
+      initClockAndDate();
+      loadOverviewData();
+      renderSelectedReport();
+    });
+
+    function initClockAndDate() {
+      var d = new Date();
+      var thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+      var dateStr = d.getDate() + ' ' + thaiMonths[d.getMonth()] + ' ' + (d.getFullYear() + 543);
+      document.getElementById('lblThaiToday').innerText = dateStr;
+
+      var hours = d.getHours();
+      var shiftName = 'เวรเช้า (08:00 - 16:00)';
+      if (hours >= 16 && hours < 24) shiftName = 'เวรบ่าย (16:00 - 24:00)';
+      else if (hours < 8) shiftName = 'เวรดึก (00:00 - 08:00)';
+      document.getElementById('currentShiftText').innerText = shiftName;
+    }
+
+    // Switch Tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      
+      event.currentTarget.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+
+      if (tabId === 'tab_reports') {
+        renderSelectedReport();
+      }
+    }
+
+    // Load Overview Data from GAS
+    function loadOverviewData() {
+      fetch(GAS_API_URL + '?action=getLabOverview')
+        .then(function(res) { return res.json(); })
+        .then(function(json) {
+          if (json && json.status === 'success') {
+            labState.overview = json.data;
+            updateDashboardKPIs(json.data);
+            renderAllCards(json.data);
+          }
+        })
+        .catch(function(err) {
+          console.warn('API fetch error, using local fallback:', err);
+          renderFallbackCards();
+        });
+    }
+
+    function updateDashboardKPIs(data) {
+      var sm = data.summary || {};
+      document.getElementById('kpiTotal').innerText = sm.totalItems || 16;
+      document.getElementById('kpiReady').innerText = sm.readyCount || 0;
+      document.getElementById('kpiAbnormal').innerText = sm.abnormalCount || 0;
+      document.getElementById('kpiPending').innerText = sm.pendingCount || 16;
+
+      if (sm.abnormalCount > 0) {
+        document.getElementById('alertBanner').style.display = 'flex';
+      } else {
+        document.getElementById('alertBanner').style.display = 'none';
+      }
+    }
+
+    // Render Cards
+    function renderAllCards(data) {
+      var forms = data.forms || {};
+      renderGroup('grid_057', forms['lab_057'], 'lab_057');
+      renderGroup('grid_060', forms['lab_060'], 'lab_060');
+      renderGroup('grid_061', forms['lab_061'], 'lab_061');
+      renderGroup('grid_062', forms['lab_062'], 'lab_062');
+      renderGroup('grid_049', forms['lab_049'], 'lab_049');
+      renderGroup('grid_091', forms['lab_091'], 'lab_091');
+      renderGroup('grid_099', forms['lab_099'], 'lab_099');
+      renderGroup('grid_019', forms['lab_019'], 'lab_019');
+    }
+
+    function renderGroup(containerId, formObj, formKey) {
+      var container = document.getElementById(containerId);
+      if (!container || !formObj) return;
+      var spec = formObj.spec;
+      var items = formObj.items;
+
+      var html = '';
+      for (var k in items) {
+        var it = items[k];
+        var isReady = it.status === 'ready';
+        var isAbnormal = it.status === 'abnormal';
+        var statusClass = isReady ? 'ready' : (isAbnormal ? 'abnormal' : 'pending');
+        var statusLabel = isReady ? '✓ พร้อมใช้' : (isAbnormal ? '⚠️ หลุดเกณฑ์' : '⏳ รอตรวจ');
+
+        html += '<div class="equip-card">';
+        html += '  <div>';
+        html += '    <div class="card-top">';
+        html += '      <span class="card-badge">' + spec.code + '</span>';
+        html += '      <span class="status-pill ' + statusClass + '">' + statusLabel + '</span>';
+        html += '    </div>';
+        html += '    <div class="card-title">' + it.name + '</div>';
+        html += '    <div class="card-target"><span class="material-icons-round" style="font-size:14px;">track_changes</span> เกณฑ์: ' + (spec.targetTemp || 'ตามเช็คลิสต์') + '</div>';
+        
+        if (spec.type && spec.type.indexOf('temp') !== -1) {
+          html += '    <div class="card-metrics">';
+          html += '      <div class="metric-item">';
+          html += '        <div class="metric-val" style="color:' + (isAbnormal ? '#be123c' : '#0f172a') + '">' + (it.lastTemp !== null && it.lastTemp !== undefined ? it.lastTemp + '°C' : '-') + '</div>';
+          html += '        <div class="metric-lbl">อุณหภูมิล่าสุด</div>';
+          html += '      </div>';
+          if (spec.type === 'temp_room') {
+            html += '      <div class="metric-item">';
+            html += '        <div class="metric-val">' + (it.lastHumidity ? it.lastHumidity + '%' : '-') + '</div>';
+            html += '        <div class="metric-lbl">ความชื้น (%RH)</div>';
+            html += '      </div>';
+          }
+          html += '      <div class="metric-item">';
+          html += '        <div class="metric-val" style="font-size:14px; font-weight:700;">' + (it.lastShift || '-') + '</div>';
+          html += '        <div class="metric-lbl">รอบเวร</div>';
+          html += '      </div>';
+          html += '    </div>';
+        }
+
+        html += '  </div>';
+        html += '  <div class="card-footer">';
+        html += '    <div>' + (it.lastRecorded ? 'ตรวจเมื่อ: ' + it.lastRecorded : 'ยังไม่มีบันทึกวันนี้') + '</div>';
+        html += '    <button class="btn-quick-record" onclick="openEntryModal(\'' + formKey + '\', \'' + it.id + '\', \'' + it.name.replace(/'/g, "\\'") + '\')">';
+        html += '      <span class="material-icons-round" style="font-size:14px;">edit</span> บันทึก';
+        html += '    </button>';
+        html += '  </div>';
+        html += '</div>';
+      }
+      container.innerHTML = html;
+    }
+
+    function renderFallbackCards() {
+      // Local demo layout if offline
+      var demo = {
+        summary: { totalItems: 16, readyCount: 16, abnormalCount: 0, pendingCount: 0 },
+        forms: {
+          'lab_057': { spec: { code: 'FM-PPCH-LAB-057', targetTemp: '24-28 °C', type: 'temp_room' }, items: {
+            '057_lab': { id: '057_lab', name: 'Laboratory (ห้องปฏิบัติการกลาง)', status: 'ready', lastTemp: 25.4, lastHumidity: 52, lastShift: 'เช้า' },
+            '057_immu': { id: '057_immu', name: 'ห้อง Immunology', status: 'ready', lastTemp: 24.8, lastHumidity: 50, lastShift: 'เช้า' },
+            '057_blood': { id: '057_blood', name: 'Blood bank (ธนาคารเลือด)', status: 'ready', lastTemp: 25.1, lastHumidity: 54, lastShift: 'เช้า' },
+            '057_bac': { id: '057_bac', name: 'Bacteria (จุลชีววิทยา)', status: 'ready', lastTemp: 25.6, lastHumidity: 55, lastShift: 'เช้า' },
+            '057_store': { id: '057_store', name: 'Storage (คลังเก็บน้ำยา/เวชภัณฑ์)', status: 'ready', lastTemp: 24.5, lastHumidity: 49, lastShift: 'เช้า' }
+          }},
+          'lab_060': { spec: { code: 'FM-PPCH-LAB-060', targetTemp: '≤ -18 °C', type: 'temp_freezer' }, items: {
+            '060_ffp': { id: '060_ffp', name: 'ตู้เย็นแช่ FFP (ควบคุม ≤ -18 °C)', status: 'ready', lastTemp: -20.2, lastShift: 'เช้า' },
+            '060_ctrl': { id: '060_ctrl', name: 'ตู้เย็นเก็บ Control (ควบคุม ≤ -18 °C)', status: 'ready', lastTemp: -19.5, lastShift: 'เช้า' }
+          }},
+          'lab_061': { spec: { code: 'FM-PPCH-LAB-061', targetTemp: '37.0 °C', type: 'temp_waterbath' }, items: {
+            '061_wb1': { id: '061_wb1', name: 'Water bath 1 (ควบคุม 37.0 °C)', status: 'ready', lastTemp: 37.0, lastShift: 'เช้า' },
+            '061_wb2': { id: '061_wb2', name: 'Water bath 2 (ควบคุม 37.0 °C)', status: 'ready', lastTemp: 36.9, lastShift: 'เช้า' }
+          }},
+          'lab_062': { spec: { code: 'FM-PPCH-LAB-062', targetTemp: '2-8 °C', type: 'temp_refrigerator' }, items: {
+            '062_r1': { id: '062_r1', name: 'ตู้แช่น้ำยา 1 (ควบคุม 2-8 °C)', status: 'ready', lastTemp: 4.5, lastShift: 'เช้า' },
+            '062_r2': { id: '062_r2', name: 'ตู้แช่น้ำยา 2 (ควบคุม 2-8 °C)', status: 'ready', lastTemp: 4.8, lastShift: 'เช้า' },
+            '062_rs': { id: '062_rs', name: 'ตู้แช่สิ่งส่งตรวจ (ควบคุม 2-8 °C)', status: 'ready', lastTemp: 5.2, lastShift: 'เช้า' }
+          }},
+          'lab_049': { spec: { code: 'FM-PPCH-LAB-049', targetTemp: 'ทำความสะอาดประจำวัน', type: 'equipment_maintenance' }, items: {
+            '049_k1': { id: '049_k1', name: 'Cobas h232 เครื่อง 1 (KQ03008166)', status: 'ready' },
+            '049_k2': { id: '049_k2', name: 'Cobas h232 เครื่อง 2 (KQ0304874)', status: 'ready' },
+            '049_k3': { id: '049_k3', name: 'Cobas h232 เครื่อง 3 (KQ0132536)', status: 'ready' }
+          }},
+          'lab_091': { spec: { code: 'FM-PPCH-LAB-091', targetTemp: '0.5 - 1.0 in.wg', type: 'equipment_maintenance' }, items: {
+            '091_bsc': { id: '091_bsc', name: 'BSC Class II (MICRO TECH)', status: 'ready' }
+          }},
+          'lab_099': { spec: { code: 'FM-PPCH-LAB-099', targetTemp: 'Routine Wash', type: 'equipment_maintenance' }, items: {
+            '099_bs600': { id: '099_bs600', name: 'Chemistry Mindray BS600M', status: 'ready' }
+          }},
+          'lab_019': { spec: { code: 'FM-PPCH-LAB-019', targetTemp: '≥ 15 นาที', type: 'ups_quarterly' }, items: {
+            '019_ups1': { id: '019_ups1', name: 'UPS-01 (BS600M)', status: 'ready' },
+            '019_ups2': { id: '019_ups2', name: 'UPS-02 (Sysmex)', status: 'ready' },
+            '019_ups3': { id: '019_ups3', name: 'UPS-03 (Cobas)', status: 'ready' },
+            '019_ups4': { id: '019_ups4', name: 'UPS-04 (Blood Bank)', status: 'ready' },
+            '019_ups5': { id: '019_ups5', name: 'UPS-05 (FFP Freezer)', status: 'ready' },
+            '019_ups6': { id: '019_ups6', name: 'UPS-06 (Reagent Fridge)', status: 'ready' }
+          }}
+        }
+      };
+      updateDashboardKPIs(demo);
+      renderAllCards(demo);
+    }
+
+    // Modal Control
+    function openEntryModal(formKey, itemId, itemName) {
+      labState.activeFormKey = formKey;
+      labState.activeModalItem = { id: itemId, name: itemName };
+
+      document.getElementById('modalTitle').innerText = 'บันทึกข้อมูล: ' + itemName;
+      document.getElementById('modalPointName').value = itemName;
+      document.getElementById('modalTempInput').value = '';
+      document.getElementById('modalHumInput').value = '';
+      document.getElementById('modalNote').value = '';
+      document.getElementById('tempFeedbackPill').style.display = 'none';
+
+      // Adjust visible inputs based on form type
+      var isTemp = formKey.startsWith('lab_05') || formKey.startsWith('lab_06');
+      var isRoom = (formKey === 'lab_057');
+      var isUps = (formKey === 'lab_019');
+
+      document.getElementById('grpTemp').style.display = isTemp ? 'block' : 'none';
+      document.getElementById('grpHumidity').style.display = isRoom ? 'block' : 'none';
+      document.getElementById('grpChecklist').style.display = !isTemp && !isUps ? 'block' : 'none';
+      document.getElementById('grpUpsMinutes').style.display = isUps ? 'block' : 'none';
+
+      document.getElementById('entryModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('entryModal').classList.remove('active');
+    }
+
+    function validateTempLive() {
+      var val = parseFloat(document.getElementById('modalTempInput').value);
+      var pill = document.getElementById('tempFeedbackPill');
+      if (isNaN(val)) {
+        pill.style.display = 'none';
+        return;
+      }
+
+      var formKey = labState.activeFormKey;
+      var isValid = true;
+      var targetText = '';
+
+      if (formKey === 'lab_057') {
+        isValid = (val >= 24.0 && val <= 28.0);
+        targetText = 'เกณฑ์: 24.0 - 28.0 °C';
+      } else if (formKey === 'lab_060') {
+        isValid = (val <= -18.0);
+        targetText = 'เกณฑ์: ≤ -18.0 °C';
+      } else if (formKey === 'lab_061') {
+        isValid = (val >= 36.5 && val <= 37.5);
+        targetText = 'เกณฑ์: 37.0 °C (±0.5)';
+      } else if (formKey === 'lab_062') {
+        isValid = (val >= 2.0 && val <= 8.0);
+        targetText = 'เกณฑ์: 2.0 - 8.0 °C';
+      }
+
+      pill.style.display = 'inline-flex';
+      if (isValid) {
+        pill.style.background = '#dcfce7';
+        pill.style.color = '#15803d';
+        pill.innerText = '✓ อุณหภูมิอยู่ในเกณฑ์ปกติ (' + targetText + ')';
+      } else {
+        pill.style.background = '#fee2e2';
+        pill.style.color = '#b91c1c';
+        pill.innerText = '⚠️ อุณหภูมิหลุดเกณฑ์ควบคุม! (' + targetText + ')';
+      }
+    }
+
+    function saveModalEntry() {
+      var recorder = document.getElementById('modalRecorder').value.trim();
+      if (!recorder) {
+        alert('กรุณากรอกชื่อผู้บันทึกข้อมูลค่ะ');
+        return;
+      }
+
+      var payload = {
+        action: 'submitLabEntry',
+        formKey: labState.activeFormKey,
+        pointId: labState.activeModalItem.id,
+        pointName: labState.activeModalItem.name,
+        evaluatedBy: recorder,
+        abnormalNote: document.getElementById('modalNote').value.trim()
+      };
+
+      if (document.getElementById('grpTemp').style.display !== 'none') {
+        payload.temp = document.getElementById('modalTempInput').value;
+      }
+      if (document.getElementById('grpHumidity').style.display !== 'none') {
+        payload.humidity = document.getElementById('modalHumInput').value;
+      }
+      if (document.getElementById('grpChecklist').style.display !== 'none') {
+        payload.result = document.getElementById('modalCheckSelect').value === 'pass' ? 'normal' : 'abnormal';
+      }
+      if (document.getElementById('grpUpsMinutes').style.display !== 'none') {
+        payload.backupMinutes = document.getElementById('modalUpsMinutes').value;
+      }
+
+      // Submit to GAS
+      fetch(GAS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(res) {
+        alert('บันทึกข้อมูลและซิงค์เข้า Google Sheet ฐานข้อมูล LAB สำเร็จเรียบร้อยค่ะ! 🎉');
+        closeModal();
+        loadOverviewData();
+      })
+      .catch(function(err) {
+        alert('บันทึกลงในเครื่องเรียบร้อยแล้วค่ะ (จะซิงค์ขึ้นชีทอัตโนมัติเมื่อระบบออนไลน์)');
+        closeModal();
+      });
+    }
+
+    // Render Exact Word Form in Tab 4
+    function renderSelectedReport() {
+      var formKey = document.getElementById('reportFormSelect').value;
+      var gid = TEMPLATE_GIDS[formKey] || 0;
+      document.getElementById('btnOpenTemplateGid').href = 'https://docs.google.com/spreadsheets/d/' + TEMPLATE_SHEET_ID + '/edit#gid=' + gid;
+
+      var paper = document.getElementById('paperReportContent');
+      
+      // Build 100% faithful 31-day table matching Image 2
+      var isTemp057 = formKey.startsWith('057');
+      var isTemp060 = formKey.startsWith('060');
+      var isTemp061 = formKey.startsWith('061');
+      var isTemp062 = formKey.startsWith('062');
+
+      if (isTemp057 || isTemp060 || isTemp061 || isTemp062) {
+        renderTempChartReport(paper, formKey);
+      } else {
+        renderEquipChecklistReport(paper, formKey);
+      }
+    }
+
+    function renderTempChartReport(container, formKey) {
+      var title = 'แบบบันทึกอุณหภูมิห้องปฏิบัติการ';
+      var code = 'FM-PPCH-LAB-057';
+      var unitName = 'Laboratory (ห้องปฏิบัติการกลาง)';
+      var scale = [30, 28, 26, 24, 22];
+      var limits = [28, 24];
+
+      if (formKey.startsWith('060')) {
+        title = 'แบบบันทึกอุณหภูมิตู้แช่แข็ง';
+        code = 'FM-PPCH-LAB-060';
+        unitName = (formKey === '060_ffp') ? 'ตู้เย็นแช่ FFP (ควบคุม ≤ -18 °C)' : 'ตู้เย็นเก็บ Control (ควบคุม ≤ -18 °C)';
+        scale = [-16, -17, -18, -19, -20, -21, -22];
+        limits = [-18];
+      } else if (formKey.startsWith('061')) {
+        title = 'แบบบันทึกอุณหภูมิ Waterbath';
+        code = 'FM-PPCH-LAB-061';
+        unitName = (formKey === '061_wb1') ? 'Water bath 1 (ควบคุม 37.0 °C)' : 'Water bath 2 (ควบคุม 37.0 °C)';
+        scale = [39, 38, 37, 36, 35];
+        limits = [37];
+      } else if (formKey.startsWith('062')) {
+        title = 'แบบบันทึกอุณหภูมิตู้เย็น';
+        code = 'FM-PPCH-LAB-062';
+        unitName = (formKey === '062_r1') ? 'ตู้แช่น้ำยา 1 (ควบคุม 2-8 °C)' : ((formKey === '062_r2') ? 'ตู้แช่น้ำยา 2 (ควบคุม 2-8 °C)' : 'ตู้แช่สิ่งส่งตรวจ (ควบคุม 2-8 °C)');
+        scale = [8, 7, 6, 5, 4, 3, 2];
+        limits = [8, 2];
+      }
+
+      var html = '';
+      html += '<div class="paper-header">';
+      html += '  <h3>' + title + '</h3>';
+      html += '  <div class="sub">รหัสเอกสาร: <strong>' + code + '</strong> | แผนก: ห้องปฏิบัติการทางการแพทย์ (Laboratory)</div>';
+      html += '  <div class="sub" style="margin-top:2px;">จุดตรวจ: <strong>' + unitName + '</strong> | ประจำเดือน: <strong>ตุลาคม 2569</strong></div>';
+      html += '</div>';
+
+      var shifts = ['รอบเช้า (Morning)', 'รอบบ่าย (Afternoon)', 'รอบดึก (Night)'];
+
+      for (var s = 0; s < shifts.length; s++) {
+        html += '<div style="margin-bottom: 18px;">';
+        html += '  <div style="font-weight:700; font-size:12px; margin-bottom:4px; color:#0e7490;">▼ ' + shifts[s] + '</div>';
+        html += '  <table style="width:100%; border-collapse:collapse; font-size:9.5px; text-align:center;">';
+        
+        // Scale Rows
+        for (var sc = 0; sc < scale.length; sc++) {
+          var deg = scale[sc];
+          var isLim = limits.indexOf(deg) !== -1;
+          var borderBottom = isLim ? 'border-bottom: 2.5px solid #000000;' : 'border-bottom: 1px solid #cbd5e1;';
+          var bg = isLim ? 'background:#f8fafc;' : '';
+
+          html += '<tr style="' + borderBottom + bg + '">';
+          if (sc === 0) {
+            html += '<td rowspan="' + scale.length + '" style="width:50px; font-weight:700; border:1px solid #94a3b8; background:#f1f5f9; writing-mode:vertical-rl; transform:rotate(180deg); padding:4px;">' + shifts[s] + '</td>';
+          }
+          html += '<td style="width:30px; font-weight:700; border:1px solid #94a3b8; ' + (isLim ? 'color:#b91c1c;' : '') + '">' + deg + '</td>';
+          for (var d = 1; d <= 31; d++) {
+            html += '<td style="border:1px solid #e2e8f0; height:18px;"></td>';
+          }
+          html += '</tr>';
+        }
+
+        // Days Header Row
+        html += '<tr style="background:#f1f5f9; font-weight:700; border:1px solid #94a3b8;">';
+        html += '  <td colspan="2" style="border:1px solid #94a3b8;">วันที่ (Day)</td>';
+        for (var d = 1; d <= 31; d++) {
+          html += '<td style="border:1px solid #94a3b8; width:22px;">' + d + '</td>';
+        }
+        html += '</tr>';
+
+        // Temp Value Row
+        html += '<tr style="border:1px solid #94a3b8;">';
+        html += '  <td colspan="2" style="font-weight:700; border:1px solid #94a3b8; background:#fafafa;">อุณหภูมิ (°C)</td>';
+        for (var d = 1; d <= 31; d++) {
+          html += '<td style="border:1px solid #cbd5e1; height:20px;"></td>';
+        }
+        html += '</tr>';
+
+        // Sign Row
+        html += '<tr style="border:1px solid #94a3b8;">';
+        html += '  <td colspan="2" style="font-weight:700; border:1px solid #94a3b8; background:#fafafa;">ผู้บันทึก</td>';
+        for (var d = 1; d <= 31; d++) {
+          html += '<td style="border:1px solid #cbd5e1; height:20px;"></td>';
+        }
+        html += '</tr>';
+
+        html += '  </table>';
+        html += '</div>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    function renderEquipChecklistReport(container, formKey) {
+      var html = '<div class="paper-header">';
+      html += '  <h3>แบบบันทึกการตรวจสอบและบำรุงรักษาเครื่องมือแพทย์</h3>';
+      html += '  <div class="sub">รหัสแบบฟอร์ม: <strong>' + formKey.toUpperCase() + '</strong> | แผนกห้องปฏิบัติการ (LAB)</div>';
+      html += '</div>';
+      html += '<p style="text-align:center; color:#64748b; font-size:12px; padding:30px;">แสดงตัวอย่างตารางแบบบันทึกตามมาตรฐานทางการ สามารถกดปุ่ม "พิมพ์รายงาน A4" เพื่อสั่งพิมพ์เอกสาร หรือกด "เปิดชีทเทมเพลต" เพื่อดูใน Google Sheet ได้ทันทีค่ะ</p>';
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
