@@ -51,14 +51,14 @@
       background-attachment: fixed;
     }
 
-    /* Left Sidebar (Frosted Glass Workstation Control Panel) */
+    /* Left Sidebar (Tactical Dark Slate Command Rail) */
     .app-sidebar {
-      width: 320px;
-      min-width: 320px;
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: var(--glass-blur-md);
-      -webkit-backdrop-filter: var(--glass-blur-md);
-      border-right: 1px solid var(--glass-border-light);
+      width: 255px;
+      min-width: 255px;
+      background: linear-gradient(180deg, #090d16 0%, #0f172a 55%, #1e293b 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       flex-direction: column;
       position: sticky;
@@ -66,18 +66,16 @@
       height: 100vh;
       overflow-y: auto;
       z-index: 50;
-      box-shadow: 4px 0 24px rgba(15, 23, 42, 0.04);
+      box-shadow: 4px 0 28px rgba(0, 0, 0, 0.28);
       transition: width 0.25s var(--ease-tactile);
+      color: #f1f5f9;
     }
 
     .sidebar-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      background: linear-gradient(135deg, rgba(9, 13, 22, 0.95) 0%, rgba(15, 23, 42, 0.90) 45%, rgba(30, 58, 138, 0.92) 100%);
-      backdrop-filter: var(--glass-blur-md);
-      -webkit-backdrop-filter: var(--glass-blur-md);
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: transparent;
       color: #ffffff;
-      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .sidebar-brand {
@@ -89,17 +87,16 @@
     }
 
     .brand-logo-squircle {
-      width: 44px;
-      height: 44px;
-      background: rgba(255, 255, 255, 0.95);
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.96);
       border: 1px solid rgba(255, 255, 255, 0.85);
-      border-radius: 12px;
-      padding: 5px;
+      border-radius: 11px;
+      padding: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 1);
-      backdrop-filter: var(--glass-blur-sm);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.35), inset 0 1px 0 rgba(255, 255, 255, 1);
       flex-shrink: 0;
       transition: transform 0.2s var(--ease-tactile);
     }
@@ -109,64 +106,64 @@
     }
 
     .sidebar-body {
-      padding: 18px 16px;
+      padding: 14px 14px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
       flex: 1;
     }
 
     .sidebar-section-title {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--glass-text-dim);
+      letter-spacing: 0.09em;
+      color: #94a3b8;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    /* Nav View Buttons (Tactile Glass Pills) */
+    /* Nav View Buttons (Tactile Command Rail Pills) */
     .view-nav-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
 
     .view-nav-btn {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 11px 16px;
-      border-radius: var(--radius-md);
+      gap: 11px;
+      padding: 9.5px 12px;
+      border-radius: 10px;
       border: 1px solid transparent;
       background: transparent;
-      color: var(--glass-text-muted);
-      font-size: 13px;
+      color: #cbd5e1;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       text-align: left;
-      transition: all 0.22s var(--ease-tactile);
+      transition: all 0.2s var(--ease-tactile);
       width: 100%;
       position: relative;
     }
 
     .view-nav-btn:hover {
-      background: rgba(241, 245, 249, 0.75);
-      color: var(--glass-text-main);
-      transform: translateX(3px);
-      border-color: rgba(203, 213, 225, 0.45);
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
+      transform: translateX(2px);
+      border-color: rgba(255, 255, 255, 0.1);
     }
 
     .view-nav-btn.active {
-      background: var(--glass-primary-gradient) !important;
-      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
       color: #ffffff !important;
       font-weight: 700;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transform: translateX(3px);
     }
 
     .view-nav-btn.active .material-icons-round {
@@ -174,37 +171,38 @@
     }
 
     .view-nav-btn .material-icons-round {
-      font-size: 20px;
-      color: var(--glass-text-dim);
+      font-size: 19px;
+      color: #94a3b8;
       transition: color 0.2s ease;
     }
 
     /* Filter Controls in Sidebar (Frosted Glass Surfaces) */
+    /* Filter Controls in Sidebar (Dark Frosted Inputs) */
     .filter-item {
       margin-bottom: 12px;
     }
 
     .filter-item label {
       display: block;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
-      color: var(--glass-text-muted);
+      color: #94a3b8;
       margin-bottom: 5px;
     }
 
     .filter-item input,
     .filter-item select {
       width: 100%;
-      padding: 9px 12px;
-      border: 1.5px solid var(--glass-border-frosted);
-      border-radius: var(--radius-md);
-      font-size: 12.5px;
+      padding: 8px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      font-size: 12px;
       font-weight: 500;
-      color: var(--glass-text-main);
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: var(--glass-blur-sm);
-      -webkit-backdrop-filter: var(--glass-blur-sm);
-      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+      color: #f8fafc;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
       outline: none;
       transition: all 0.2s var(--ease-tactile);
       font-family: inherit;
@@ -212,50 +210,49 @@
 
     .filter-item input:hover,
     .filter-item select:hover {
-      border-color: #94a3b8;
-      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(15, 23, 42, 0.85);
     }
 
     .filter-item input:focus,
     .filter-item select:focus {
-      background: #ffffff;
-      border-color: var(--glass-primary);
-      box-shadow: 0 0 0 3px var(--glass-primary-glow), inset 0 1px 2px rgba(15, 23, 42, 0.03);
+      background: #0f172a;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
     .quick-date-group {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       margin-top: 6px;
     }
 
     .quick-date-btn {
       flex: 1;
-      padding: 6.5px 8px;
+      padding: 6px 8px;
       font-size: 11px;
       font-weight: 600;
-      border: 1px solid var(--glass-border-frosted);
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 7px;
       cursor: pointer;
-      color: var(--glass-text-muted);
-      backdrop-filter: var(--glass-blur-sm);
+      color: #cbd5e1;
+      backdrop-filter: blur(8px);
       transition: all 0.18s var(--ease-tactile);
       text-align: center;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 
     .quick-date-btn:hover {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-      color: var(--glass-text-main);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
     }
 
     .quick-date-btn.active {
-      background: var(--glass-primary-gradient);
+      background: #2563eb;
       border-color: transparent;
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
       font-weight: 700;
     }
 
@@ -263,9 +260,9 @@
     .sidebar-actions {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
       padding-top: 14px;
-      border-top: 1px solid var(--glass-border-subtle);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .sidebar-btn {
@@ -273,8 +270,8 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 9.5px 12px;
-      border-radius: var(--radius-md);
+      padding: 9px 12px;
+      border-radius: 9px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
@@ -292,64 +289,62 @@
     }
 
     .sidebar-btn-primary {
-      background: var(--glass-primary-gradient);
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
     }
     .sidebar-btn-primary:hover {
-      background: linear-gradient(135deg, #172554 0%, #1d4ed8 100%);
-      box-shadow: 0 6px 18px rgba(30, 64, 175, 0.35);
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
       color: #ffffff;
     }
 
     .sidebar-btn-teal {
-      background: var(--glass-teal-gradient);
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
     }
     .sidebar-btn-teal:hover {
-      background: linear-gradient(135deg, #115e59 0%, #0f766e 100%);
-      box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+      background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+      box-shadow: 0 6px 18px rgba(13, 148, 136, 0.45);
       color: #ffffff;
     }
 
     .sidebar-btn-outline {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: var(--glass-blur-sm);
-      border: 1px solid var(--glass-border-frosted);
-      color: var(--glass-text-main);
-      box-shadow: var(--glass-shadow-ambient);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
     }
     .sidebar-btn-outline:hover {
-      background: #ffffff;
-      border-color: #94a3b8;
-      color: var(--glass-primary);
-      box-shadow: var(--glass-shadow-card);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
     .sidebar-status-pill {
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: var(--glass-blur-sm);
-      -webkit-backdrop-filter: var(--glass-blur-sm);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--glass-border-light);
+      padding: 9px 12px;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 11.5px;
-      color: var(--glass-text-muted);
+      color: #94a3b8;
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: var(--glass-shadow-ambient);
     }
 
     /* Main Workstation View */
     .workstation-main {
       flex: 1;
-      padding: 24px 36px;
+      padding: 22px 28px;
       overflow-y: auto;
-      max-width: calc(100% - 320px);
+      max-width: calc(100% - 255px);
     }
 
     @media (max-width: 1024px) {
@@ -485,67 +480,163 @@
       box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
     }
 
-    /* ==================== TACTILE GLASS KPI STRIP & SQUIRCLE ICONS ==================== */
-    .kpi-strip {
-      display: grid;
-      gap: 14px;
-      margin-bottom: 20px;
+    /* ==================== EXECUTIVE SINGLE-ROW KPI STRIP ==================== */
+    .kpi-strip,
+    .kpi-strip.kpi-grid-5 {
+      display: grid !important;
+      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      margin-bottom: 16px !important;
+      width: 100% !important;
+    }
+
+    @media (max-width: 992px) {
+      .kpi-strip,
+      .kpi-strip.kpi-grid-5 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .kpi-strip,
+      .kpi-strip.kpi-grid-5 {
+        grid-template-columns: 1fr !important;
+      }
     }
 
     .kpi-mini-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.82) 100%);
-      backdrop-filter: var(--glass-blur-md);
-      -webkit-backdrop-filter: var(--glass-blur-md);
-      border: 1px solid var(--glass-border-light);
-      border-radius: var(--radius-lg);
-      padding: 14px 16px;
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 14px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      box-shadow: var(--glass-shadow-card);
-      transition: transform 0.25s var(--ease-tactile),
-                  box-shadow 0.25s var(--ease-tactile),
-                  border-color 0.25s var(--ease-tactile);
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.03);
+      transition: transform 0.22s var(--ease-tactile),
+                  box-shadow 0.22s var(--ease-tactile),
+                  border-color 0.22s var(--ease-tactile);
+      min-width: 0;
     }
 
     .kpi-mini-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--glass-shadow-hover);
-      border-color: rgba(147, 197, 253, 0.85);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      border-color: #cbd5e1;
     }
 
     .kpi-mini-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 20px;
       flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-      transition: transform 0.2s var(--ease-tactile);
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
     }
 
-    .icon-blue { background: rgba(239, 246, 255, 0.90); color: #1d4ed8; border: 1px solid rgba(191, 219, 254, 0.75); }
-    .icon-teal { background: rgba(240, 253, 250, 0.90); color: #0f766e; border: 1px solid rgba(153, 246, 228, 0.75); }
-    .icon-green { background: rgba(236, 253, 245, 0.90); color: #059669; border: 1px solid rgba(167, 243, 208, 0.75); }
-    .icon-red { background: rgba(254, 242, 242, 0.90); color: #dc2626; border: 1px solid rgba(254, 202, 202, 0.75); }
-    .icon-amber { background: rgba(255, 251, 235, 0.90); color: #d97706; border: 1px solid rgba(253, 230, 138, 0.75); }
+    .icon-blue { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+    .icon-teal { background: #f0fdfa; color: #0d9488; border: 1px solid #99f6e4; }
+    .icon-green { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .icon-red { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .icon-amber { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
 
     .kpi-mini-num {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 800;
       line-height: 1.15;
-      color: var(--glass-text-main);
+      color: #0f172a;
       letter-spacing: -0.02em;
+      font-family: 'Inter', var(--font-sans);
     }
 
     .kpi-mini-lbl {
       font-size: 11px;
       font-weight: 600;
-      color: var(--glass-text-dim);
+      color: #64748b;
       margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ==================== INTERACTIVE WARD QUICK SWITCHER BAR ==================== */
+    .ward-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 2px 2px 14px 2px;
+      margin-bottom: 6px;
+      scrollbar-width: thin;
+    }
+
+    .ward-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6.5px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      user-select: none;
+    }
+
+    .ward-pill-btn:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+      transform: translateY(-1px);
+    }
+
+    .ward-pill-btn.active {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      border-color: #0f172a !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.22) !important;
+    }
+
+    .ward-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-er { background: #ef4444; }
+    .dot-icu { background: #3b82f6; }
+    .dot-or { background: #10b981; }
+
+    /* Category Header Mini Progress Bar */
+    .cat-progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cat-progress-track {
+      width: 90px;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cat-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 9999px;
+      transition: width 0.3s ease;
     }
 
     /* ==================== CATEGORY CARDS & DATA TABLES ==================== */
@@ -1239,6 +1330,35 @@
             <div class="kpi-mini-lbl">ยังไม่ตรวจเช็ค</div>
           </div>
         </div>
+      </div>
+
+      <!-- Interactive Ward / Department Quick Switcher Bar -->
+      <div class="ward-filter-bar no-print" id="wardFilterBar">
+        <button class="ward-pill-btn active" data-ward="all" onclick="selectWardFilter('all')">
+          <span class="material-icons-round" style="font-size: 15px;">apps</span>
+          <span>ทุกแผนก (32)</span>
+        </button>
+        <button class="ward-pill-btn" data-ward="ER" onclick="selectWardFilter('ER')">
+          <span class="ward-badge-dot dot-er"></span>
+          <span>🚨 แผนกอุบัติเหตุฉุกเฉิน (ER)</span>
+        </button>
+        <button class="ward-pill-btn" data-ward="ICU" onclick="selectWardFilter('ICU')">
+          <span class="ward-badge-dot dot-icu"></span>
+          <span>🩺 หอผู้ป่วยวิกฤต (ICU)</span>
+        </button>
+        <button class="ward-pill-btn" data-ward="OR" onclick="selectWardFilter('OR')">
+          <span class="ward-badge-dot dot-or"></span>
+          <span>🏥 ห้องผ่าตัด (OR)</span>
+        </button>
+        <button class="ward-pill-btn" data-ward="WARD23" onclick="selectWardFilter('WARD23')">
+          <span>🛏️ หอผู้ป่วย 2-3 (Ward 2-3)</span>
+        </button>
+        <button class="ward-pill-btn" data-ward="WARD45" onclick="selectWardFilter('WARD45')">
+          <span>🛏️ หอผู้ป่วย 4-5 (Ward 4-5)</span>
+        </button>
+        <button class="ward-pill-btn" data-ward="OPD" onclick="selectWardFilter('OPD')">
+          <span>🏢 แผนกผู้ป่วยนอก (OPD)</span>
+        </button>
       </div>
 
       <!-- ==================== VIEW 1: DAILY INSPECTION REPORT (DEFAULT) ==================== -->
@@ -1980,10 +2100,31 @@
       }
     }
 
+    function selectWardFilter(wardId) {
+      var deptSel = document.getElementById('sidebarDeptSelect');
+      if (deptSel) {
+        deptSel.value = wardId;
+      }
+      syncWardPills(wardId);
+      applyFilters();
+    }
+
+    function syncWardPills(activeWard) {
+      var pills = document.querySelectorAll('.ward-pill-btn');
+      pills.forEach(function (pill) {
+        if (pill.getAttribute('data-ward') === activeWard) {
+          pill.classList.add('active');
+        } else {
+          pill.classList.remove('active');
+        }
+      });
+    }
+
     function resetFilters() {
       document.getElementById('sidebarDeptSelect').value = 'all';
       document.getElementById('sidebarCategorySelect').value = 'all';
       document.getElementById('sidebarSearchInput').value = '';
+      syncWardPills('all');
 
       if (currentViewMode === 'daily') {
         document.getElementById('sidebarStatusSelect').value = 'all';
@@ -2010,6 +2151,8 @@
     }
 
     function applyFilters() {
+      var dept = document.getElementById('sidebarDeptSelect') ? document.getElementById('sidebarDeptSelect').value : 'all';
+      syncWardPills(dept);
       if (currentViewMode === 'history') {
         renderHistoryView();
       } else {
@@ -2095,6 +2238,25 @@
       document.getElementById('kpiAbnormalDevices').innerText = abnormalTodayCount;
       document.getElementById('kpiPendingDevices').innerText = pendingTodayCount;
 
+      // Update Ward Quick Switcher counts
+      var deptCounts = {};
+      allEquipment.forEach(function (eq) {
+        deptCounts[eq.currentDept] = (deptCounts[eq.currentDept] || 0) + 1;
+      });
+      var wardPills = document.querySelectorAll('.ward-pill-btn');
+      wardPills.forEach(function (pill) {
+        var w = pill.getAttribute('data-ward');
+        var span = pill.querySelector('span:last-child');
+        if (span) {
+          if (w === 'all') {
+            span.innerText = 'ทุกแผนก (' + totalDevices + ')';
+          } else if (deptCounts[w] !== undefined) {
+            var rawText = span.innerText.split('(')[0].trim();
+            span.innerText = rawText + ' (' + deptCounts[w] + ')';
+          }
+        }
+      });
+
       var abCard = document.getElementById('kpiCardAbnormal');
       if (abCard) {
         if (abnormalTodayCount > 0) {
@@ -2138,7 +2300,8 @@
           }
         });
 
-        var badgePillText = 'ตรวจแล้ว ' + catChecked + '/' + devicesInCategory.length + ' เครื่อง';
+        var catPct = devicesInCategory.length > 0 ? Math.round((catChecked / devicesInCategory.length) * 100) : 0;
+        var badgePillText = 'ตรวจแล้ว ' + catChecked + '/' + devicesInCategory.length + ' เครื่อง (' + catPct + '%)';
         if (catAbnormal > 0) badgePillText += ' (⚠️ ผิดปกติ ' + catAbnormal + ')';
 
         html += '<div class="category-card glass-panel">' +
@@ -2156,8 +2319,11 @@
                 '</div>' +
               '</div>' +
             '</div>' +
-            '<div>' +
-              '<span class="badge-status glass-pill" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : 'rgba(255, 255, 255, 0.75)') + '; color: ' + (catAbnormal > 0 ? '#b91c1c' : '#475569') + '; border: 1px solid ' + (catAbnormal > 0 ? '#fca5a5' : 'rgba(226, 232, 240, 0.8)') + ';">' + badgePillText + '</span>' +
+            '<div class="cat-progress-wrap">' +
+              '<div class="cat-progress-track" title="ความคืบหน้า ' + catPct + '%">' +
+                '<div class="cat-progress-fill" style="width: ' + catPct + '%;"></div>' +
+              '</div>' +
+              '<span class="badge-status glass-pill" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : (catPct === 100 ? '#ecfdf5' : 'rgba(255, 255, 255, 0.9)')) + '; color: ' + (catAbnormal > 0 ? '#b91c1c' : (catPct === 100 ? '#047857' : '#334155')) + '; border: 1px solid ' + (catAbnormal > 0 ? '#fca5a5' : (catPct === 100 ? '#a7f3d0' : '#e2e8f0')) + ';">' + badgePillText + '</span>' +
             '</div>' +
           '</div>' +
           '<div style="overflow-x: auto;">' +
