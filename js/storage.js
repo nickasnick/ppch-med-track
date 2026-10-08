@@ -314,10 +314,16 @@
 
       if (evalPayload.result === 'abnormal') {
         eq.status = 'abnormal';
-        eq.abnormalReason = evalPayload.abnormalNote || 'พบความผิดปกติจากการตรวจเช็ค';
+        eq.abnormalReason = evalPayload.abnormalNote || 'พบข้อบกพร่องจากการตรวจเช็ค';
+        eq.repairStatus = 'reported';
+        eq.repairReportedAt = nowStr;
+        eq.repairReportedBy = evalPayload.evaluatedBy;
+        eq.repairAcknowledgedAt = null;
+        eq.repairAcknowledgedBy = null;
       } else {
         eq.status = 'ready';
         eq.abnormalReason = '';
+        eq.repairStatus = 'ready';
       }
 
       // Track latest UPS Battery status if evaluated
@@ -394,18 +400,114 @@
       return { success: true, transfer: transferLog, equipment: eq };
     },
 
-    // Mark as repaired/cleared by Admin
-    resolveAbnormal: function (deviceId, resolvedBy, note) {
+    // Acknowledge defect by Medical Engineering Officer (abnormal -> in_progress)
+    acknowledgeDefect: function (deviceId, ackBy) {
       var data = loadData();
+      var eq = null;
+      var eqIndex = -1;
+
       for (var i = 0; i < data.equipment.length; i++) {
         if (data.equipment[i].id === deviceId) {
-          data.equipment[i].status = 'ready';
-          data.equipment[i].lastEvaluatedStatus = 'normal';
-          data.equipment[i].abnormalReason = '';
+          eq = data.equipment[i];
+          eqIndex = i;
           break;
         }
       }
+
+      if (!eq) {
+        throw new Error('ไม่พบเครื่องมือแพทย์รหัส: ' + deviceId);
+      }
+
+      var nowStr = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
+      eq.status = 'in_progress';
+      eq.repairStatus = 'in_progress';
+      eq.repairAcknowledgedAt = nowStr;
+      eq.repairAcknowledgedBy = ackBy || 'เจ้าหน้าที่เครื่องมือแพทย์';
+
+      data.equipment[eqIndex] = eq;
       saveData(data);
+      window.dispatchEvent(new CustomEvent('ppch:defect-acknowledged', { detail: { equipment: eq } }));
+      return { success: true, equipment: eq };
+    },
+
+    // Resolve defect & record action taken and date (in_progress / abnormal -> ready)
+    resolveDefect: function (deviceId, resolvedBy, actionTaken, resolveDate, note) {
+      var data = loadData();
+      var eq = null;
+      var eqIndex = -1;
+
+      for (var i = 0; i < data.equipment.length; i++) {
+        if (data.equipment[i].id === deviceId) {
+          eq = data.equipment[i];
+          eqIndex = i;
+          break;
+        }
+      }
+
+      if (!eq) {
+        throw new Error('ไม่พบเครื่องมือแพทย์รหัส: ' + deviceId);
+      }
+
+      var nowStr = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
+      var resDateStr = resolveDate || nowStr;
+
+      var repairRecord = {
+        id: 'REP-' + Date.now(),
+        deviceId: eq.id,
+        deviceAsset: eq.assetCode,
+        deviceName: eq.name,
+        department: eq.currentDept,
+        defectReason: eq.abnormalReason || 'พบข้อบกพร่องจากการตรวจเช็ค',
+        reportedAt: eq.repairReportedAt || eq.lastEvaluatedAt || '-',
+        reportedBy: eq.repairReportedBy || eq.lastEvaluatedBy || '-',
+        acknowledgedAt: eq.repairAcknowledgedAt || '-',
+        acknowledgedBy: eq.repairAcknowledgedBy || '-',
+        resolvedAt: resDateStr,
+        resolvedBy: resolvedBy || 'เจ้าหน้าที่เครื่องมือแพทย์',
+        actionTaken: actionTaken || 'ดำเนินการตรวจสอบและแก้ไขเรียบร้อย',
+        note: note || ''
+      };
+
+      eq.status = 'ready';
+      eq.lastEvaluatedStatus = 'normal';
+      eq.repairStatus = 'ready';
+      eq.abnormalReason = '';
+      eq.lastRepairedAt = resDateStr;
+      eq.lastRepairedBy = resolvedBy || 'เจ้าหน้าที่เครื่องมือแพทย์';
+
+      if (!Array.isArray(eq.repairHistory)) {
+        eq.repairHistory = [];
+      }
+      eq.repairHistory.unshift(repairRecord);
+
+      if (!Array.isArray(data.repairs)) {
+        data.repairs = [];
+      }
+      data.repairs.unshift(repairRecord);
+
+      data.equipment[eqIndex] = eq;
+      saveData(data);
+      window.dispatchEvent(new CustomEvent('ppch:defect-resolved', { detail: { record: repairRecord, equipment: eq } }));
+      return { success: true, record: repairRecord, equipment: eq };
+    },
+
+    // Legacy alias
+    resolveAbnormal: function (deviceId, resolvedBy, note) {
+      return this.resolveDefect(deviceId, resolvedBy, note || 'ดำเนินการแก้ไขเสร็จสิ้น', null, note);
+    },
+
+    // Get List of Defective / In-Repair Equipment
+    getDefectiveEquipment: function () {
+      var data = loadData();
+      return (data.equipment || []).filter(function (eq) {
+        return eq.status === 'abnormal' || eq.status === 'in_progress' || eq.repairStatus === 'reported' || eq.repairStatus === 'in_progress';
+      });
+    },
+
+    // Get Repair History
+    getRepairs: function () {
+      var data = loadData();
+      return data.repairs || [];
     },
 
     // Get List of Overdue Equipment (Crucial requirement!)

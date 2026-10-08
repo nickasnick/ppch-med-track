@@ -368,6 +368,25 @@
       color: var(--text-light) !important;
     }
 
+    .nav-count-badge {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      background: var(--red-abnormal);
+      padding: 1px 7px;
+      border-radius: 9999px;
+      min-width: 19px;
+      text-align: center;
+      line-height: 1.4;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35);
+      animation: pulseDefect 2s infinite ease-in-out;
+    }
+    @keyframes pulseDefect {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
     .sidebar-divider {
       height: 1px;
       background: var(--border-subtle);
@@ -928,6 +947,11 @@
             <span class="material-icons-round">fact_check</span>
             <span>สรุปผลรายเครื่อง</span>
           </button>
+          <button onclick="switchView('defective')" id="navBtn_defective" class="nav-btn">
+            <span class="material-icons-round">build_circle</span>
+            <span>เครื่องมือไม่พร้อมใช้งาน</span>
+            <span id="badgeDefectiveNav" class="nav-count-badge" style="display: none;">0</span>
+          </button>
           <button onclick="switchView('relocate')" id="navBtn_relocate" class="nav-btn">
             <span class="material-icons-round">swap_horiz</span>
             <span>มอบหมายแผนก / ย้าย</span>
@@ -1097,6 +1121,108 @@
           </div>
         </section>
 
+        <!-- ==================== SUB-VIEW 4: เครื่องมือไม่พร้อมใช้งาน ==================== -->
+        <section id="viewDefective" style="display: none;">
+          <!-- 4-Column KPI Strip for Defects -->
+          <div class="kpi-strip-5 no-print" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+            <div class="kpi-card" id="kpiCard_defectTotal">
+              <div class="kpi-icon-box kpi-icon-red">
+                <span class="material-icons-round">error</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiDefectTotal" style="color: var(--red-abnormal);">0</div>
+                <div class="kpi-label">ไม่พร้อมใช้งาน</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpiCard_defectReported">
+              <div class="kpi-icon-box" style="background: #fee2e2; color: #dc2626;">
+                <span class="material-icons-round">notification_important</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiDefectReported" style="color: #b91c1c;">0</div>
+                <div class="kpi-label">รอรับทราบ</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpiCard_defectProgress">
+              <div class="kpi-icon-box kpi-icon-amber">
+                <span class="material-icons-round">build</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiDefectProgress" style="color: var(--amber-pending);">0</div>
+                <div class="kpi-label">กำลังดำเนินการแก้ไข</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpiCard_defectResolved">
+              <div class="kpi-icon-box kpi-icon-green">
+                <span class="material-icons-round">task_alt</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiDefectResolved" style="color: var(--green-ready);">0</div>
+                <div class="kpi-label">แก้ไขเสร็จสิ้นแล้ว</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Defective Table Panel -->
+          <div class="content-panel">
+            <div class="panel-header">
+              <div class="panel-title" style="display: flex; align-items: center; gap: 8px;">
+                <span class="material-icons-round" style="color: var(--red-abnormal); font-size: 19px;">warning</span>
+                <span>รายการเครื่องมือแพทย์ไม่พร้อมใช้งาน (พบข้อบกพร่อง / กำลังดำเนินการแก้ไข)</span>
+              </div>
+              <span class="panel-badge" id="defectiveCountBadge" style="background: #fef2f2; color: #dc2626; border-color: #fecaca; font-weight: 700;">0 เครื่อง</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="device-table">
+                <thead>
+                  <tr>
+                    <th style="width: 125px;">รหัสครุภัณฑ์</th>
+                    <th>เครื่องมือแพทย์ & รุ่น</th>
+                    <th style="width: 130px;">แผนกปัจจุบัน</th>
+                    <th>อาการข้อบกพร่องที่พบ</th>
+                    <th style="width: 140px;">ผู้แจ้ง / วันที่ตรวจพบ</th>
+                    <th style="width: 150px;">สถานะงานซ่อม</th>
+                    <th class="btn-action-col no-print" style="width: 170px; text-align: center;">ดำเนินการ</th>
+                  </tr>
+                </thead>
+                <tbody id="defectiveTableBody">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- History of Resolved Repairs Panel -->
+          <div class="content-panel" style="margin-top: 16px;">
+            <div class="panel-header">
+              <div class="panel-title" style="display: flex; align-items: center; gap: 8px;">
+                <span class="material-icons-round" style="color: var(--green-ready); font-size: 19px;">history</span>
+                <span>ประวัติการแก้ไขและส่งคืนความพร้อมใช้งาน (Repair History)</span>
+              </div>
+              <span class="panel-badge" id="repairHistoryCountBadge">0 รายการ</span>
+            </div>
+            <div style="overflow-x: auto; max-height: 320px;">
+              <table class="device-table">
+                <thead>
+                  <tr>
+                    <th style="width: 130px;">วัน-เวลาที่แก้ไขเสร็จ</th>
+                    <th style="width: 120px;">รหัสครุภัณฑ์</th>
+                    <th>เครื่องมือแพทย์</th>
+                    <th>รายละเอียดการแก้ไข (สิ่งที่ดำเนินการไป)</th>
+                    <th style="width: 150px;">ผู้ดำเนินการแก้ไข</th>
+                  </tr>
+                </thead>
+                <tbody id="repairHistoryTableBody">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
         <!-- ==================== SUB-VIEW 2: มอบหมายแผนก / ย้ายเครื่อง ==================== -->
         <section id="viewRelocate" style="display: none;">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
@@ -1236,6 +1362,66 @@
     </div>
   </div>
 
+  <!-- Modal: บันทึกการแก้ไขเครื่องมือแพทย์เสร็จสิ้น -->
+  <div id="modalResolveDefect" class="modal-overlay hidden no-print" onclick="if(event.target === this) closeResolveModal()">
+    <div class="modal-box" style="max-width: 500px; text-align: left;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px; margin-bottom: 14px;">
+        <div style="font-size: 15px; font-weight: 700; color: var(--royal-blue); display: flex; align-items: center; gap: 6px;">
+          <span class="material-icons-round" style="color: var(--green-ready); font-size: 20px;">build_circle</span>
+          <span>บันทึกการแก้ไขเครื่องมือแพทย์เสร็จสิ้น</span>
+        </div>
+        <button onclick="closeResolveModal()" style="border: none; background: transparent; cursor: pointer; color: var(--text-muted);"><span class="material-icons-round">close</span></button>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border-main); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
+        <div style="font-weight: 700; color: var(--text-main);" id="modalResolveDeviceName">-</div>
+        <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;" id="modalResolveDeviceMeta">-</div>
+        <div style="font-size: 12px; color: #dc2626; margin-top: 6px; background: #fff5f5; padding: 6px 8px; border-radius: 6px; border: 1px solid #fed7d7;" id="modalResolveDefectNote">-</div>
+      </div>
+
+      <form id="formResolveDefect" onsubmit="handleResolveSubmit(event)">
+        <input type="hidden" id="resolveDeviceId" value="">
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">
+            รายละเอียดการแก้ไข (แก้ไขอะไรไป) *
+          </label>
+          <textarea id="resolveActionTaken" class="filter-input" style="width: 100%; height: 75px; resize: vertical;" placeholder="ระบุสิ่งที่ดำเนินการแก้ไข เช่น ตรวจสอบระบบสายไฟ AC เปลี่ยนหัวปลั๊กใหม่ และทดสอบโหลดต่อเนื่อง 1 ชม. ผ่านเกณฑ์ปกติ..." required></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+          <div>
+            <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">
+              วันที่-เวลาที่แก้ไขเสร็จ *
+            </label>
+            <input type="datetime-local" id="resolveDateTime" class="filter-input" style="width: 100%;" required>
+          </div>
+          <div>
+            <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">
+              ผู้ดำเนินการแก้ไข (ช่าง/เจ้าหน้าที่) *
+            </label>
+            <input type="text" id="resolveTechnician" class="filter-input" style="width: 100%;" placeholder="เช่น นายช่างประสิทธิ์ บุญมี" required>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">
+            ผลการทดสอบการใช้งานหลังแก้ไข
+          </label>
+          <input type="text" id="resolveTestNote" class="filter-input" style="width: 100%;" placeholder="เช่น ทดสอบเปิดเครื่องใช้งานต่อเนื่อง 1 ชั่วโมง ทำงานปกติพร้อมส่งมอบ">
+        </div>
+
+        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+          <button type="button" onclick="closeResolveModal()" class="btn-tool">ยกเลิก</button>
+          <button type="submit" class="btn-tool btn-tool-primary" style="background: var(--green-ready); border-color: var(--green-ready);">
+            <span class="material-icons-round" style="font-size: 16px;">check_circle</span>
+            <span>บันทึกเสร็จสิ้น & ปลดล็อกเครื่อง</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notice -->
   <div id="toastNotice">
     <span class="material-icons-round" style="color: #38bdf8; font-size: 18px;">info</span>
@@ -1344,9 +1530,24 @@
         });
       }
 
+      // Update defective badge in sidebar
+      var defectiveList = (window.PPCH_STORE && window.PPCH_STORE.getDefectiveEquipment) ? window.PPCH_STORE.getDefectiveEquipment() : [];
+      var badgeDefect = document.getElementById('badgeDefectiveNav');
+      if (badgeDefect) {
+        if (defectiveList.length > 0) {
+          badgeDefect.style.display = 'inline-block';
+          badgeDefect.innerText = defectiveList.length;
+        } else {
+          badgeDefect.style.display = 'none';
+        }
+      }
+
       applyFilters();
       renderTransfers();
       renderDirectoryView();
+      if (currentView === 'defective') {
+        renderDefectiveView();
+      }
     }
 
     function switchView(viewKey) {
@@ -1354,17 +1555,193 @@
       var bread = document.getElementById('breadCurrent');
       var breadMap = {
         summary: 'สรุปผลรายเครื่อง',
+        defective: 'เครื่องมือไม่พร้อมใช้งาน & จัดการงานซ่อม',
         relocate: 'มอบหมายแผนก / ย้ายเครื่อง',
         directory: 'รายการเครื่อง & QR Code'
       };
       bread.innerText = breadMap[viewKey] || viewKey;
 
-      ['summary', 'relocate', 'directory'].forEach(function (v) {
+      ['summary', 'defective', 'relocate', 'directory'].forEach(function (v) {
         var btn = document.getElementById('navBtn_' + v);
         var sec = document.getElementById('view' + v.charAt(0).toUpperCase() + v.slice(1));
         if (btn) btn.classList.toggle('active', v === viewKey);
         if (sec) sec.style.display = (v === viewKey) ? 'block' : 'none';
       });
+
+      if (viewKey === 'defective') {
+        renderDefectiveView();
+      }
+    }
+
+    // ==================== DEFECTIVE VIEW & REPAIR WORKFLOW ====================
+    function renderDefectiveView() {
+      var defectiveList = (window.PPCH_STORE && window.PPCH_STORE.getDefectiveEquipment) ? window.PPCH_STORE.getDefectiveEquipment() : [];
+      var repairs = (window.PPCH_STORE && window.PPCH_STORE.getRepairs) ? window.PPCH_STORE.getRepairs() : [];
+
+      var reportedCount = 0;
+      var progressCount = 0;
+
+      defectiveList.forEach(function (eq) {
+        if (eq.status === 'in_progress' || eq.repairStatus === 'in_progress') {
+          progressCount++;
+        } else {
+          reportedCount++;
+        }
+      });
+
+      // Update KPI
+      var kTotal = document.getElementById('kpiDefectTotal');
+      var kReported = document.getElementById('kpiDefectReported');
+      var kProgress = document.getElementById('kpiDefectProgress');
+      var kResolved = document.getElementById('kpiDefectResolved');
+      var kBadge = document.getElementById('defectiveCountBadge');
+
+      if (kTotal) kTotal.innerText = defectiveList.length;
+      if (kReported) kReported.innerText = reportedCount;
+      if (kProgress) kProgress.innerText = progressCount;
+      if (kResolved) kResolved.innerText = repairs.length;
+      if (kBadge) kBadge.innerText = defectiveList.length + ' เครื่อง';
+
+      // Render Active Defective Table
+      var tbody = document.getElementById('defectiveTableBody');
+      if (tbody) {
+        if (defectiveList.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--green-ready); font-weight: 600;"><span class="material-icons-round" style="font-size: 28px; vertical-align: middle; margin-right: 6px;">verified</span>ขณะนี้ไม่มีเครื่องมือแพทย์ที่พบข้อบกพร่อง ทุกเครื่องพร้อมใช้งาน 100%</td></tr>';
+        } else {
+          var html = '';
+          defectiveList.forEach(function (eq) {
+            var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+            var isUnderFix = (eq.status === 'in_progress' || eq.repairStatus === 'in_progress');
+
+            var statusBadge = '';
+            var actionBtn = '';
+
+            if (isUnderFix) {
+              var ackInfo = eq.repairAcknowledgedBy ? '<div style="font-size: 10.5px; color: #b45309; margin-top: 2px;">โดย ' + eq.repairAcknowledgedBy + '</div>' : '';
+              statusBadge = '<div><span class="badge-status" style="color: var(--amber-pending); font-weight: 700;"><span class="material-icons-round" style="font-size: 14px;">build</span> กำลังดำเนินการแก้ไข</span>' + ackInfo + '</div>';
+              actionBtn = '<button onclick="openResolveModal(\'' + eq.id + '\')" class="btn-tool" style="background: var(--green-ready); color: #ffffff; border-color: var(--green-ready); font-weight: 600;" title="บันทึกรายละเอียดการซ่อมเสร็จสิ้น">' +
+                '<span class="material-icons-round" style="font-size: 14px;">task_alt</span><span>บันทึกการแก้ไข</span>' +
+              '</button>';
+            } else {
+              statusBadge = '<span class="badge-status badge-status-abnormal" style="font-weight: 700;"><span class="material-icons-round" style="font-size: 14px;">error</span> พบข้อบกพร่อง (รอรับทราบ)</span>';
+              actionBtn = '<button onclick="handleAcknowledgeDefect(\'' + eq.id + '\')" class="btn-tool btn-tool-primary" title="เจ้าหน้าที่เครื่องมือแพทย์กดรับทราบเพื่อเริ่มแก้ไข">' +
+                '<span class="material-icons-round" style="font-size: 14px;">thumb_up</span><span>รับทราบ</span>' +
+              '</button>';
+            }
+
+            var reporterText = eq.repairReportedBy || eq.lastEvaluatedBy || '-';
+            var reportedTime = eq.repairReportedAt || eq.lastEvaluatedAt || '-';
+
+            html += '<tr>' +
+              '<td><span class="asset-code-clean">' + eq.assetCode + '</span></td>' +
+              '<td><div style="font-weight: 700; color: var(--text-main);">' + eq.name + '</div><div style="font-size: 11px; color: var(--text-muted);">รุ่น ' + (eq.model || '-') + '</div></td>' +
+              '<td><span style="font-weight: 500;">' + deptName + '</span></td>' +
+              '<td><div style="color: #b91c1c; font-weight: 500; font-size: 12px; background: #fff5f5; padding: 5px 9px; border-radius: 6px; border: 1px solid #fed7d7;">' + (eq.abnormalReason || 'ตรวจพบความผิดปกติ') + '</div></td>' +
+              '<td><div style="font-size: 12px; font-weight: 600; color: var(--text-main);">' + reporterText + '</div><div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">' + reportedTime + '</div></td>' +
+              '<td>' + statusBadge + '</td>' +
+              '<td class="btn-action-col no-print" style="text-align: center; white-space: nowrap;">' + actionBtn + '</td>' +
+            '</tr>';
+          });
+          tbody.innerHTML = html;
+        }
+      }
+
+      // Render Resolved Repairs History
+      var hBody = document.getElementById('repairHistoryTableBody');
+      var hBadge = document.getElementById('repairHistoryCountBadge');
+      if (hBadge) hBadge.innerText = repairs.length + ' รายการ';
+
+      if (hBody) {
+        if (repairs.length === 0) {
+          hBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--text-light);">ยังไม่มีประวัติการซ่อมบำรุงที่บันทึกเสร็จสิ้น</td></tr>';
+        } else {
+          var hHtml = '';
+          repairs.slice(0, 20).forEach(function (r) {
+            hHtml += '<tr>' +
+              '<td style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">' + (r.resolvedAt || '-') + '</td>' +
+              '<td><span class="asset-code-clean">' + (r.deviceAsset || '-') + '</span></td>' +
+              '<td><div style="font-weight: 600;">' + (r.deviceName || '-') + '</div><div style="font-size: 11px; color: var(--text-muted);">' + window.PPCH_STORE.getDepartmentName(r.department) + '</div></td>' +
+              '<td><div style="font-size: 12px; color: var(--text-main); font-weight: 600;">' + (r.actionTaken || '-') + '</div>' +
+                (r.defectReason ? '<div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">อาการเดิม: ' + r.defectReason + '</div>' : '') +
+              '</td>' +
+              '<td><span style="font-size: 12px; font-weight: 600; color: var(--green-ready);"><span class="material-icons-round" style="font-size: 13px; vertical-align: -2px;">person</span> ' + (r.resolvedBy || '-') + '</span></td>' +
+            '</tr>';
+          });
+          hBody.innerHTML = hHtml;
+        }
+      }
+    }
+
+    function handleAcknowledgeDefect(deviceId) {
+      var eq = window.PPCH_STORE.getEquipmentById(deviceId);
+      if (!eq) return;
+
+      var defaultTech = 'นายช่างประสิทธิ์ บุญมี (ช่างเครื่องมือแพทย์)';
+      var techName = prompt('ระบุชื่อเจ้าหน้าที่เครื่องมือแพทย์ที่รับทราบ เพื่อเริ่มดำเนินการแก้ไข:', defaultTech);
+      if (techName === null) return;
+      techName = techName.trim() || defaultTech;
+
+      try {
+        window.PPCH_STORE.acknowledgeDefect(deviceId, techName);
+        showToast('รับทราบรายการ ' + eq.assetCode + ' เรียบร้อย! เปลี่ยนสถานะเป็น "กำลังดำเนินการแก้ไข"');
+        loadData();
+      } catch (err) {
+        alert('เกิดข้อผิดพลาด: ' + err.message);
+      }
+    }
+
+    function openResolveModal(deviceId) {
+      var eq = window.PPCH_STORE.getEquipmentById(deviceId);
+      if (!eq) return;
+
+      document.getElementById('resolveDeviceId').value = eq.id;
+      document.getElementById('modalResolveDeviceName').innerText = eq.name + ' (' + eq.assetCode + ')';
+      document.getElementById('modalResolveDeviceMeta').innerText = 'รุ่น: ' + (eq.model || '-') + ' • แผนกปัจจุบัน: ' + window.PPCH_STORE.getDepartmentName(eq.currentDept);
+      document.getElementById('modalResolveDefectNote').innerText = 'อาการข้อบกพร่องที่แจ้ง: ' + (eq.abnormalReason || 'ตรวจพบความผิดปกติ');
+
+      document.getElementById('resolveActionTaken').value = '';
+      document.getElementById('resolveTestNote').value = 'ทดสอบเปิดเครื่องและใช้งานร่วมกับพยาบาล 1 ชั่วโมง ทำงานปกติพร้อมส่งมอบ';
+      document.getElementById('resolveTechnician').value = eq.repairAcknowledgedBy || 'นายช่างประสิทธิ์ บุญมี';
+
+      // Set datetime-local default to current Bangkok time
+      var now = new Date();
+      var year = now.getFullYear();
+      var month = ('0' + (now.getMonth() + 1)).slice(-2);
+      var day = ('0' + now.getDate()).slice(-2);
+      var hours = ('0' + now.getHours()).slice(-2);
+      var minutes = ('0' + now.getMinutes()).slice(-2);
+      document.getElementById('resolveDateTime').value = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+
+      document.getElementById('modalResolveDefect').classList.remove('hidden');
+    }
+
+    function closeResolveModal() {
+      document.getElementById('modalResolveDefect').classList.add('hidden');
+    }
+
+    function handleResolveSubmit(e) {
+      e.preventDefault();
+      var deviceId = document.getElementById('resolveDeviceId').value;
+      var actionTaken = document.getElementById('resolveActionTaken').value.trim();
+      var dtVal = document.getElementById('resolveDateTime').value;
+      var techName = document.getElementById('resolveTechnician').value.trim();
+      var testNote = document.getElementById('resolveTestNote').value.trim();
+
+      if (!deviceId || !actionTaken || !techName) {
+        alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        return;
+      }
+
+      var formattedDt = dtVal ? dtVal.replace('T', ' ') : null;
+
+      try {
+        var res = window.PPCH_STORE.resolveDefect(deviceId, techName, actionTaken, formattedDt, testNote);
+        closeResolveModal();
+        showToast('บันทึกการแก้ไข ' + res.equipment.assetCode + ' เสร็จสิ้น! ปลดล็อกเครื่องพร้อมใช้งานแล้ว');
+        loadData();
+      } catch (err) {
+        alert('เกิดข้อผิดพลาดในการบันทึก: ' + err.message);
+      }
     }
 
     function setQuickDate(type) {
@@ -1476,12 +1853,21 @@
         var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
         var form = window.PPCH_STORE.getFormById(eq.formId);
 
+        var isUnderFix = (eq.status === 'in_progress' || eq.repairStatus === 'in_progress');
+        var isDefective = (eq.status === 'abnormal' || eq.repairStatus === 'reported');
+
         var statusBadge = '<span class="badge-status badge-status-pending"><span class="material-icons-round" style="font-size: 14px;">schedule</span> รอตรวจวันนี้</span>';
         var evalTime = '-';
         var evaluator = '-';
         var actions = '<a href="eval.html?formId=' + eq.formId + '&deviceId=' + eq.id + '" class="btn-action-eval" title="เปิดหน้าตรวจเช็ค"><span class="material-icons-round" style="font-size: 13px;">assignment</span><span>ตรวจ</span></a>';
 
-        if (ev) {
+        if (isUnderFix) {
+          statusBadge = '<span class="badge-status" style="color: var(--amber-pending);"><span class="material-icons-round" style="font-size: 14px;">build</span> กำลังซ่อมบำรุง</span>';
+          actions = '<button onclick="switchView(\'defective\')" class="btn-action-slip" title="เครื่องอยู่ระหว่างซ่อมบำรุง คลิกเพื่อดู/บันทึกการแก้ไข" style="color: var(--amber-pending); border-color: var(--amber-border);"><span class="material-icons-round" style="font-size: 13px;">build</span><span>งานซ่อม</span></button>';
+        } else if (isDefective) {
+          statusBadge = '<span class="badge-status badge-status-abnormal" title="' + (eq.abnormalReason || '') + '"><span class="material-icons-round" style="font-size: 14px;">error</span> ข้อบกพร่อง</span>';
+          actions = '<button onclick="switchView(\'defective\')" class="btn-action-slip" title="พบข้อบกพร่อง คลิกเพื่อรับทราบงานซ่อม" style="color: var(--red-abnormal); border-color: var(--red-border);"><span class="material-icons-round" style="font-size: 13px;">build_circle</span><span>จัดการซ่อม</span></button>';
+        } else if (ev) {
           if (ev.result === 'normal') {
             statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 14px;">check_circle</span> พร้อมใช้</span>';
           } else {

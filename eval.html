@@ -405,6 +405,53 @@
       width: 90%;
       text-align: center;
     }
+
+    /* Device Under Repair Banner & Overlay */
+    .repair-lock-banner {
+      background: #fef2f2;
+      border: 1.5px solid #f87171;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.08);
+      animation: loaderPop 0.3s ease;
+    }
+    .repair-banner-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: #fee2e2;
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 24px;
+    }
+    .repair-pill-status {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      background: #dc2626;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+    .repair-pill-status.in-progress {
+      background: #d97706;
+    }
+    .item-unanswered-highlight {
+      background: #fff7ed !important;
+      border-left: 4px solid #f97316 !important;
+      animation: pulseHighlight 1s infinite alternate;
+    }
+    @keyframes pulseHighlight {
+      0% { background: #fff7ed; }
+      100% { background: #fee2e2; }
+    }
   </style>
 </head>
 <body>
@@ -485,6 +532,32 @@
       </div>
     </section>
 
+    <!-- Repair Lock Banner (Displayed if Equipment is Abnormal / In Repair) -->
+    <div id="repairLockBanner" class="repair-lock-banner" style="display: none;">
+      <div class="repair-banner-icon">
+        <span class="material-icons-round">build_circle</span>
+      </div>
+      <div style="flex: 1;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; flex-wrap: wrap;">
+          <div style="font-size: 14px; font-weight: 700; color: #991b1b;" id="repairLockTitle">
+            เครื่องมือแพทย์ไม่พร้อมใช้งาน (อยู่ระหว่างซ่อมบำรุง)
+          </div>
+          <span id="repairStatusBadgePill" class="repair-pill-status">พบข้อบกพร่อง</span>
+        </div>
+        <div style="font-size: 12.5px; color: #7f1d1d; margin-bottom: 6px;" id="repairLockReason">
+          อาการข้อบกพร่องที่พบ: -
+        </div>
+        <div style="font-size: 11.5px; color: #991b1b; display: flex; flex-wrap: wrap; gap: 14px; background: rgba(254, 226, 226, 0.6); padding: 6px 10px; border-radius: 6px; margin-bottom: 6px;">
+          <span id="repairLockReportedBy">ผู้รายงาน: -</span>
+          <span id="repairLockReportedAt">วันที่ตรวจพบ: -</span>
+        </div>
+        <div style="font-size: 12px; font-weight: 600; color: #b91c1c; display: flex; align-items: center; gap: 5px;">
+          <span class="material-icons-round" style="font-size: 16px;">lock</span>
+          <span>ระบบล็อกไม่ให้กรอกแบบตรวจเช็ค จนกว่าเจ้าหน้าที่เครื่องมือแพทย์จะบันทึกการแก้ไขเสร็จสิ้นในระบบ Admin</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Card 2: UPS Battery Check (Shown ONLY on 1st & 16th of Month or when Dev Simulation is ON) -->
     <section class="eval-card" id="cardUpsBattery" style="display: none;">
       <div class="eval-card-header">
@@ -532,6 +605,17 @@
 
     <!-- Card 3: Evaluation Checklist Items -->
     <div class="checklist-locked-wrapper" id="checklistWrapper">
+      <!-- Lock Overlay for Equipment Under Repair -->
+      <div class="checklist-lock-overlay" id="deviceRepairLockOverlay" style="display: none; background: rgba(254, 242, 242, 0.94); z-index: 25;">
+        <span class="material-icons-round" style="font-size: 44px; color: #dc2626; margin-bottom: 8px;">build_circle</span>
+        <div style="font-size: 15px; font-weight: 700; color: #991b1b; margin-bottom: 4px;">
+          แบบตรวจเช็คถูกล็อก (เครื่องมือไม่พร้อมใช้งาน)
+        </div>
+        <div style="font-size: 12.5px; color: #7f1d1d; max-width: 360px; line-height: 1.5;" id="deviceRepairLockMsg">
+          เครื่องมือนี้ถูกระบุว่าพบข้อบกพร่อง หรืออยู่ระหว่างการซ่อมบำรุงแก้ไข ไม่สามารถบันทึกการตรวจเช็คได้ในขณะนี้
+        </div>
+      </div>
+
       <!-- Lock Overlay (Displayed if UPS not filled on mandatory dates) -->
       <div class="checklist-lock-overlay" id="checklistLockOverlay" style="display: none;">
         <span class="material-icons-round" style="font-size: 36px; color: #d97706; margin-bottom: 8px;">lock</span>
@@ -549,10 +633,9 @@
             <span class="material-icons-round" style="color: var(--royal-blue); font-size: 18px;">checklist</span>
             <span>รายการตรวจเช็คความพร้อมใช้งาน</span>
           </div>
-          <button type="button" onclick="setAllPass()" class="btn-check-choice" style="background: var(--royal-subtle); color: var(--royal-blue); border-color: var(--border-blue-soft);">
-            <span class="material-icons-round" style="font-size: 14px; vertical-align: text-bottom;">done_all</span>
-            <span>ผ่านทุกข้อ (All Pass)</span>
-          </button>
+          <div id="checklistProgressBadge" style="font-size: 11.5px; font-weight: 600; color: var(--text-muted); background: #f1f5f9; border: 1px solid var(--border-main); padding: 3px 10px; border-radius: 9999px;">
+            ประเมินแล้ว 0/0 ข้อ
+          </div>
         </div>
 
         <div id="checklistItemsList">
@@ -617,6 +700,7 @@
     var isRealUpsDay = false;
     var isUpsEnforced = false;
     var isUpsRuntimeValid = false;
+    var isDeviceLockedForRepair = false;
 
     document.addEventListener('DOMContentLoaded', function () {
       try {
@@ -657,11 +741,16 @@
       var allEq = (window.PPCH_STORE && window.PPCH_STORE.getEquipment ? window.PPCH_STORE.getEquipment() : []) || [];
 
       if (select) {
+        select.innerHTML = '<option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>';
         allEq.forEach(function (eq) {
           var deptName = window.PPCH_STORE ? window.PPCH_STORE.getDepartmentName(eq.currentDept) : eq.currentDept;
           var opt = document.createElement('option');
           opt.value = eq.id;
-          opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + deptName + ']';
+          var statusTag = '';
+          if (eq.status === 'abnormal' || eq.status === 'in_progress') {
+            statusTag = eq.status === 'in_progress' ? ' [🔧 กำลังซ่อม]' : ' [⛔ มีข้อบกพร่อง]';
+          }
+          opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + deptName + ']' + statusTag;
           if (preselectedDeviceId && (eq.id === preselectedDeviceId || eq.assetCode === preselectedDeviceId)) {
             opt.selected = true;
           }
@@ -689,7 +778,11 @@
 
     function onDeviceSelected() {
       var devId = document.getElementById('evalDeviceSelect').value;
-      if (!devId) return;
+      if (!devId) {
+        currentDevice = null;
+        applyRepairLock(false);
+        return;
+      }
 
       currentDevice = window.PPCH_STORE.getEquipmentById(devId);
       if (!currentDevice) return;
@@ -701,7 +794,64 @@
       document.getElementById('badgeCategoryPill').innerText = currentForm.category;
       document.getElementById('evalDeptDisplay').innerText = window.PPCH_STORE.getDepartmentName(currentDevice.currentDept);
 
+      // Check repair lock status
+      var underRepair = (currentDevice.status === 'abnormal' || currentDevice.status === 'in_progress' || currentDevice.repairStatus === 'reported' || currentDevice.repairStatus === 'in_progress');
+      applyRepairLock(underRepair);
+
       renderChecklist(currentForm.items || []);
+    }
+
+    function applyRepairLock(locked) {
+      isDeviceLockedForRepair = locked;
+      var banner = document.getElementById('repairLockBanner');
+      var overlay = document.getElementById('deviceRepairLockOverlay');
+      var btnSubmit = document.getElementById('btnSubmitEval');
+
+      if (locked && currentDevice) {
+        var isUnderFix = (currentDevice.status === 'in_progress' || currentDevice.repairStatus === 'in_progress');
+        
+        if (banner) {
+          banner.style.display = 'flex';
+          var pill = document.getElementById('repairStatusBadgePill');
+          if (pill) {
+            pill.innerText = isUnderFix ? 'กำลังดำเนินการแก้ไข' : 'พบข้อบกพร่อง (รอรับทราบ)';
+            pill.className = isUnderFix ? 'repair-pill-status in-progress' : 'repair-pill-status';
+          }
+          var reasonEl = document.getElementById('repairLockReason');
+          if (reasonEl) {
+            reasonEl.innerText = 'อาการข้อบกพร่องที่พบ: ' + (currentDevice.abnormalReason || 'ตรวจพบความผิดปกติจากรอบก่อนหน้า');
+          }
+          var byEl = document.getElementById('repairLockReportedBy');
+          if (byEl) {
+            byEl.innerText = 'ผู้รายงาน: ' + (currentDevice.repairReportedBy || currentDevice.lastEvaluatedBy || 'เจ้าหน้าที่ประจำแผนก');
+          }
+          var atEl = document.getElementById('repairLockReportedAt');
+          if (atEl) {
+            atEl.innerText = 'วันที่ตรวจพบ: ' + (currentDevice.repairReportedAt || currentDevice.lastEvaluatedAt || '-');
+          }
+        }
+
+        if (overlay) overlay.style.display = 'flex';
+
+        if (btnSubmit) {
+          btnSubmit.disabled = true;
+          btnSubmit.style.opacity = '0.55';
+          btnSubmit.style.cursor = 'not-allowed';
+          btnSubmit.style.background = '#94a3b8';
+          btnSubmit.innerHTML = '<span class="material-icons-round">lock</span><span>เครื่องมืออยู่ระหว่างซ่อมบำรุง (ไม่สามารถบันทึกได้)</span>';
+        }
+      } else {
+        if (banner) banner.style.display = 'none';
+        if (overlay) overlay.style.display = 'none';
+
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.style.opacity = '1';
+          btnSubmit.style.cursor = 'pointer';
+          btnSubmit.style.background = '';
+          btnSubmit.innerHTML = '<span class="material-icons-round">check_circle</span><span>บันทึกผลการตรวจเช็ค</span>';
+        }
+      }
     }
 
     function toggleSimulateUpsCycle() {
@@ -800,21 +950,33 @@
       checklistState = {};
 
       items.forEach(function (text, idx) {
-        checklistState[idx] = 'pass'; // default to pass
+        checklistState[idx] = null; // Default to UNCHECKED (พนักงานต้องกดประเมินเองทีละข้อ)
 
         var div = document.createElement('div');
         div.className = 'checklist-item';
-        div.innerHTML = '<div class="item-text">' + (idx + 1) + '. ' + text + '</div>' +
+        div.id = 'checkItemRow_' + idx;
+        div.innerHTML = '<div class="item-text"><strong>' + (idx + 1) + '.</strong> ' + text + '</div>' +
           '<div class="item-btn-group">' +
-            '<button type="button" class="btn-check-choice active-pass" id="btnPass_' + idx + '" onclick="setChoice(' + idx + ', \'pass\')">ผ่าน</button>' +
-            '<button type="button" class="btn-check-choice" id="btnFail_' + idx + '" onclick="setChoice(' + idx + ', \'fail\')">ไม่ผ่าน</button>' +
+            '<button type="button" class="btn-check-choice" id="btnPass_' + idx + '" onclick="setChoice(' + idx + ', \'pass\')" ' + (isDeviceLockedForRepair ? 'disabled' : '') + '>' +
+              '<span class="material-icons-round" style="font-size: 13px; vertical-align: -2px;">check</span> ผ่าน' +
+            '</button>' +
+            '<button type="button" class="btn-check-choice" id="btnFail_' + idx + '" onclick="setChoice(' + idx + ', \'fail\')" ' + (isDeviceLockedForRepair ? 'disabled' : '') + '>' +
+              '<span class="material-icons-round" style="font-size: 13px; vertical-align: -2px;">close</span> ไม่ผ่าน' +
+            '</button>' +
           '</div>';
         container.appendChild(div);
       });
+
+      updateChecklistProgress();
     }
 
     function setChoice(idx, choice) {
+      if (isDeviceLockedForRepair) return;
       checklistState[idx] = choice;
+
+      var row = document.getElementById('checkItemRow_' + idx);
+      if (row) row.classList.remove('item-unanswered-highlight');
+
       var btnPass = document.getElementById('btnPass_' + idx);
       var btnFail = document.getElementById('btnFail_' + idx);
 
@@ -825,12 +987,39 @@
         btnPass.className = 'btn-check-choice';
         btnFail.className = 'btn-check-choice active-fail';
       }
+
+      updateChecklistProgress();
     }
 
-    function setAllPass() {
-      Object.keys(checklistState).forEach(function (k) {
-        setChoice(k, 'pass');
-      });
+    function updateChecklistProgress() {
+      var total = (currentForm && currentForm.items) ? currentForm.items.length : 0;
+      var answered = 0;
+      for (var k in checklistState) {
+        if (checklistState[k] !== null && checklistState[k] !== undefined) answered++;
+      }
+
+      var badge = document.getElementById('checklistProgressBadge');
+      if (!badge) return;
+
+      if (total === 0) {
+        badge.innerText = 'ไม่มีรายการประเมิน';
+        badge.style.color = 'var(--text-muted)';
+        badge.style.background = '#f1f5f9';
+        badge.style.borderColor = 'var(--border-main)';
+        return;
+      }
+
+      if (answered === total) {
+        badge.innerHTML = '<span class="material-icons-round" style="font-size: 13px; vertical-align: -2px;">check_circle</span> ประเมินครบ ' + answered + '/' + total + ' ข้อ';
+        badge.style.color = '#059669';
+        badge.style.background = '#ecfdf5';
+        badge.style.borderColor = '#a7f3d0';
+      } else {
+        badge.innerText = 'ประเมินแล้ว ' + answered + '/' + total + ' ข้อ (ยังไม่ครบ)';
+        badge.style.color = '#d97706';
+        badge.style.background = '#fffbeb';
+        badge.style.borderColor = '#fde68a';
+      }
     }
 
     function submitEvaluation() {
@@ -839,9 +1028,32 @@
         return;
       }
 
+      if (isDeviceLockedForRepair) {
+        alert('เครื่องมือแพทย์นี้อยู่ระหว่างการแจ้งชำรุดหรือซ่อมบำรุง\nไม่สามารถทำการตรวจเช็คได้ จนกว่าเจ้าหน้าที่เครื่องมือแพทย์จะบันทึกการแก้ไขเสร็จสิ้น');
+        return;
+      }
+
       if (isUpsEnforced && !isUpsRuntimeValid) {
         alert('เนื่องจากอยู่ในรอบบังคับตรวจ UPS กรุณากรอกระยะเวลาสำรองไฟให้ครบถ้วนก่อน');
         document.getElementById('upsHours').focus();
+        return;
+      }
+
+      var totalItems = (currentForm && currentForm.items) ? currentForm.items.length : 0;
+      var unanswered = [];
+      for (var i = 0; i < totalItems; i++) {
+        if (!checklistState[i]) {
+          unanswered.push(i + 1);
+        }
+      }
+
+      if (unanswered.length > 0) {
+        alert('กรุณาประเมินรายการตรวจเช็คให้ครบถ้วนทุกข้อก่อนบันทึก\n(ข้อที่ยังไม่ได้ประเมิน: ข้อ ' + unanswered.join(', ') + ')');
+        var firstMissingRow = document.getElementById('checkItemRow_' + (unanswered[0] - 1));
+        if (firstMissingRow) {
+          firstMissingRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstMissingRow.classList.add('item-unanswered-highlight');
+        }
         return;
       }
 
@@ -895,7 +1107,7 @@
 
       try {
         window.PPCH_STORE.recordEvaluation(record);
-        document.getElementById('successModalSub').innerText = 'บันทึก ' + currentDevice.name + ' (' + currentDevice.assetCode + ') สถานะ: ' + (record.result === 'normal' ? 'พร้อมใช้งาน' : 'พบข้อบกพร่อง');
+        document.getElementById('successModalSub').innerText = 'บันทึก ' + currentDevice.name + ' (' + currentDevice.assetCode + ') สถานะ: ' + (record.result === 'normal' ? 'พร้อมใช้งาน' : 'พบข้อบกพร่อง (ส่งแจ้งซ่อม)');
         document.getElementById('successModal').classList.remove('hidden');
       } catch (err) {
         alert('เกิดข้อผิดพลาดในการบันทึก: ' + err.message);
@@ -907,7 +1119,9 @@
       document.getElementById('evalAbnormalNote').value = '';
       document.getElementById('upsHours').value = '';
       document.getElementById('upsMinutes').value = '';
-      setAllPass();
+      if (currentForm && currentForm.items) {
+        renderChecklist(currentForm.items);
+      }
       updateUpsMode();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
