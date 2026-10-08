@@ -805,6 +805,21 @@
       }
 
       updateUpsMode();
+
+      // 4. Background sync with Google Sheets to keep evaluations up to date
+      if (window.PPCH_API && window.PPCH_API.isConfigured() && window.PPCH_STORE && window.PPCH_STORE.syncCloudEvaluations) {
+        window.PPCH_API.fetchEvaluations(function (res) {
+          if (res && res.success && Array.isArray(res.data)) {
+            window.PPCH_STORE.syncCloudEvaluations(res.data);
+            if (currentDevice) {
+              currentDevice = window.PPCH_STORE.getEquipmentById(currentDevice.id);
+              var underRepair = currentDevice && (currentDevice.status === 'abnormal' || currentDevice.status === 'in_progress');
+              applyRepairLock(underRepair);
+              checkExistingEvaluationOnDate();
+            }
+          }
+        });
+      }
     }
 
     function onDateTimeChanged() {

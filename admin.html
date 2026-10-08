@@ -1586,8 +1586,13 @@
         });
       }
 
-      // 4. Load Data
+      // 4. Load Data (Immediate render from local cache)
       loadData();
+
+      // 5. Auto background sync with Google Sheets (Single source of truth)
+      if (window.PPCH_API && window.PPCH_API.isConfigured()) {
+        syncWithGas(true);
+      }
     }
 
     function loadData() {
@@ -2247,25 +2252,32 @@
     }
 
     // ==================== UTILITIES ====================
-    function syncWithGas() {
+    function syncWithGas(silent) {
       var btn = document.getElementById('btnSync');
-      btn.disabled = true;
-      showToast('กำลังซิงค์ข้อมูลกับ Google Apps Script...');
+      if (btn) btn.disabled = true;
+      if (!silent) showToast('กำลังซิงค์ข้อมูลกับ Google Sheets...');
+
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
         window.PPCH_API.fetchEvaluations(function (res) {
-          btn.disabled = false;
+          if (btn) btn.disabled = false;
           if (res && res.success && Array.isArray(res.data)) {
-            showToast('ซิงค์ข้อมูลสำเร็จ (' + res.data.length + ' รายการ)');
+            // Synchronize cloud evaluations directly into PPCH_STORE
+            if (window.PPCH_STORE && window.PPCH_STORE.syncCloudEvaluations) {
+              window.PPCH_STORE.syncCloudEvaluations(res.data);
+            }
+            if (!silent) {
+              showToast('ซิงค์ข้อมูลตรงกับ Google Sheets เรียบร้อย (' + res.data.length + ' รายการ)');
+            }
             loadData();
           } else {
-            showToast('เชื่อมต่อเสร็จสิ้น (ใช้ข้อมูลแคชท้องถิ่น)');
+            if (!silent) showToast('เชื่อมต่อเสร็จสิ้น (ใช้ข้อมูลแคชท้องถิ่น)');
           }
         });
       } else {
         setTimeout(function () {
-          btn.disabled = false;
-          showToast('ระบบทำงานในโหมดออฟไลน์/แคชท้องถิ่น');
-        }, 600);
+          if (btn) btn.disabled = false;
+          if (!silent) showToast('ระบบทำงานในโหมดออฟไลน์/แคชท้องถิ่น');
+        }, 500);
       }
     }
 

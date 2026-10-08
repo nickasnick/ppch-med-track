@@ -583,6 +583,72 @@
       return list;
     },
 
+    // Sync evaluations from Google Sheets (Cloud is Single Source of Truth)
+    syncCloudEvaluations: function (cloudEvals) {
+      var data = loadData();
+      if (!Array.isArray(cloudEvals)) cloudEvals = [];
+
+      // Cloud evaluations replace existing non-battery evaluations
+      var nonConflictingBatterySeeds = INITIAL_BATTERY_SEEDS.filter(function (seed) {
+        return !cloudEvals.some(function (cev) { return cev.id === seed.id; });
+      });
+      data.evaluations = cloudEvals.concat(nonConflictingBatterySeeds);
+
+      // Map latest evaluation per device from cloud
+      var latestEvalMap = {};
+      cloudEvals.forEach(function (ev) {
+        if (!latestEvalMap[ev.deviceId] || (ev.evaluatedAt && ev.evaluatedAt > latestEvalMap[ev.deviceId].evaluatedAt)) {
+          latestEvalMap[ev.deviceId] = ev;
+        }
+      });
+
+      // Update equipment statuses based on cloud data
+      data.equipment.forEach(function (eq) {
+        var latestEv = latestEvalMap[eq.id];
+        if (latestEv) {
+          eq.lastEvaluatedAt = latestEv.evaluatedAt || '';
+          eq.lastEvaluatedBy = latestEv.evaluatedBy || '';
+          eq.lastEvaluatedStatus = latestEv.result || 'normal';
+          eq.currentDept = latestEv.department || eq.currentDept;
+
+          if (latestEv.result === 'abnormal') {
+            eq.status = 'abnormal';
+            eq.abnormalReason = latestEv.abnormalNote || 'พบข้อบกพร่องจากการตรวจเช็ค';
+            if (eq.repairStatus !== 'in_progress') {
+              eq.repairStatus = 'reported';
+              eq.repairReportedAt = latestEv.evaluatedAt;
+              eq.repairReportedBy = latestEv.evaluatedBy;
+            }
+          } else {
+            eq.status = 'ready';
+            eq.abnormalReason = '';
+            eq.repairStatus = 'ready';
+          }
+
+          if (latestEv.upsBattery && latestEv.upsBattery.tested) {
+            eq.lastBatteryTestedAt = latestEv.evaluatedAt;
+            eq.lastBatteryRuntime = latestEv.upsBattery.runtimeFormatted;
+            eq.lastBatteryStatus = latestEv.upsBattery.status || 'normal';
+          }
+        } else {
+          // If device has no evaluation in cloud: reset daily check status to pending
+          eq.lastEvaluatedAt = '';
+          eq.lastEvaluatedBy = '';
+          eq.lastEvaluatedStatus = '';
+          eq.status = 'ready';
+          eq.abnormalReason = '';
+          eq.repairStatus = 'ready';
+          eq.repairReportedAt = null;
+          eq.repairReportedBy = null;
+          eq.repairAcknowledgedAt = null;
+          eq.repairAcknowledgedBy = null;
+        }
+      });
+
+      saveData(data);
+      return data;
+    },
+
     // Reset seed data
     resetSeed: function () {
       localStorage.removeItem(STORAGE_KEY);
