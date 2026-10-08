@@ -871,13 +871,54 @@
     }
 
     /* Print View */
+    #qrStickerPrintContainer {
+      display: none;
+    }
+
     @media print {
       body { background: #ffffff !important; }
-      .app-topbar, .app-sidebar, .page-filter-bar, .kpi-strip-5, #pageLoader, .btn-action-col, .no-print {
+
+      /* Standard Dashboard/Report Print Mode */
+      body:not(.printing-qr-sticker) .app-topbar,
+      body:not(.printing-qr-sticker) .app-sidebar,
+      body:not(.printing-qr-sticker) .page-filter-bar,
+      body:not(.printing-qr-sticker) .kpi-strip-5,
+      body:not(.printing-qr-sticker) #pageLoader,
+      body:not(.printing-qr-sticker) .btn-action-col,
+      body:not(.printing-qr-sticker) .no-print,
+      body:not(.printing-qr-sticker) #qrStickerPrintContainer {
         display: none !important;
       }
-      .app-main-content { max-width: 100% !important; padding: 0 !important; }
-      .content-panel { border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
+      body:not(.printing-qr-sticker) .app-main-content { max-width: 100% !important; padding: 0 !important; }
+      body:not(.printing-qr-sticker) .content-panel { border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
+
+      /* Dedicated Equipment QR Sticker Print Mode (Clean & Isolated) */
+      @page {
+        margin: 6mm;
+      }
+      body.printing-qr-sticker {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+      }
+      body.printing-qr-sticker .app-wrapper,
+      body.printing-qr-sticker .app-topbar,
+      body.printing-qr-sticker .app-sidebar,
+      body.printing-qr-sticker .app-main-content,
+      body.printing-qr-sticker .modal-overlay,
+      body.printing-qr-sticker #pageLoader,
+      body.printing-qr-sticker #toastNotice {
+        display: none !important;
+      }
+      body.printing-qr-sticker #qrStickerPrintContainer {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding: 10px 0 !important;
+      }
     }
   </style>
 </head>
@@ -1362,6 +1403,47 @@
     </div>
   </div>
 
+  <!-- Modal: รับทราบข้อบกพร่องเพื่อเริ่มแก้ไข (Custom In-App Modal) -->
+  <div id="modalAcknowledgeDefect" class="modal-overlay hidden no-print" onclick="if(event.target === this) closeAcknowledgeModal()">
+    <div class="modal-box" style="max-width: 480px; text-align: left;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px; margin-bottom: 14px;">
+        <div style="font-size: 15px; font-weight: 700; color: var(--royal-blue); display: flex; align-items: center; gap: 8px;">
+          <span class="material-icons-round" style="color: var(--amber-pending); font-size: 22px;">handyman</span>
+          <span>รับทราบข้อบกพร่อง & เริ่มงานซ่อม</span>
+        </div>
+        <button onclick="closeAcknowledgeModal()" style="border: none; background: transparent; cursor: pointer; color: var(--text-muted);"><span class="material-icons-round">close</span></button>
+      </div>
+
+      <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
+        <div style="font-weight: 700; color: #92400e;" id="modalAckDeviceName">-</div>
+        <div style="font-size: 11.5px; color: #b45309; margin-top: 2px;" id="modalAckDeviceMeta">-</div>
+        <div style="font-size: 12px; color: #b91c1c; margin-top: 6px; background: #ffffff; padding: 6px 10px; border-radius: 6px; border: 1px solid #fecaca;" id="modalAckDefectReason">-</div>
+      </div>
+
+      <form id="formAcknowledgeDefect" onsubmit="submitAcknowledgeDefect(event)">
+        <input type="hidden" id="ackDeviceId" value="">
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">
+            ชื่อเจ้าหน้าที่เครื่องมือแพทย์ผู้รับทราบ *
+          </label>
+          <input type="text" id="ackOfficerName" class="filter-input" style="width: 100%; font-size: 13px; font-weight: 600; padding: 8px 10px; border-color: var(--border-blue-soft);" value="อาภากร บุญเกตกูล" placeholder="ระบุชื่อเจ้าหน้าที่" required>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+            เมื่อกดยืนยัน สถานะเครื่องจะเปลี่ยนเป็น "กำลังดำเนินการแก้ไข" และเปิดรับบันทึกผลการซ่อม
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+          <button type="button" onclick="closeAcknowledgeModal()" class="btn-tool">ยกเลิก</button>
+          <button type="submit" class="btn-tool btn-tool-primary" style="background: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-light) 100%);">
+            <span class="material-icons-round" style="font-size: 16px;">thumb_up</span>
+            <span>ยืนยันรับทราบงานซ่อม</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Modal: บันทึกการแก้ไขเครื่องมือแพทย์เสร็จสิ้น -->
   <div id="modalResolveDefect" class="modal-overlay hidden no-print" onclick="if(event.target === this) closeResolveModal()">
     <div class="modal-box" style="max-width: 500px; text-align: left;">
@@ -1400,7 +1482,7 @@
             <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">
               ผู้ดำเนินการแก้ไข (ช่าง/เจ้าหน้าที่) *
             </label>
-            <input type="text" id="resolveTechnician" class="filter-input" style="width: 100%;" placeholder="เช่น นายช่างประสิทธิ์ บุญมี" required>
+            <input type="text" id="resolveTechnician" class="filter-input" style="width: 100%;" placeholder="เช่น อาภากร บุญเกตกูล" value="อาภากร บุญเกตกูล" required>
           </div>
         </div>
 
@@ -1408,7 +1490,7 @@
           <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">
             ผลการทดสอบการใช้งานหลังแก้ไข
           </label>
-          <input type="text" id="resolveTestNote" class="filter-input" style="width: 100%;" placeholder="เช่น ทดสอบเปิดเครื่องใช้งานต่อเนื่อง 1 ชั่วโมง ทำงานปกติพร้อมส่งมอบ">
+          <input type="text" id="resolveTestNote" class="filter-input" style="width: 100%;" placeholder="ระบุผลการทดสอบการใช้งานหลังแก้ไข (ให้พนักงานกรอกเอง)">
         </div>
 
         <div style="display: flex; gap: 8px; justify-content: flex-end;">
@@ -1624,7 +1706,7 @@
               '</button>';
             } else {
               statusBadge = '<span class="badge-status badge-status-abnormal" style="font-weight: 700;"><span class="material-icons-round" style="font-size: 14px;">error</span> พบข้อบกพร่อง (รอรับทราบ)</span>';
-              actionBtn = '<button onclick="handleAcknowledgeDefect(\'' + eq.id + '\')" class="btn-tool btn-tool-primary" title="เจ้าหน้าที่เครื่องมือแพทย์กดรับทราบเพื่อเริ่มแก้ไข">' +
+              actionBtn = '<button onclick="openAcknowledgeModal(\'' + eq.id + '\')" class="btn-tool btn-tool-primary" title="เจ้าหน้าที่เครื่องมือแพทย์กดรับทราบเพื่อเริ่มแก้ไข">' +
                 '<span class="material-icons-round" style="font-size: 14px;">thumb_up</span><span>รับทราบ</span>' +
               '</button>';
             }
@@ -1672,18 +1754,41 @@
       }
     }
 
-    function handleAcknowledgeDefect(deviceId) {
+    var currentAckDeviceId = null;
+
+    function openAcknowledgeModal(deviceId) {
+      currentAckDeviceId = deviceId;
       var eq = window.PPCH_STORE.getEquipmentById(deviceId);
       if (!eq) return;
 
-      var defaultTech = 'นายช่างประสิทธิ์ บุญมี (ช่างเครื่องมือแพทย์)';
-      var techName = prompt('ระบุชื่อเจ้าหน้าที่เครื่องมือแพทย์ที่รับทราบ เพื่อเริ่มดำเนินการแก้ไข:', defaultTech);
-      if (techName === null) return;
-      techName = techName.trim() || defaultTech;
+      document.getElementById('ackDeviceId').value = eq.id;
+      document.getElementById('modalAckDeviceName').innerText = eq.name + ' (' + eq.assetCode + ')';
+      document.getElementById('modalAckDeviceMeta').innerText = 'รุ่น: ' + (eq.model || '-') + ' • แผนกปัจจุบัน: ' + window.PPCH_STORE.getDepartmentName(eq.currentDept);
+      document.getElementById('modalAckDefectReason').innerText = 'อาการข้อบกพร่องที่แจ้ง: ' + (eq.abnormalReason || 'ตรวจพบความผิดปกติ');
+      document.getElementById('ackOfficerName').value = 'อาภากร บุญเกตกูล';
 
+      document.getElementById('modalAcknowledgeDefect').classList.remove('hidden');
+    }
+
+    function closeAcknowledgeModal() {
+      document.getElementById('modalAcknowledgeDefect').classList.add('hidden');
+    }
+
+    function submitAcknowledgeDefect(e) {
+      e.preventDefault();
+      var deviceId = document.getElementById('ackDeviceId').value;
+      var officerName = document.getElementById('ackOfficerName').value.trim();
+
+      if (!deviceId || !officerName) {
+        alert('กรุณาระบุชื่อเจ้าหน้าที่ผู้รับทราบ');
+        return;
+      }
+
+      var eq = window.PPCH_STORE.getEquipmentById(deviceId);
       try {
-        window.PPCH_STORE.acknowledgeDefect(deviceId, techName);
-        showToast('รับทราบรายการ ' + eq.assetCode + ' เรียบร้อย! เปลี่ยนสถานะเป็น "กำลังดำเนินการแก้ไข"');
+        window.PPCH_STORE.acknowledgeDefect(deviceId, officerName);
+        closeAcknowledgeModal();
+        showToast('รับทราบรายการ ' + (eq ? eq.assetCode : deviceId) + ' เรียบร้อย! เปลี่ยนสถานะเป็น "กำลังดำเนินการแก้ไข"');
         loadData();
       } catch (err) {
         alert('เกิดข้อผิดพลาด: ' + err.message);
@@ -1700,8 +1805,9 @@
       document.getElementById('modalResolveDefectNote').innerText = 'อาการข้อบกพร่องที่แจ้ง: ' + (eq.abnormalReason || 'ตรวจพบความผิดปกติ');
 
       document.getElementById('resolveActionTaken').value = '';
-      document.getElementById('resolveTestNote').value = 'ทดสอบเปิดเครื่องและใช้งานร่วมกับพยาบาล 1 ชั่วโมง ทำงานปกติพร้อมส่งมอบ';
-      document.getElementById('resolveTechnician').value = eq.repairAcknowledgedBy || 'นายช่างประสิทธิ์ บุญมี';
+      // หัวข้อ ผลการทดสอบการใช้งานหลังแก้ไข ไม่ต้องกรอกข้อมูลให้ ให้พนักงานกรอกเอง
+      document.getElementById('resolveTestNote').value = '';
+      document.getElementById('resolveTechnician').value = eq.repairAcknowledgedBy || 'อาภากร บุญเกตกูล';
 
       // Set datetime-local default to current Bangkok time
       var now = new Date();
@@ -1993,7 +2099,10 @@
       grid.innerHTML = html;
     }
 
+    var currentQrDeviceId = null;
+
     function openQrModal(deviceId) {
+      currentQrDeviceId = deviceId;
       var eq = window.PPCH_STORE.getEquipmentById(deviceId);
       if (!eq) return;
 
@@ -2034,7 +2143,74 @@
     }
 
     function printQrSticker() {
+      if (!currentQrDeviceId) return;
+      var eq = window.PPCH_STORE.getEquipmentById(currentQrDeviceId);
+      if (!eq) return;
+
+      var qrContainer = document.getElementById('qrCanvas');
+      var qrImg = qrContainer ? qrContainer.querySelector('img') : null;
+      var qrCanvas = qrContainer ? qrContainer.querySelector('canvas') : null;
+      var qrDataUrl = '';
+      if (qrCanvas) {
+        try {
+          qrDataUrl = qrCanvas.toDataURL('image/png');
+        } catch(e) {}
+      } else if (qrImg && qrImg.src) {
+        qrDataUrl = qrImg.src;
+      }
+
+      var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+
+      var printArea = document.getElementById('qrStickerPrintContainer');
+      if (!printArea) {
+        printArea = document.createElement('div');
+        printArea.id = 'qrStickerPrintContainer';
+        document.body.appendChild(printArea);
+      }
+
+      printArea.innerHTML = '<div style="border: 2.5px solid #002e6e; border-radius: 14px; padding: 22px 24px; width: 340px; text-align: center; background: #ffffff; font-family: Prompt, sans-serif; box-sizing: border-box;">' +
+        '<div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px;">' +
+          '<img src="logo.png" style="height: 38px; width: auto;" alt="Logo">' +
+          '<div style="text-align: left;">' +
+            '<div style="font-size: 13px; font-weight: 800; color: #002e6e; line-height: 1.2;">โรงพยาบาลพิษณุเวช พิจิตร</div>' +
+            '<div style="font-size: 10px; color: #64748b; font-weight: 500;">PHITSANUVEJ PHICHIT HOSPITAL</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="border-top: 1.5px solid #004b93; margin: 6px 0 10px 0;"></div>' +
+        '<div style="font-size: 10px; font-weight: 700; color: #004b93; background: #f0f7ff; border: 1px solid #bfdbfe; padding: 2px 8px; border-radius: 4px; display: inline-block;">' +
+          'รหัสครุภัณฑ์การแพทย์ (ASSET CODE)' +
+        '</div>' +
+        '<div style="font-size: 24px; font-weight: 800; font-family: Inter, monospace; color: #002e6e; margin: 4px 0 2px 0; letter-spacing: 1px;">' +
+          eq.assetCode +
+        '</div>' +
+        '<div style="font-size: 13.5px; font-weight: 700; color: #0f172a; margin-top: 4px; line-height: 1.3;">' +
+          eq.name +
+        '</div>' +
+        '<div style="font-size: 11px; color: #475569; margin-top: 2px;">' +
+          'รุ่น: ' + (eq.model || '-') + ' | S/N: ' + (eq.serialNo || '-') +
+        '</div>' +
+        '<div style="font-size: 12px; font-weight: 700; color: #004b93; margin-top: 5px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 3px 8px; border-radius: 4px; display: inline-block;">' +
+          'แผนกรับผิดชอบ: ' + deptName +
+        '</div>' +
+        '<div style="margin: 12px 0 6px 0; display: flex; justify-content: center;">' +
+          (qrDataUrl ? '<img src="' + qrDataUrl + '" style="width: 175px; height: 175px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px; background: #ffffff;">' : '') +
+        '</div>' +
+        '<div style="font-size: 11.5px; font-weight: 700; color: #002e6e; margin-top: 6px;">' +
+          '📱 สแกนเพื่อตรวจเช็คความพร้อมใช้' +
+        '</div>' +
+        '<div style="font-size: 9px; color: #64748b; margin-top: 2px; word-break: break-all;">' +
+          selectedQrUrl +
+        '</div>' +
+      '</div>';
+
+      var cleanup = function () {
+        document.body.classList.remove('printing-qr-sticker');
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+      document.body.classList.add('printing-qr-sticker');
       window.print();
+      setTimeout(cleanup, 2500);
     }
 
     // ==================== DETAIL SLIP MODAL ====================

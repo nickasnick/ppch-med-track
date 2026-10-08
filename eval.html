@@ -525,8 +525,34 @@
             <div id="evalDeptDisplay" style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-top: 2px;">-</div>
           </div>
           <div style="background: #f8fafc; border: 1px solid var(--border-main); padding: 8px 12px; border-radius: 8px;">
-            <div style="font-size: 11px; color: var(--text-muted);">วัน-เวลาประเมิน</div>
-            <div id="evalTimeDisplay" style="font-size: 13px; font-weight: 700; color: var(--royal-blue); margin-top: 2px; font-family: var(--font-mono);">-</div>
+            <label for="evalDateTimeInput" style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-muted); cursor: pointer; margin-bottom: 2px;">
+              <span>วัน-เวลาประเมิน</span>
+              <span style="font-size: 10px; color: var(--royal-blue); font-weight: 600;">(คลิกเลือกเปลี่ยนวันได้)</span>
+            </label>
+            <input type="datetime-local" id="evalDateTimeInput" class="form-control-input" style="padding: 4px 8px; font-size: 12.5px; font-weight: 700; color: var(--royal-blue); background: #ffffff; cursor: pointer; font-family: var(--font-mono);" onchange="onDateTimeChanged()">
+          </div>
+        </div>
+
+        <!-- Re-evaluation / Intra-day failure reporting banner -->
+        <div id="reCheckNoticeBanner" style="display: none; background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 8px; padding: 10px 14px; margin-top: 10px; animation: loaderPop 0.25s ease;">
+          <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <span class="material-icons-round" style="color: var(--royal-blue); font-size: 20px; flex-shrink: 0; margin-top: 1px;">history</span>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+                <div style="font-size: 12.5px; font-weight: 700; color: var(--royal-dark);" id="reCheckTitle">
+                  มีบันทึกตรวจเช็คเครื่องนี้ในวันที่เลือกแล้ว
+                </div>
+                <span id="reCheckPrevStatusBadge" style="font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;">
+                  พร้อมใช้งาน
+                </span>
+              </div>
+              <div style="font-size: 11.5px; color: var(--text-body); margin-top: 3px;" id="reCheckDesc">
+                ตรวจล่าสุดเมื่อเวลา 08:00 น.
+              </div>
+              <div style="font-size: 11.5px; color: #0369a1; margin-top: 4px; line-height: 1.4;">
+                💡 <strong>ตรวจซ้ำระหว่างวัน:</strong> หากเครื่องพบปัญหาระหว่างวัน สามารถเลือกข้อที่ไม่ผ่านและกดบันทึกใหม่ได้ทันที ข้อมูลจะถูกบันทึกเป็นรอบใหม่ตามเวลาที่ระบุด้านบน
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -726,11 +752,17 @@
     }
 
     function initEvalPage() {
-      // 1. Set current timestamp
+      // 1. Set default timestamp to now (user can click to change date/time)
       var now = new Date();
-      var timeStr = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
-      var timeEl = document.getElementById('evalTimeDisplay');
-      if (timeEl) timeEl.innerText = timeStr;
+      var year = now.getFullYear();
+      var month = ('0' + (now.getMonth() + 1)).slice(-2);
+      var day = ('0' + now.getDate()).slice(-2);
+      var hours = ('0' + now.getHours()).slice(-2);
+      var minutes = ('0' + now.getMinutes()).slice(-2);
+      var dtInput = document.getElementById('evalDateTimeInput');
+      if (dtInput) {
+        dtInput.value = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+      }
 
       // 2. Populate devices
       var urlParams = new URLSearchParams(window.location.search);
@@ -759,8 +791,7 @@
       }
 
       // 3. Check if today is 1st or 16th of the month
-      var day = now.getDate();
-      isRealUpsDay = (day === 1 || day === 16);
+      isRealUpsDay = (now.getDate() === 1 || now.getDate() === 16);
       if (urlParams.get('batteryCheck') === '1') {
         isSimulateActive = true;
       }
@@ -776,11 +807,78 @@
       updateUpsMode();
     }
 
+    function onDateTimeChanged() {
+      var dtInput = document.getElementById('evalDateTimeInput');
+      if (!dtInput || !dtInput.value) return;
+
+      var selectedDate = new Date(dtInput.value);
+      if (!isNaN(selectedDate.getTime())) {
+        var d = selectedDate.getDate();
+        isRealUpsDay = (d === 1 || d === 16);
+        updateUpsMode();
+      }
+
+      checkExistingEvaluationOnDate();
+    }
+
+    function checkExistingEvaluationOnDate() {
+      var banner = document.getElementById('reCheckNoticeBanner');
+      if (!banner || !currentDevice) {
+        if (banner) banner.style.display = 'none';
+        return;
+      }
+
+      var dtInput = document.getElementById('evalDateTimeInput');
+      if (!dtInput || !dtInput.value) {
+        banner.style.display = 'none';
+        return;
+      }
+
+      var selectedDateStr = dtInput.value.slice(0, 10); // YYYY-MM-DD
+      var evals = (window.PPCH_STORE && window.PPCH_STORE.getEvaluations) ? window.PPCH_STORE.getEvaluations() : [];
+      
+      var evalsOnDate = evals.filter(function (ev) {
+        return ev.deviceId === currentDevice.id && ev.evaluatedAt && ev.evaluatedAt.indexOf(selectedDateStr) === 0;
+      });
+
+      if (evalsOnDate.length > 0) {
+        // Sort descending by evaluatedAt
+        evalsOnDate.sort(function (a, b) {
+          return (b.evaluatedAt || '').localeCompare(a.evaluatedAt || '');
+        });
+        var latestEv = evalsOnDate[0];
+        var isNormal = latestEv.result === 'normal';
+        var timeOnly = (latestEv.evaluatedAt || '').slice(11, 16);
+
+        var titleEl = document.getElementById('reCheckTitle');
+        var badgeEl = document.getElementById('reCheckPrevStatusBadge');
+        var descEl = document.getElementById('reCheckDesc');
+
+        if (titleEl) {
+          titleEl.innerText = 'เครื่องนี้มีการตรวจเช็คในวันที่ ' + selectedDateStr + ' แล้ว (' + evalsOnDate.length + ' ครั้ง)';
+        }
+        if (badgeEl) {
+          badgeEl.innerText = isNormal ? 'รอบล่าสุด (' + timeOnly + ' น.): พร้อมใช้งาน' : 'รอบล่าสุด (' + timeOnly + ' น.): พบข้อบกพร่อง';
+          badgeEl.style.background = isNormal ? '#ecfdf5' : '#fef2f2';
+          badgeEl.style.color = isNormal ? '#059669' : '#dc2626';
+          badgeEl.style.borderColor = isNormal ? '#a7f3d0' : '#fecaca';
+        }
+        if (descEl) {
+          descEl.innerText = 'ผู้ตรวจล่าสุด: ' + (latestEv.evaluatedBy || 'ไม่ระบุ') + ' (เวลา ' + timeOnly + ' น.)' + (latestEv.abnormalNote ? ' | ปัญหา: ' + latestEv.abnormalNote : '');
+        }
+
+        banner.style.display = 'block';
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+
     function onDeviceSelected() {
       var devId = document.getElementById('evalDeviceSelect').value;
       if (!devId) {
         currentDevice = null;
         applyRepairLock(false);
+        checkExistingEvaluationOnDate();
         return;
       }
 
@@ -797,6 +895,8 @@
       // Check repair lock status
       var underRepair = (currentDevice.status === 'abnormal' || currentDevice.status === 'in_progress' || currentDevice.repairStatus === 'reported' || currentDevice.repairStatus === 'in_progress');
       applyRepairLock(underRepair);
+
+      checkExistingEvaluationOnDate();
 
       renderChecklist(currentForm.items || []);
     }
@@ -1067,6 +1167,17 @@
       // Determine result
       var hasFail = Object.values(checklistState).some(function (v) { return v === 'fail'; });
       var note = document.getElementById('evalAbnormalNote').value.trim();
+      var evalDtInput = document.getElementById('evalDateTimeInput');
+      var evalTimeStr = '';
+      var evalDateObj = new Date();
+      if (evalDtInput && evalDtInput.value) {
+        evalTimeStr = evalDtInput.value.replace('T', ' ');
+        evalDateObj = new Date(evalDtInput.value);
+      } else {
+        var now = new Date();
+        evalTimeStr = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2) + ' ' + ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+        evalDateObj = now;
+      }
 
       // UPS Battery data
       var hVal = document.getElementById('upsHours').value.trim();
@@ -1077,8 +1188,7 @@
         var h = parseInt(hVal, 10) || 0;
         var m = parseInt(mVal, 10) || 0;
         var formatted = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
-        var now = new Date();
-        var cycleDate = now.toISOString().slice(0, 7) + '-' + (now.getDate() <= 15 ? '01' : '16');
+        var cycleDate = evalDateObj.getFullYear() + '-' + ('0' + (evalDateObj.getMonth() + 1)).slice(-2) + '-' + (evalDateObj.getDate() <= 15 ? '01' : '16');
 
         upsObj = {
           tested: true,
@@ -1098,7 +1208,7 @@
         formId: currentDevice.formId,
         department: currentDevice.currentDept,
         evaluatedBy: evaluator,
-        evaluatedAt: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' '),
+        evaluatedAt: evalTimeStr,
         result: hasFail ? 'abnormal' : 'normal',
         abnormalNote: note,
         checklist: checklistState,
@@ -1123,11 +1233,23 @@
         renderChecklist(currentForm.items);
       }
       updateUpsMode();
+      if (currentDevice) {
+        currentDevice = window.PPCH_STORE.getEquipmentById(currentDevice.id);
+        var underRepair = currentDevice && (currentDevice.status === 'abnormal' || currentDevice.status === 'in_progress');
+        applyRepairLock(underRepair);
+        checkExistingEvaluationOnDate();
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function closeSuccessModal() {
       document.getElementById('successModal').classList.add('hidden');
+      if (currentDevice) {
+        currentDevice = window.PPCH_STORE.getEquipmentById(currentDevice.id);
+        var underRepair = currentDevice && (currentDevice.status === 'abnormal' || currentDevice.status === 'in_progress');
+        applyRepairLock(underRepair);
+        checkExistingEvaluationOnDate();
+      }
     }
   </script>
 </body>
