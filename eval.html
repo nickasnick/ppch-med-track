@@ -439,6 +439,7 @@
   <script src="js/api.js"></script>
 
   <script>
+    var urlParams = new URLSearchParams(window.location.search);
     var currentForm = null;
     var selectedDevice = null;
     var checklistResults = {};
@@ -450,78 +451,78 @@
       initEvaluationPage();
     });
 
+    function hidePageLoader() {
+      var loader = document.getElementById('pageLoader');
+      if (loader) loader.classList.add('hidden');
+    }
+
     function initEvaluationPage() {
-      var urlParams = new URLSearchParams(window.location.search);
-      var formId = urlParams.get('formId');
-      var deviceId = urlParams.get('deviceId');
+      try {
+        urlParams = new URLSearchParams(window.location.search);
+        var formId = urlParams.get('formId');
+        var deviceId = urlParams.get('deviceId');
 
-      if (!formId && deviceId) {
-        var eq = window.PPCH_STORE.getEquipmentById(deviceId);
-        if (eq && eq.formId) formId = eq.formId;
+        if (!formId && deviceId) {
+          var eq = window.PPCH_STORE.getEquipmentById(deviceId);
+          if (eq && eq.formId) formId = eq.formId;
+        }
+        if (!formId) formId = 'defibrillator';
+
+        currentForm = window.PPCH_STORE.getFormById(formId);
+        if (!currentForm) currentForm = window.PPCH_CONFIG.forms[0];
+
+        document.getElementById('formTitle').innerText = currentForm.name;
+        document.getElementById('formDescription').innerText = currentForm.description;
+        document.getElementById('categoryLabel').innerText = currentForm.category;
+
+        var freqBadge = document.getElementById('badgeFrequency');
+        if (currentForm.frequency === 'quarterly') {
+          freqBadge.className = 'glass-pill';
+          freqBadge.style.color = '#b45309';
+          freqBadge.style.borderColor = 'rgba(253, 230, 138, 0.85)';
+          freqBadge.style.background = 'rgba(254, 243, 199, 0.9)';
+          freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">event_repeat</span> ทุก 3 เดือน (Quarterly)';
+        } else if (currentForm.frequency === 'daily') {
+          freqBadge.className = 'glass-pill';
+          freqBadge.style.color = '#b91c1c';
+          freqBadge.style.borderColor = 'rgba(254, 202, 202, 0.85)';
+          freqBadge.style.background = 'rgba(254, 242, 242, 0.9)';
+          freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">schedule</span> ' + (currentForm.frequencyLabel || 'ทุกวัน (Daily)');
+        } else {
+          freqBadge.className = 'glass-pill';
+          freqBadge.style.color = '#1e40af';
+          freqBadge.style.borderColor = 'rgba(191, 219, 254, 0.85)';
+          freqBadge.style.background = 'rgba(239, 246, 255, 0.9)';
+          freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">event</span> ประจำเดือน (Monthly)';
+        }
+
+        populateDevices(currentForm.id, deviceId);
+        renderChecklist(currentForm.items);
+
+        var now = new Date();
+        document.getElementById('evalDateDisplay').value = now.toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
+
+        updateBatteryCardVisibility();
+      } catch (err) {
+        console.error('Error in initEvaluationPage:', err);
+      } finally {
+        setTimeout(hidePageLoader, 250);
       }
-      if (!formId) formId = 'defibrillator';
-
-      currentForm = window.PPCH_STORE.getFormById(formId);
-      if (!currentForm) currentForm = window.PPCH_CONFIG.forms[0];
-
-      document.getElementById('formTitle').innerText = currentForm.name;
-      document.getElementById('formDescription').innerText = currentForm.description;
-      document.getElementById('categoryLabel').innerText = currentForm.category;
-
-      var freqBadge = document.getElementById('badgeFrequency');
-      if (currentForm.frequency === 'quarterly') {
-        freqBadge.className = 'glass-pill';
-        freqBadge.style.color = '#b45309';
-        freqBadge.style.borderColor = 'rgba(253, 230, 138, 0.85)';
-        freqBadge.style.background = 'rgba(254, 243, 199, 0.9)';
-        freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">event_repeat</span> ทุก 3 เดือน (Quarterly)';
-      } else if (currentForm.frequency === 'daily') {
-        freqBadge.className = 'glass-pill';
-        freqBadge.style.color = '#b91c1c';
-        freqBadge.style.borderColor = 'rgba(254, 202, 202, 0.85)';
-        freqBadge.style.background = 'rgba(254, 242, 242, 0.9)';
-        freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">schedule</span> ' + (currentForm.frequencyLabel || 'ทุกวัน (Daily)');
-      } else {
-        freqBadge.className = 'glass-pill';
-        freqBadge.style.color = '#1e40af';
-        freqBadge.style.borderColor = 'rgba(191, 219, 254, 0.85)';
-        freqBadge.style.background = 'rgba(239, 246, 255, 0.9)';
-        freqBadge.innerHTML = '<span class="material-icons-round" style="font-size: 13px;">event</span> ประจำเดือน (Monthly)';
-      }
-
-      populateDevices(currentForm.id, deviceId);
-      renderChecklist(currentForm.items);
-
-      var now = new Date();
-      document.getElementById('evalDateDisplay').value = now.toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' ');
-
-      updateBatteryCardVisibility();
-
-      setTimeout(function () {
-        var loader = document.getElementById('pageLoader');
-        if (loader) loader.classList.add('hidden');
-      }, 350);
     }
 
     function updateBatteryCardVisibility() {
-      var isLab = (currentForm && currentForm.id && currentForm.id.indexOf('lab_') === 0) || 
-                  (selectedDevice && (selectedDevice.homeDept === 'LAB' || selectedDevice.currentDept === 'LAB'));
       var batteryCard = document.getElementById('upsBatteryCard');
+      if (!batteryCard) return;
 
-      if (isLab) {
-        if (batteryCard) batteryCard.style.display = 'none';
-        isBatteryCheckActive = false;
-        lockChecklist(false);
-      } else {
-        if (batteryCard) batteryCard.style.display = 'block';
-        var day = new Date().getDate();
-        var is1stOr16th = (day === 1 || day === 16);
-        var urlBatteryCheck = (urlParams.get('batteryCheck') === '1');
-        var simChk = document.getElementById('simulateBatteryCycleCheckbox');
-        var shouldEnforceBattery = (simChk && simChk.checked) || is1stOr16th || urlBatteryCheck;
-        if (simChk) simChk.checked = shouldEnforceBattery;
-        setBatteryMandatoryMode(shouldEnforceBattery);
-      }
+      batteryCard.style.display = 'block';
+      var day = new Date().getDate();
+      var is1stOr16th = (day === 1 || day === 16);
+      var params = (typeof urlParams !== 'undefined' && urlParams) ? urlParams : new URLSearchParams(window.location.search);
+      var urlBatteryCheck = (params.get('batteryCheck') === '1');
+      var simChk = document.getElementById('simulateBatteryCycleCheckbox');
+      var shouldEnforceBattery = (simChk && simChk.checked) || is1stOr16th || urlBatteryCheck;
+      if (simChk) simChk.checked = shouldEnforceBattery;
+      setBatteryMandatoryMode(shouldEnforceBattery);
     }
 
     function setBatteryMandatoryMode(isMandatory) {

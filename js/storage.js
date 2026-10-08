@@ -173,10 +173,21 @@
             parsed.evaluations = INITIAL_BATTERY_SEEDS.slice();
             saveData(parsed);
           }
-          if (Array.isArray(parsed.transfers)) {
-            parsed.transfers = parsed.transfers.filter(function (tr) {
-              return tr.id && tr.id.indexOf('TR-20260929') === -1;
+          // Purge any LAB equipment, forms, or evaluations from medical equipment store
+          var beforeCount = parsed.equipment.length;
+          parsed.equipment = parsed.equipment.filter(function (eq) {
+            return !eq.id.startsWith('PPCH-EQ-LAB-') && 
+                   !eq.formId.startsWith('lab_') && 
+                   eq.currentDept !== 'LAB' && 
+                   eq.homeDept !== 'LAB';
+          });
+          if (Array.isArray(parsed.evaluations)) {
+            parsed.evaluations = parsed.evaluations.filter(function (ev) {
+              return !ev.formId.startsWith('lab_') && ev.department !== 'LAB';
             });
+          }
+          if (parsed.equipment.length !== beforeCount) {
+            saveData(parsed);
           }
 
           // Ensure any new equipment from PPCH_CONFIG.initialEquipment is merged
