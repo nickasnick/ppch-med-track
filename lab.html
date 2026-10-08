@@ -12,11 +12,43 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
   <style>
+    /* ==================== PPCH DEEP ROYAL BLUE THEME ==================== */
     :root {
-      --primary: #0891b2;
-      --primary-dark: #0e7490;
-      --primary-light: #e0f2fe;
-      --primary-gradient: linear-gradient(135deg, #0e7490 0%, #0891b2 50%, #0284c7 100%);
+      --royal-dark: #002e6e;
+      --royal-blue: #004b93;
+      --royal-hover: #003a73;
+      --royal-light: #0284c7;
+      --royal-subtle: #f0f7ff;
+      --royal-glow: rgba(0, 75, 147, 0.16);
+
+      --canvas-bg: #f4f7fb;
+      --surface-white: #ffffff;
+      --border-main: #e2e8f0;
+      --border-subtle: #edf2f7;
+      --border-focus: #004b93;
+      --border-blue-soft: #bfdbfe;
+
+      --text-main: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --green-ready: #059669;
+      --green-bg: #ecfdf5;
+      --green-border: #a7f3d0;
+
+      --amber-pending: #d97706;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+
+      --red-abnormal: #dc2626;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+
+      --primary: #004b93;
+      --primary-dark: #002e6e;
+      --primary-light: #eff6ff;
+      --primary-gradient: linear-gradient(135deg, #002e6e 0%, #004b93 60%, #0284c7 100%);
       --accent: #0284c7;
       --success: #059669;
       --success-bg: #ecfdf5;
@@ -25,25 +57,21 @@
       --danger: #dc2626;
       --danger-bg: #fef2f2;
       
-      --glass-bg: rgba(255, 255, 255, 0.85);
-      --glass-border: rgba(255, 255, 255, 0.7);
-      --glass-card-bg: rgba(255, 255, 255, 0.92);
-      --glass-card-border: rgba(226, 232, 240, 0.8);
-      --glass-blur: blur(16px);
-      
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
+      --glass-bg: rgba(255, 255, 255, 0.95);
+      --glass-border: rgba(226, 232, 240, 0.9);
+      --glass-card-bg: #ffffff;
+      --glass-card-border: #e2e8f0;
+      --glass-blur: blur(12px);
       
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
       
-      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
-      --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.08);
-      --shadow-glow: 0 0 24px rgba(8, 145, 178, 0.25);
+      --shadow-sm: 0 1px 3px rgba(0, 46, 110, 0.04);
+      --shadow-md: 0 4px 16px rgba(0, 46, 110, 0.06);
+      --shadow-lg: 0 12px 32px rgba(0, 46, 110, 0.08);
+      --shadow-glow: 0 0 24px rgba(0, 75, 147, 0.16);
     }
 
     * {
@@ -54,7 +82,7 @@
 
     body {
       font-family: 'Prompt', 'Plus Jakarta Sans', -apple-system, sans-serif;
-      background: radial-gradient(circle at 10% 10%, rgba(224, 242, 254, 0.6) 0%, rgba(248, 250, 252, 0.95) 50%, rgba(241, 245, 249, 1) 100%);
+      background: var(--canvas-bg);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
@@ -62,21 +90,123 @@
       overflow-x: hidden;
     }
 
+    /* ==================== PHITSANUVEJ CSS MEDICAL CROSS LOADER ==================== */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      background: rgba(244, 247, 251, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    #pageLoader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 38px 46px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 46, 110, 0.08);
+      min-width: 290px;
+      animation: loaderPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .css-logo-loader {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 10px auto 30px;
+      transform: scale(1.4);
+      transform-origin: center;
+    }
+
+    .logo-petal {
+      position: absolute;
+      animation: loadingPulse 1.6s ease-in-out infinite;
+      will-change: transform, opacity;
+    }
+
+    .logo-petal.outer {
+      background: #1e5387;
+      border-radius: 6px;
+    }
+
+    .logo-petal.inner {
+      background: #5faee3;
+      border-radius: 5px;
+    }
+
+    .logo-petal.outer.top {
+      top: 0px; left: 30px; width: 20px; height: 24px;
+      animation-delay: 0s;
+    }
+    .logo-petal.inner.top-right {
+      top: 14px; right: 14px; width: 20px; height: 20px;
+      animation-delay: 0.2s;
+    }
+    .logo-petal.outer.right {
+      top: 30px; right: 0px; width: 24px; height: 20px;
+      animation-delay: 0.4s;
+    }
+    .logo-petal.inner.bottom-right {
+      bottom: 14px; right: 14px; width: 20px; height: 20px;
+      animation-delay: 0.6s;
+    }
+    .logo-petal.outer.bottom {
+      bottom: 0px; left: 30px; width: 20px; height: 24px;
+      animation-delay: 0.8s;
+    }
+    .logo-petal.inner.bottom-left {
+      bottom: 14px; left: 14px; width: 20px; height: 20px;
+      animation-delay: 1.0s;
+    }
+    .logo-petal.outer.left {
+      top: 30px; left: 0px; width: 24px; height: 20px;
+      animation-delay: 1.2s;
+    }
+    .logo-petal.inner.top-left {
+      top: 14px; left: 14px; width: 20px; height: 20px;
+      animation-delay: 1.4s;
+    }
+
+    @keyframes loadingPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.35;
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 1;
+        filter: drop-shadow(0 0 6px rgba(95, 174, 227, 0.8));
+      }
+    }
+
+    @keyframes loaderPop {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
     /* Top Navbar */
     .lab-navbar {
-      background: rgba(15, 23, 42, 0.92);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      color: #ffffff;
-      padding: 14px 28px;
+      background: #ffffff;
+      color: var(--text-main);
+      padding: 12px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border-bottom: 1px solid var(--border-main);
+      box-shadow: 0 1px 4px rgba(0, 46, 110, 0.04);
     }
 
     .brand-group {
@@ -85,24 +215,35 @@
       gap: 14px;
     }
 
-    .brand-icon-box {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+    .brand-logo-img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border-main);
+    }
+
+    .brand-badge-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
     }
 
     .brand-text h1 {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       letter-spacing: -0.01em;
       line-height: 1.2;
-      color: #ffffff;
+      color: var(--royal-dark);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -110,7 +251,7 @@
 
     .brand-text p {
       font-size: 11.5px;
-      color: #94a3b8;
+      color: var(--text-muted);
     }
 
     .nav-actions {
@@ -123,21 +264,21 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
-      background: rgba(8, 145, 178, 0.25);
-      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 5px 12px;
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
       border-radius: 999px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
-      color: #7dd3fc;
+      color: var(--royal-blue);
     }
 
     .shift-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: #38bdf8;
-      box-shadow: 0 0 10px #38bdf8;
+      background: var(--royal-light);
+      box-shadow: 0 0 6px rgba(2, 132, 199, 0.4);
       animation: pulse-dot 1.8s infinite;
     }
 
@@ -150,19 +291,21 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-radius: var(--radius-md);
       font-size: 12px;
       font-weight: 600;
       text-decoration: none;
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-body);
+      background: #ffffff;
+      border: 1px solid var(--border-main);
       transition: all 0.2s;
     }
 
     .btn-sheet-link:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--royal-subtle);
+      border-color: var(--border-blue-soft);
+      color: var(--royal-blue);
       transform: translateY(-1px);
     }
 
@@ -170,20 +313,22 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 14px;
+      padding: 6px 14px;
       border-radius: var(--radius-md);
       font-size: 12px;
       font-weight: 600;
       text-decoration: none;
-      color: #cbd5e1;
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
       transition: all 0.2s;
     }
 
     .btn-back-central:hover {
+      background: var(--royal-blue);
       color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.4);
+      border-color: var(--royal-blue);
+      transform: translateY(-1px);
     }
 
     /* Main Container */
@@ -197,30 +342,31 @@
 
     /* Hero / Status Banner */
     .hero-banner {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.85) 100%);
-      border: 1px solid var(--glass-card-border);
+      background: #ffffff;
+      border: 1px solid var(--border-main);
       border-radius: var(--radius-xl);
-      padding: 24px 28px;
-      box-shadow: var(--shadow-md);
+      padding: 22px 28px;
+      box-shadow: 0 4px 16px rgba(0, 46, 110, 0.04);
       margin-bottom: 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 18px;
+      position: relative;
     }
 
     .hero-title h2 {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
-      color: #0f172a;
+      color: var(--royal-dark);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .hero-title p {
-      font-size: 13.5px;
+      font-size: 13px;
       color: var(--text-muted);
       margin-top: 4px;
     }
@@ -228,19 +374,24 @@
     .kpi-strip {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
     .kpi-card {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--border-main);
       border-radius: var(--radius-md);
       padding: 10px 18px;
       display: flex;
       align-items: center;
       gap: 12px;
       box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .kpi-card:hover {
+      border-color: var(--border-blue-soft);
+      transform: translateY(-1px);
     }
 
     .kpi-icon {
@@ -253,10 +404,10 @@
       font-size: 20px;
     }
 
-    .kpi-icon.teal { background: #e0f2fe; color: #0284c7; }
-    .kpi-icon.green { background: #dcfce7; color: #15803d; }
-    .kpi-icon.rose { background: #ffe4e6; color: #be123c; }
-    .kpi-icon.amber { background: #fef3c7; color: #b45309; }
+    .kpi-icon.teal { background: #eff6ff; color: var(--royal-blue); }
+    .kpi-icon.green { background: #ecfdf5; color: var(--green-ready); }
+    .kpi-icon.rose { background: #fef2f2; color: var(--red-abnormal); }
+    .kpi-icon.amber { background: #fffbeb; color: var(--amber-pending); }
 
     .kpi-val {
       font-size: 20px;
@@ -301,27 +452,30 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 18px;
+      padding: 9px 16px;
       border-radius: var(--radius-md);
       border: 1px solid transparent;
-      background: transparent;
+      background: #ffffff;
       color: var(--text-muted);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
       white-space: nowrap;
+      border: 1px solid var(--border-subtle);
     }
 
     .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.8);
-      color: var(--text-main);
+      background: var(--royal-subtle);
+      color: var(--royal-blue);
+      border-color: var(--border-blue-soft);
     }
 
     .tab-btn.active {
       background: var(--primary-gradient);
       color: #ffffff;
-      box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35);
+      border-color: var(--royal-blue);
+      box-shadow: 0 4px 12px rgba(0, 75, 147, 0.22);
     }
 
     /* Tab Content Section */
@@ -692,8 +846,8 @@
     }
 
     .input-field:focus {
-      border-color: #0891b2;
-      box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 3px rgba(0, 75, 147, 0.15);
     }
 
     .temp-feedback-pill {
@@ -737,7 +891,7 @@
       font-weight: 700;
       font-size: 13px;
       cursor: pointer;
-      box-shadow: 0 2px 10px rgba(8, 145, 178, 0.3);
+      box-shadow: 0 2px 10px rgba(0, 75, 147, 0.25);
     }
 
     /* Print Specific Style */
@@ -745,7 +899,7 @@
       body {
         background: #ffffff !important;
       }
-      .lab-navbar, .hero-banner, .lab-tabs, .report-toolbar, .no-print {
+      .lab-navbar, .hero-banner, .lab-tabs, .report-toolbar, #pageLoader, .no-print {
         display: none !important;
       }
       .lab-container {
@@ -762,16 +916,41 @@
 </head>
 <body>
 
-  <!-- Top Navbar -->
-  <header class="lab-navbar">
-    <div class="brand-group">
-      <div class="brand-icon-box">
-        <span class="material-icons-round" style="font-size: 26px;">biotech</span>
+  <!-- Loading Screen (Phitsanuvej Medical Cross Petals Style) -->
+  <div id="pageLoader">
+    <div class="loader-card">
+      <div class="css-logo-loader">
+        <div class="logo-petal outer top"></div>
+        <div class="logo-petal inner top-right"></div>
+        <div class="logo-petal outer right"></div>
+        <div class="logo-petal inner bottom-right"></div>
+        <div class="logo-petal outer bottom"></div>
+        <div class="logo-petal inner bottom-left"></div>
+        <div class="logo-petal outer left"></div>
+        <div class="logo-petal inner top-left"></div>
       </div>
+      <div style="margin-top: 14px;">
+        <div style="font-size: 16px; font-weight: 700; color: #004b93; margin-bottom: 4px;">
+          ระบบบันทึกเครื่องมือแพทย์ แผนก LAB
+        </div>
+        <div style="font-size: 12px; font-weight: 500; color: #64748b;">
+          โรงพยาบาลพิษณุเวช พิจิตร
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Navbar -->
+  <header class="lab-navbar no-print">
+    <div class="brand-group">
+      <a href="admin.html" style="text-decoration: none; display: flex; align-items: center; gap: 10px;" title="กลับหน้า Admin เครื่องมือแพทย์">
+        <img src="logo.png" alt="โรงพยาบาลพิษณุเวช" class="brand-logo-img">
+        <div class="brand-divider"></div>
+        <div class="brand-badge-pill">LAB HUB</div>
+      </a>
       <div class="brand-text">
         <h1>
           PPCH Laboratory Tracking System
-          <span style="font-size: 11px; padding: 2px 8px; border-radius: 999px; background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-weight: 700;">STANDALONE LAB</span>
         </h1>
         <p>โรงพยาบาลพิษณุเวช • ระบบบันทึกและติดตามความพร้อมเครื่องมือแพทย์ แผนกห้องปฏิบัติการ</p>
       </div>
@@ -786,19 +965,19 @@
 
       <!-- Links to Google Sheets -->
       <a href="https://docs.google.com/spreadsheets/d/1pP-f9f8yFabsENOB8VttfLu01hG8q-PG3rJHV-vqgzQ/edit" target="_blank" class="btn-sheet-link" title="เปิดดู Google Sheet ฐานข้อมูล LAB">
-        <span class="material-icons-round" style="font-size: 16px; color: #38bdf8;">table_chart</span>
+        <span class="material-icons-round" style="font-size: 16px; color: var(--royal-blue);">table_chart</span>
         <span>ชีทฐานข้อมูล LAB</span>
       </a>
 
       <a href="https://docs.google.com/spreadsheets/d/17QRxD2Niog4SIrXbeWDa-_NVwuRlZZy8W7MqIbJrOzs/edit" target="_blank" class="btn-sheet-link" title="เปิดดู Google Sheet ฟอร์มทางการ 16 แท็บ">
-        <span class="material-icons-round" style="font-size: 16px; color: #34d399;">description</span>
+        <span class="material-icons-round" style="font-size: 16px; color: var(--green-ready);">description</span>
         <span>ชีทฟอร์มทางการ (16 แท็บ)</span>
       </a>
 
       <!-- Quick back to central admin -->
-      <a href="desktop.html" class="btn-back-central" title="กลับหน้าระบบเครื่องมือแพทย์ส่วนกลาง">
-        <span class="material-icons-round" style="font-size: 16px;">admin_panel_settings</span>
-        <span>Admin ส่วนกลาง</span>
+      <a href="admin.html" class="btn-back-central" title="กลับหน้าระบบเครื่องมือแพทย์ Admin">
+        <span class="material-icons-round" style="font-size: 16px;">arrow_back</span>
+        <span>กลับหน้า Admin</span>
       </a>
     </div>
   </header>
@@ -810,7 +989,7 @@
     <div class="hero-banner">
       <div class="hero-title">
         <h2>
-          <span class="material-icons-round" style="color: #0891b2; font-size: 28px;">medical_services</span>
+          <span class="material-icons-round" style="color: var(--royal-blue); font-size: 28px;">medical_services</span>
           ภาพรวมความพร้อมเครื่องมือแพทย์และจุดควบคุม แผนก LAB
         </h2>
         <p>ประจำวันที่ <strong id="lblThaiToday">-</strong> | ควบคุมคุณภาพตามมาตรฐานโรงพยาบาลและเกณฑ์สากล</p>
@@ -1131,6 +1310,15 @@
       initClockAndDate();
       loadOverviewData();
       renderSelectedReport();
+    });
+
+    window.addEventListener('load', function() {
+      var pl = document.getElementById('pageLoader');
+      if (pl) {
+        setTimeout(function() {
+          pl.classList.add('hidden');
+        }, 300);
+      }
     });
 
     function initClockAndDate() {

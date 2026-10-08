@@ -2,15 +2,21 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=admin.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PPCH Medical Equipment Hub | โรงพยาบาลพิษณุเวช</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --royal-dark: #002e6e;
+      --royal-blue: #004b93;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Prompt', -apple-system, sans-serif;
-      background: #f8fafc;
+      background: #f4f7fb;
       color: #0f172a;
       display: flex;
       flex-direction: column;
@@ -21,48 +27,79 @@
       padding: 20px;
       text-align: center;
     }
-    .card {
+    .loader-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 40px;
-      max-width: 520px;
-      box-shadow: 0 4px 20px rgba(0, 46, 110, 0.06);
+      border-radius: 20px;
+      padding: 38px 46px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 46, 110, 0.08);
+      min-width: 290px;
     }
-    .logo {
-      height: 48px;
-      margin-bottom: 20px;
+    .css-logo-loader {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 10px auto 30px;
+      transform: scale(1.4);
+      transform-origin: center;
     }
-    h1 {
-      font-size: 20px;
-      font-weight: 700;
-      color: #004b93;
-      margin: 0 0 10px;
+    .logo-petal {
+      position: absolute;
+      animation: loadingPulse 1.6s ease-in-out infinite;
+      will-change: transform, opacity;
     }
-    p {
-      font-size: 14px;
-      color: #64748b;
-      margin: 0 0 24px;
-      line-height: 1.6;
+    .logo-petal.outer { background: #1e5387; border-radius: 6px; }
+    .logo-petal.inner { background: #5faee3; border-radius: 5px; }
+    .logo-petal.outer.top { top: 0px; left: 30px; width: 20px; height: 24px; animation-delay: 0s; }
+    .logo-petal.inner.top-right { top: 14px; right: 14px; width: 20px; height: 20px; animation-delay: 0.2s; }
+    .logo-petal.outer.right { top: 30px; right: 0px; width: 24px; height: 20px; animation-delay: 0.4s; }
+    .logo-petal.inner.bottom-right { bottom: 14px; right: 14px; width: 20px; height: 20px; animation-delay: 0.6s; }
+    .logo-petal.outer.bottom { bottom: 0px; left: 30px; width: 20px; height: 24px; animation-delay: 0.8s; }
+    .logo-petal.inner.bottom-left { bottom: 14px; left: 14px; width: 20px; height: 20px; animation-delay: 1.0s; }
+    .logo-petal.outer.left { top: 30px; left: 0px; width: 24px; height: 20px; animation-delay: 1.2s; }
+    .logo-petal.inner.top-left { top: 14px; left: 14px; width: 20px; height: 20px; animation-delay: 1.4s; }
+
+    @keyframes loadingPulse {
+      0%, 100% { transform: scale(1); opacity: 0.35; }
+      50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 6px rgba(95, 174, 227, 0.8)); }
     }
-    .badge {
+    .btn-enter {
       display: inline-block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #0284c7;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 6px 14px;
-      border-radius: 9999px;
+      margin-top: 18px;
+      padding: 10px 24px;
+      border-radius: 10px;
+      background: var(--royal-blue);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-enter:hover {
+      background: var(--royal-dark);
+      transform: translateY(-1px);
     }
   </style>
+  <script>
+    window.location.replace('admin.html');
+  </script>
 </head>
 <body>
-  <div class="card">
-    <img src="logo.png" alt="โรงพยาบาลพิษณุเวช" class="logo">
-    <h1>ระบบเครื่องมือแพทย์ โรงพยาบาลพิษณุเวช</h1>
-    <p>เคลียร์ข้อมูลการออกแบบเดิมเรียบร้อยแล้ว<br>ฐานข้อมูล Google Forms, ข้อมูลที่สแกน, และระบบ GAS ยังคงอยู่อย่างครบถ้วน พร้อมสำหรับการเริ่มต้นออกแบบใหม่</p>
-    <div class="badge">Ready for Fresh Start</div>
+  <div class="loader-card">
+    <div class="css-logo-loader">
+      <div class="logo-petal outer top"></div>
+      <div class="logo-petal inner top-right"></div>
+      <div class="logo-petal outer right"></div>
+      <div class="logo-petal inner bottom-right"></div>
+      <div class="logo-petal outer bottom"></div>
+      <div class="logo-petal inner bottom-left"></div>
+      <div class="logo-petal outer left"></div>
+      <div class="logo-petal inner top-left"></div>
+    </div>
+    <h1 style="font-size: 17px; font-weight: 700; color: #004b93; margin-bottom: 4px;">ระบบเครื่องมือแพทย์ (Admin Hub)</h1>
+    <p style="font-size: 12px; color: #64748b;">กำลังเข้าสู่ระบบ โรงพยาบาลพิษณุเวช...</p>
+    <a href="admin.html" class="btn-enter">เข้าสู่หน้าระบบทันที</a>
   </div>
 </body>
 </html>

@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPCH Medical Equipment Hub (Admin) | โรงพยาบาลพิษณุเวช</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    /* ==================== PPCH DEEP ROYAL BLUE & CRISP WHITE THEME ==================== */
+    :root {
+      --royal-dark: #002e6e;
+      --royal-blue: #004b93;
+      --royal-hover: #003a73;
+      --royal-light: #0284c7;
+      --royal-subtle: #f0f7ff;
+      --royal-glow: rgba(0, 75, 147, 0.16);
+
+      --canvas-bg: #f4f7fb;
+      --surface-white: #ffffff;
+      --border-main: #e2e8f0;
+      --border-subtle: #edf2f7;
+      --border-focus: #004b93;
+      --border-blue-soft: #bfdbfe;
+
+      --text-main: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --green-ready: #059669;
+      --green-bg: #ecfdf5;
+      --green-border: #a7f3d0;
+
+      --amber-pending: #d97706;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+
+      --red-abnormal: #dc2626;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+
+      --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Inter', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--canvas-bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ==================== PHITSANUVEJ CSS MEDICAL CROSS LOADER ==================== */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      background: rgba(244, 247, 251, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    #pageLoader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 38px 46px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 46, 110, 0.08);
+      min-width: 290px;
+      animation: loaderPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .css-logo-loader {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 10px auto 30px;
+      transform: scale(1.4);
+      transform-origin: center;
+    }
+
+    .logo-petal {
+      position: absolute;
+      animation: loadingPulse 1.6s ease-in-out infinite;
+      will-change: transform, opacity;
+    }
+
+    .logo-petal.outer {
+      background: #1e5387;
+      border-radius: 6px;
+    }
+
+    .logo-petal.inner {
+      background: #5faee3;
+      border-radius: 5px;
+    }
+
+    .logo-petal.outer.top {
+      top: 0px; left: 30px; width: 20px; height: 24px;
+      animation-delay: 0s;
+    }
+    .logo-petal.inner.top-right {
+      top: 14px; right: 14px; width: 20px; height: 20px;
+      animation-delay: 0.2s;
+    }
+    .logo-petal.outer.right {
+      top: 30px; right: 0px; width: 24px; height: 20px;
+      animation-delay: 0.4s;
+    }
+    .logo-petal.inner.bottom-right {
+      bottom: 14px; right: 14px; width: 20px; height: 20px;
+      animation-delay: 0.6s;
+    }
+    .logo-petal.outer.bottom {
+      bottom: 0px; left: 30px; width: 20px; height: 24px;
+      animation-delay: 0.8s;
+    }
+    .logo-petal.inner.bottom-left {
+      bottom: 14px; left: 14px; width: 20px; height: 20px;
+      animation-delay: 1.0s;
+    }
+    .logo-petal.outer.left {
+      top: 30px; left: 0px; width: 24px; height: 20px;
+      animation-delay: 1.2s;
+    }
+    .logo-petal.inner.top-left {
+      top: 14px; left: 14px; width: 20px; height: 20px;
+      animation-delay: 1.4s;
+    }
+
+    @keyframes loadingPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.35;
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 1;
+      }
+    }
+
+    @keyframes loaderPop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ==================== 1. TOP HEADER ==================== */
+    .app-topbar {
+      height: 56px;
+      background: #ffffff;
+      border-bottom: 2px solid var(--royal-blue);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 46, 110, 0.05);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand-logo-img {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border-main);
+    }
+
+    .brand-badge-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .topbar-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      margin-left: 6px;
+    }
+    .bread-parent { color: var(--text-muted); }
+    .bread-sep { color: var(--text-light); }
+    .bread-current {
+      color: var(--royal-blue);
+      font-weight: 600;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-realtime-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+    .pulse-indicator-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green-ready);
+      box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+    }
+
+    .admin-profile-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: #f8fafc;
+      border: 1px solid var(--border-main);
+    }
+    .avatar-circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-light) 100%);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-body);
+    }
+
+    /* ==================== 2. BODY LAYOUT (SIDEBAR + MAIN) ==================== */
+    .app-layout-body {
+      display: flex;
+      flex: 1;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* Lean Left Sidebar */
+    .app-sidebar {
+      width: 220px;
+      background: #ffffff;
+      border-right: 1px solid var(--border-main);
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 6px 10px 4px 10px;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-body);
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-btn:hover {
+      background: var(--royal-subtle);
+      color: var(--royal-blue);
+      transform: translateX(2px);
+    }
+    .nav-btn.active {
+      background: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-light) 100%) !important;
+      color: #ffffff !important;
+      font-weight: 600 !important;
+      box-shadow: 0 4px 12px rgba(0, 75, 147, 0.25);
+    }
+    .nav-btn .material-icons-round {
+      font-size: 18px;
+      color: var(--text-muted);
+      transition: color 0.15s;
+    }
+    .nav-btn:hover .material-icons-round {
+      color: var(--royal-blue);
+    }
+    .nav-btn.active .material-icons-round {
+      color: #ffffff;
+    }
+
+    .nav-btn-lab {
+      color: var(--royal-blue);
+      font-weight: 600;
+    }
+    .nav-ext-icon {
+      margin-left: auto;
+      font-size: 13px !important;
+      color: var(--text-light) !important;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 10px 4px;
+    }
+
+    .sidebar-bottom-status {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding-left: 6px;
+    }
+    .sync-dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green-ready);
+      flex-shrink: 0;
+    }
+
+    /* ==================== 3. MAIN WORKSTATION ==================== */
+    .app-main-content {
+      flex: 1;
+      padding: 16px 24px;
+      overflow-y: auto;
+      max-width: calc(100% - 220px);
+    }
+
+    /* Clickable KPI Strip 5 */
+    .kpi-strip-5 {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    @media (max-width: 1100px) {
+      .kpi-strip-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .kpi-strip-5 { grid-template-columns: 1fr; }
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0, 46, 110, 0.03);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: #93c5fd;
+      box-shadow: 0 6px 16px rgba(0, 75, 147, 0.08);
+    }
+    .kpi-card.active-kpi {
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 2px var(--royal-blue);
+      background: var(--royal-subtle);
+    }
+
+    .kpi-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+    .kpi-icon-blue { background: #eff6ff; color: var(--royal-blue); }
+    .kpi-icon-teal { background: #f0fdfa; color: #0d9488; }
+    .kpi-icon-green { background: #ecfdf5; color: var(--green-ready); }
+    .kpi-icon-red { background: #fef2f2; color: var(--red-abnormal); }
+    .kpi-icon-amber { background: #fffbeb; color: var(--amber-pending); }
+
+    .kpi-val {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      font-family: var(--font-mono);
+    }
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* On-Page Filter Bar */
+    .page-filter-bar {
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0, 46, 110, 0.02);
+      flex-wrap: wrap;
+    }
+
+    .filter-left-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .search-input-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      border: 1px solid var(--border-main);
+      border-radius: 6px;
+      padding: 5px 10px;
+      min-width: 180px;
+      transition: all 0.15s;
+    }
+    .search-input-box:focus-within {
+      background: #ffffff;
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 2px rgba(0, 75, 147, 0.12);
+    }
+    .search-input-box .material-icons-round {
+      font-size: 16px;
+      color: var(--text-light);
+    }
+    .search-input-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--text-main);
+      width: 100%;
+    }
+
+    .filter-date-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-input {
+      background: #f8fafc;
+      border: 1px solid var(--border-main);
+      border-radius: 6px;
+      padding: 5px 9px;
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--text-body);
+      outline: none;
+      transition: all 0.15s;
+    }
+    .filter-input:focus {
+      background: #ffffff;
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 2px rgba(0, 75, 147, 0.12);
+    }
+
+    .btn-pill-date {
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-pill-date:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+    .btn-pill-date.active {
+      background: var(--royal-blue);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .btn-reset-ghost {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--border-main);
+      background: #ffffff;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-reset-ghost:hover {
+      background: #f1f5f9;
+      color: var(--royal-blue);
+    }
+
+    .filter-right-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-tool {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-body);
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-tool:hover {
+      background: var(--royal-subtle);
+      border-color: var(--border-blue-soft);
+      color: var(--royal-blue);
+    }
+
+    .btn-tool-primary {
+      background: var(--royal-blue);
+      color: #ffffff;
+      border-color: var(--royal-blue);
+      font-weight: 600;
+    }
+    .btn-tool-primary:hover {
+      background: var(--royal-hover);
+      color: #ffffff;
+    }
+
+    /* Table & Cards */
+    .content-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0, 46, 110, 0.02);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .panel-header {
+      padding: 10px 14px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .panel-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .panel-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border: 1px solid var(--border-main);
+      color: var(--text-muted);
+    }
+
+    .device-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .device-table th {
+      background: #f8fafc;
+      color: var(--text-body);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border-main);
+      white-space: nowrap;
+    }
+    .device-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 12.5px;
+      color: var(--text-main);
+      vertical-align: middle;
+      transition: background 0.1s;
+    }
+    .device-table tbody tr:hover td {
+      background: #f8fafc;
+    }
+    .device-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .asset-code-clean {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-status-ready { color: var(--green-ready); }
+    .badge-status-pending { color: var(--amber-pending); }
+    .badge-status-abnormal { color: var(--red-abnormal); }
+
+    .btn-action-eval {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 9px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .btn-action-eval:hover {
+      background: #dbeafe;
+    }
+
+    .btn-action-slip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 9px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-body);
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-action-slip:hover {
+      background: #f1f5f9;
+      color: var(--royal-blue);
+    }
+
+    /* Equipment Cards Grid (View 3) */
+    .equip-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .equip-item-card {
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.18s;
+      box-shadow: 0 1px 3px rgba(0, 46, 110, 0.02);
+    }
+    .equip-item-card:hover {
+      border-color: #93c5fd;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 75, 147, 0.06);
+    }
+
+    .equip-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .equip-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+    .equip-meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .equip-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 1;
+      visibility: visible;
+      transition: all 0.2s;
+    }
+    .modal-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 46, 110, 0.16);
+      border: 1px solid var(--border-main);
+      padding: 24px;
+      max-width: 480px;
+      width: 90%;
+      animation: loaderPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Toast Notification */
+    #toastNotice {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      transform: translateY(60px);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #toastNotice.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Print View */
+    @media print {
+      body { background: #ffffff !important; }
+      .app-topbar, .app-sidebar, .page-filter-bar, .kpi-strip-5, #pageLoader, .btn-action-col, .no-print {
+        display: none !important;
+      }
+      .app-main-content { max-width: 100% !important; padding: 0 !important; }
+      .content-panel { border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Screen (Phitsanuvej Medical Cross Petals Style) -->
+  <div id="pageLoader">
+    <div class="loader-card">
+      <div class="css-logo-loader">
+        <div class="logo-petal outer top"></div>
+        <div class="logo-petal inner top-right"></div>
+        <div class="logo-petal outer right"></div>
+        <div class="logo-petal inner bottom-right"></div>
+        <div class="logo-petal outer bottom"></div>
+        <div class="logo-petal inner bottom-left"></div>
+        <div class="logo-petal outer left"></div>
+        <div class="logo-petal inner top-left"></div>
+      </div>
+      <div style="margin-top: 14px;">
+        <div id="loaderTitle" style="font-size: 16px; font-weight: 700; color: #004b93; margin-bottom: 4px;">
+          ระบบเครื่องมือแพทย์ (Admin Hub)
+        </div>
+        <div id="loaderSubtitle" style="font-size: 12px; font-weight: 500; color: #64748b;">
+          โรงพยาบาลพิษณุเวช พิจิตร
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-wrapper">
+
+    <!-- 1. Top Header -->
+    <header class="app-topbar no-print">
+      <div class="topbar-left">
+        <a href="admin.html" class="topbar-brand" title="PPCH Medical Equipment Hub">
+          <img src="logo.png" alt="โรงพยาบาลพิษณุเวช" class="brand-logo-img">
+          <div class="brand-divider"></div>
+          <div class="brand-badge-pill">Med Track</div>
+        </a>
+        <div class="topbar-breadcrumbs">
+          <span class="bread-parent">ระบบเครื่องมือแพทย์</span>
+          <span class="bread-sep">/</span>
+          <span class="bread-current" id="breadCurrent">สรุปผลรายเครื่อง</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="status-realtime-badge">
+          <span class="pulse-indicator-dot"></span>
+          <span id="topStatusText">สถานะวันนี้ • พร้อมใช้</span>
+        </div>
+        <div class="admin-profile-pill">
+          <div class="avatar-circle">ชก</div>
+          <span class="admin-label">ผู้ดูแลระบบ</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. Body Layout -->
+    <div class="app-layout-body">
+
+      <!-- Left Sidebar -->
+      <aside class="app-sidebar no-print">
+        <div class="sidebar-section-title">เมนูหลัก</div>
+        <nav class="sidebar-nav">
+          <button onclick="switchView('summary')" id="navBtn_summary" class="nav-btn active">
+            <span class="material-icons-round">fact_check</span>
+            <span>สรุปผลรายเครื่อง</span>
+          </button>
+          <button onclick="switchView('relocate')" id="navBtn_relocate" class="nav-btn">
+            <span class="material-icons-round">swap_horiz</span>
+            <span>มอบหมายแผนก / ย้าย</span>
+          </button>
+          <button onclick="switchView('directory')" id="navBtn_directory" class="nav-btn">
+            <span class="material-icons-round">qr_code_2</span>
+            <span>รายการเครื่อง & QR Code</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-section-title">ระบบที่เกี่ยวข้อง</div>
+        <nav class="sidebar-nav">
+          <a href="lab.html" target="_blank" class="nav-btn nav-btn-lab" title="เปิดหน้า Admin แผนก LAB (ลิงก์แยกเฉพาะ)">
+            <span class="material-icons-round">biotech</span>
+            <span>หน้าแผนก LAB</span>
+            <span class="material-icons-round nav-ext-icon">open_in_new</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom-status">
+          <span class="sync-dot-live"></span>
+          <span id="syncText">ระบบออนไลน์ (Active)</span>
+        </div>
+      </aside>
+
+      <!-- 3. Main Workstation -->
+      <main class="app-main-content">
+
+        <!-- ==================== SUB-VIEW 1: สรุปผลรายเครื่อง ==================== -->
+        <section id="viewSummary">
+          <!-- 5-Column Clickable KPI Strip -->
+          <div class="kpi-strip-5 no-print">
+            <div class="kpi-card" id="kpiCard_all" onclick="filterByKpi('all')" title="คลิกเพื่อดูทั้งหมด">
+              <div class="kpi-icon-box kpi-icon-blue">
+                <span class="material-icons-round">medical_services</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiTotal">14</div>
+                <div class="kpi-label">ทั้งหมด</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpiCard_checked" onclick="filterByKpi('checked')" title="คลิกเพื่อดูรายการที่ตรวจแล้ว">
+              <div class="kpi-icon-box kpi-icon-teal">
+                <span class="material-icons-round">assignment_turned_in</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiChecked">0</div>
+                <div class="kpi-label">ตรวจแล้ว</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpiCard_ready" onclick="filterByKpi('ready')" title="คลิกเพื่อกรองเฉพาะเครื่องพร้อมใช้">
+              <div class="kpi-icon-box kpi-icon-green">
+                <span class="material-icons-round">check_circle</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiReady" style="color: var(--green-ready);">0</div>
+                <div class="kpi-label">พร้อมใช้</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpiCard_abnormal" onclick="filterByKpi('abnormal')" title="คลิกเพื่อกรองเฉพาะเครื่องที่พบข้อบกพร่อง">
+              <div class="kpi-icon-box kpi-icon-red">
+                <span class="material-icons-round">error</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiAbnormal" style="color: var(--red-abnormal);">0</div>
+                <div class="kpi-label">ข้อบกพร่อง</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpiCard_pending" onclick="filterByKpi('pending')" title="คลิกเพื่อกรองเฉพาะเครื่องที่รอตรวจ">
+              <div class="kpi-icon-box kpi-icon-amber">
+                <span class="material-icons-round">schedule</span>
+              </div>
+              <div>
+                <div class="kpi-val" id="kpiPending" style="color: var(--amber-pending);">14</div>
+                <div class="kpi-label">รอตรวจ</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- On-Page Filter Bar -->
+          <div class="page-filter-bar no-print">
+            <div class="filter-left-controls">
+              <!-- Search -->
+              <div class="search-input-box">
+                <span class="material-icons-round">search</span>
+                <input type="text" id="filterSearch" placeholder="ค้นหาเครื่อง, รหัสครุภัณฑ์..." oninput="applyFilters()">
+              </div>
+
+              <!-- Date Picker & Quick Date Pills (Defaults to today) -->
+              <div class="filter-date-group">
+                <input type="date" id="filterDate" class="filter-input" onchange="applyFilters()">
+                <button type="button" onclick="setQuickDate('today')" id="btnDateToday" class="btn-pill-date active">วันนี้</button>
+                <button type="button" onclick="setQuickDate('yesterday')" id="btnDateYesterday" class="btn-pill-date">เมื่อวาน</button>
+              </div>
+
+              <!-- Department Selector -->
+              <select id="filterDept" class="filter-input" onchange="applyFilters()">
+                <option value="all">ทุกแผนก</option>
+              </select>
+
+              <!-- Category Selector -->
+              <select id="filterCategory" class="filter-input" onchange="applyFilters()">
+                <option value="all">ทุกประเภท</option>
+              </select>
+
+              <!-- Status Selector -->
+              <select id="filterStatus" class="filter-input" onchange="applyFilters()">
+                <option value="all">ทุกสถานะ</option>
+                <option value="ready">พร้อมใช้งาน</option>
+                <option value="pending">รอตรวจ</option>
+                <option value="abnormal">พบข้อบกพร่อง</option>
+              </select>
+
+              <!-- Reset Button -->
+              <button type="button" onclick="resetFilters()" class="btn-reset-ghost" title="รีเซ็ตตัวกรอง">
+                <span class="material-icons-round" style="font-size: 16px;">refresh</span>
+              </button>
+            </div>
+
+            <div class="filter-right-tools">
+              <button type="button" onclick="window.print()" class="btn-tool" title="พิมพ์รายงาน">
+                <span class="material-icons-round" style="font-size: 15px;">print</span>
+                <span>พิมพ์</span>
+              </button>
+              <button type="button" onclick="exportCsv()" class="btn-tool" title="ส่งออก CSV">
+                <span class="material-icons-round" style="font-size: 15px; color: #059669;">download</span>
+                <span>ส่งออก</span>
+              </button>
+              <button type="button" onclick="syncWithGas()" class="btn-tool btn-tool-primary" id="btnSync" title="ซิงค์ข้อมูล Google Apps Script">
+                <span class="material-icons-round" style="font-size: 15px;">sync</span>
+                <span>ซิงค์</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Table Panel -->
+          <div class="content-panel">
+            <div class="panel-header">
+              <div class="panel-title" id="summaryTableTitle">สรุปผลการตรวจเช็คเครื่องมือแพทย์ประจำวัน</div>
+              <span class="panel-badge" id="summaryCountBadge">14 เครื่อง</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="device-table">
+                <thead>
+                  <tr>
+                    <th style="width: 130px;">รหัสครุภัณฑ์</th>
+                    <th>เครื่องมือแพทย์ & รุ่น</th>
+                    <th style="width: 140px;">แผนกรับผิดชอบ</th>
+                    <th style="width: 110px;">ประเภท</th>
+                    <th style="width: 120px;">สถานะวันนี้</th>
+                    <th style="width: 120px;">เวลาตรวจ</th>
+                    <th style="width: 110px;">ผู้ตรวจ</th>
+                    <th class="btn-action-col no-print" style="width: 110px; text-align: center;">จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="summaryTableBody">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SUB-VIEW 2: มอบหมายแผนก / ย้ายเครื่อง ==================== -->
+        <section id="viewRelocate" style="display: none;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <!-- Form Card -->
+            <div class="content-panel" style="margin-bottom: 0;">
+              <div class="panel-header">
+                <div class="panel-title">มอบหมายแผนกที่ต้องทำการตรวจเช็ค (ย้ายพื้นที่)</div>
+              </div>
+              <div style="padding: 16px;">
+                <form id="relocationForm" onsubmit="handleRelocationSubmit(event)">
+                  <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">เลือกเครื่องมือแพทย์ *</label>
+                    <select id="relocateDeviceSelect" class="filter-input" style="width: 100%;" onchange="onRelocateDeviceSelected()" required>
+                      <option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>
+                    </select>
+                  </div>
+
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                    <div style="background: #f8fafc; border: 1px solid var(--border-main); padding: 8px 12px; border-radius: 6px;">
+                      <div style="font-size: 11px; color: var(--text-muted);">แผนกตั้งต้น (Home Dept)</div>
+                      <div id="relocateHomeDept" style="font-size: 12.5px; font-weight: 700; color: var(--text-main); margin-top: 2px;">-</div>
+                    </div>
+                    <div style="background: var(--royal-subtle); border: 1px solid var(--border-blue-soft); padding: 8px 12px; border-radius: 6px;">
+                      <div style="font-size: 11px; color: var(--royal-blue);">แผนกปัจจุบัน (Current Dept)</div>
+                      <div id="relocateCurrentDept" style="font-size: 12.5px; font-weight: 700; color: var(--royal-blue); margin-top: 2px;">-</div>
+                    </div>
+                  </div>
+
+                  <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">มอบหมายให้แผนกใหม่รับผิดชอบตรวจเช็ค *</label>
+                    <select id="relocateTargetDept" class="filter-input" style="width: 100%;" required>
+                      <option value="">-- เลือกแผนกปลายทาง --</option>
+                    </select>
+                  </div>
+
+                  <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">ชื่อผู้ทำรายการ / ผู้รับมอบ *</label>
+                    <input type="text" id="relocateActor" class="filter-input" style="width: 100%;" placeholder="เช่น พว.สมศรี, ช่างกมล" required>
+                  </div>
+
+                  <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-body); margin-bottom: 4px;">เหตุผลการขอยืม / โอนย้าย</label>
+                    <input type="text" id="relocateReason" class="filter-input" style="width: 100%;" placeholder="เช่น ขอยืมใช้งานเคสฉุกเฉิน, ย้ายประจำการ">
+                  </div>
+
+                  <button type="submit" class="btn-tool btn-tool-primary" style="width: 100%; justify-content: center; padding: 9px;">
+                    <span class="material-icons-round">check_circle</span>
+                    <span>บันทึกการมอบหมายแผนก</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Transfer History Card -->
+            <div class="content-panel" style="margin-bottom: 0;">
+              <div class="panel-header">
+                <div class="panel-title">ประวัติการโอนย้ายและเปลี่ยนพื้นที่ล่าสุด</div>
+              </div>
+              <div style="overflow-x: auto; max-height: 380px;">
+                <table class="device-table">
+                  <thead>
+                    <tr>
+                      <th>วัน-เวลา</th>
+                      <th>เครื่องมือแพทย์</th>
+                      <th>จาก -> ไปยัง</th>
+                      <th>ผู้ทำรายการ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="transferHistoryBody">
+                    <!-- Populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SUB-VIEW 3: รายการเครื่อง & QR CODE ==================== -->
+        <section id="viewDirectory" style="display: none;">
+          <div class="content-panel">
+            <div class="panel-header">
+              <div class="panel-title">รายการเครื่องมือแพทย์รวมลิงก์แบบตรวจเช็ค & QR Code ประจำเครื่อง</div>
+              <div class="search-input-box" style="min-width: 200px;">
+                <span class="material-icons-round">search</span>
+                <input type="text" id="directorySearch" placeholder="ค้นหาเครื่อง..." oninput="renderDirectoryView()">
+              </div>
+            </div>
+            <div class="equip-grid-3" id="directoryGrid">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- QR Code Modal -->
+  <div id="qrModal" class="modal-overlay hidden no-print" onclick="if(event.target === this) closeQrModal()">
+    <div class="modal-box" style="text-align: center;">
+      <div style="font-size: 15px; font-weight: 700; color: var(--royal-blue); margin-bottom: 2px;" id="qrDeviceTitle">QR Code ตรวจเช็คเครื่องมือแพทย์</div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;" id="qrDeviceAsset">EQ-68-DEF-001</div>
+      
+      <div style="background: #ffffff; padding: 14px; border: 1px solid var(--border-main); border-radius: 12px; display: inline-block; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+        <div id="qrCanvas"></div>
+      </div>
+
+      <div style="font-size: 11px; color: var(--text-muted); word-break: break-all; margin-bottom: 16px; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-main);" id="qrLinkText">-</div>
+
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <button type="button" onclick="copyQrLink()" class="btn-tool">
+          <span class="material-icons-round">content_copy</span>
+          <span>คัดลอกลิงก์</span>
+        </button>
+        <button type="button" onclick="printQrSticker()" class="btn-tool btn-tool-primary">
+          <span class="material-icons-round">print</span>
+          <span>พิมพ์สติกเกอร์</span>
+        </button>
+        <button type="button" onclick="closeQrModal()" class="btn-tool">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Slip Modal -->
+  <div id="slipModal" class="modal-overlay hidden no-print" onclick="if(event.target === this) closeSlipModal()">
+    <div class="modal-box" style="max-width: 440px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px; margin-bottom: 12px;">
+        <div style="font-size: 14px; font-weight: 700; color: var(--royal-blue);">สลิปผลการตรวจเช็คเครื่องมือแพทย์</div>
+        <button onclick="closeSlipModal()" style="border: none; background: transparent; cursor: pointer; color: var(--text-muted);"><span class="material-icons-round">close</span></button>
+      </div>
+      <div id="slipContent">
+        <!-- Injected -->
+      </div>
+      <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+        <button type="button" onclick="closeSlipModal()" class="btn-tool">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notice -->
+  <div id="toastNotice">
+    <span class="material-icons-round" style="color: #38bdf8; font-size: 18px;">info</span>
+    <span id="toastMsg">ข้อความ</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/qrcode.min.js"></script>
+
+  <script>
+    var currentView = 'summary';
+    var allEquipment = [];
+    var allEvaluations = [];
+    var activeKpiFilter = 'all';
+    var selectedQrUrl = '';
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initApp();
+      window.addEventListener('ppch:data-updated', function () {
+        loadData();
+      });
+    });
+
+    function hidePageLoader() {
+      var loader = document.getElementById('pageLoader');
+      if (loader) loader.classList.add('hidden');
+    }
+
+    function initApp() {
+      // 1. Set default date to today
+      var todayStr = new Date().toISOString().slice(0, 10);
+      document.getElementById('filterDate').value = todayStr;
+
+      // 2. Populate departments in filter
+      var deptSel = document.getElementById('filterDept');
+      var relocateSel = document.getElementById('relocateTargetDept');
+      (window.PPCH_CONFIG.departments || []).forEach(function (dp) {
+        var opt = document.createElement('option');
+        opt.value = dp.id;
+        opt.innerText = dp.name;
+        deptSel.appendChild(opt);
+
+        var opt2 = document.createElement('option');
+        opt2.value = dp.id;
+        opt2.innerText = dp.name;
+        relocateSel.appendChild(opt2);
+      });
+
+      // 3. Populate categories in filter
+      var catSel = document.getElementById('filterCategory');
+      (window.PPCH_CONFIG.forms || []).forEach(function (f) {
+        var opt = document.createElement('option');
+        opt.value = f.id;
+        opt.innerText = f.shortName || f.name;
+        catSel.appendChild(opt);
+      });
+
+      // 4. Load Data
+      loadData();
+
+      // 5. Hide Loader after smooth delay
+      setTimeout(hidePageLoader, 350);
+    }
+
+    function loadData() {
+      allEquipment = window.PPCH_STORE.getEquipment() || [];
+      allEvaluations = window.PPCH_STORE.getEvaluations() || [];
+
+      // Populate relocation device dropdown
+      var devSel = document.getElementById('relocateDeviceSelect');
+      devSel.innerHTML = '<option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>';
+      allEquipment.forEach(function (eq) {
+        var opt = document.createElement('option');
+        opt.value = eq.id;
+        opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + window.PPCH_STORE.getDepartmentName(eq.currentDept) + ']';
+        devSel.appendChild(opt);
+      });
+
+      applyFilters();
+      renderTransfers();
+      renderDirectoryView();
+    }
+
+    function switchView(viewKey) {
+      currentView = viewKey;
+      var bread = document.getElementById('breadCurrent');
+      var breadMap = {
+        summary: 'สรุปผลรายเครื่อง',
+        relocate: 'มอบหมายแผนก / ย้ายเครื่อง',
+        directory: 'รายการเครื่อง & QR Code'
+      };
+      bread.innerText = breadMap[viewKey] || viewKey;
+
+      ['summary', 'relocate', 'directory'].forEach(function (v) {
+        var btn = document.getElementById('navBtn_' + v);
+        var sec = document.getElementById('view' + v.charAt(0).toUpperCase() + v.slice(1));
+        if (btn) btn.classList.toggle('active', v === viewKey);
+        if (sec) sec.style.display = (v === viewKey) ? 'block' : 'none';
+      });
+    }
+
+    function setQuickDate(type) {
+      var d = new Date();
+      if (type === 'yesterday') {
+        d.setDate(d.getDate() - 1);
+      }
+      var str = d.toISOString().slice(0, 10);
+      document.getElementById('filterDate').value = str;
+
+      document.getElementById('btnDateToday').classList.toggle('active', type === 'today');
+      document.getElementById('btnDateYesterday').classList.toggle('active', type === 'yesterday');
+      applyFilters();
+    }
+
+    function filterByKpi(kpiType) {
+      activeKpiFilter = kpiType;
+      document.querySelectorAll('.kpi-card').forEach(function (c) { c.classList.remove('active-kpi'); });
+      var activeCard = document.getElementById('kpiCard_' + kpiType);
+      if (activeCard) activeCard.classList.add('active-kpi');
+      applyFilters();
+    }
+
+    function resetFilters() {
+      document.getElementById('filterSearch').value = '';
+      setQuickDate('today');
+      document.getElementById('filterDept').value = 'all';
+      document.getElementById('filterCategory').value = 'all';
+      document.getElementById('filterStatus').value = 'all';
+      filterByKpi('all');
+    }
+
+    function applyFilters() {
+      var search = (document.getElementById('filterSearch').value || '').trim().toLowerCase();
+      var dateVal = document.getElementById('filterDate').value;
+      var deptVal = document.getElementById('filterDept').value;
+      var catVal = document.getElementById('filterCategory').value;
+      var statusVal = document.getElementById('filterStatus').value;
+
+      // Map today's latest evaluation per device on selected date
+      var evalsOnDate = allEvaluations.filter(function (ev) {
+        return ev.evaluatedAt && ev.evaluatedAt.indexOf(dateVal) === 0;
+      });
+      var evalMapByDevice = {};
+      evalsOnDate.forEach(function (ev) {
+        if (!evalMapByDevice[ev.deviceId] || ev.evaluatedAt > evalMapByDevice[ev.deviceId].evaluatedAt) {
+          evalMapByDevice[ev.deviceId] = ev;
+        }
+      });
+
+      var readyCount = 0;
+      var abnormalCount = 0;
+      var checkedCount = 0;
+
+      // Filter machines
+      var filtered = allEquipment.filter(function (eq) {
+        var ev = evalMapByDevice[eq.id];
+        var status = 'pending';
+        if (ev) {
+          status = (ev.result === 'normal') ? 'ready' : 'abnormal';
+          checkedCount++;
+          if (status === 'ready') readyCount++;
+          if (status === 'abnormal') abnormalCount++;
+        }
+
+        // Apply filters
+        if (deptVal !== 'all' && eq.currentDept !== deptVal) return false;
+        if (catVal !== 'all' && eq.formId !== catVal) return false;
+        if (statusVal !== 'all' && status !== statusVal) return false;
+        if (activeKpiFilter === 'ready' && status !== 'ready') return false;
+        if (activeKpiFilter === 'abnormal' && status !== 'abnormal') return false;
+        if (activeKpiFilter === 'pending' && status !== 'pending') return false;
+        if (activeKpiFilter === 'checked' && status === 'pending') return false;
+
+        if (search) {
+          var mAsset = (eq.assetCode || '').toLowerCase().indexOf(search) !== -1;
+          var mName = (eq.name || '').toLowerCase().indexOf(search) !== -1;
+          var mModel = (eq.model || '').toLowerCase().indexOf(search) !== -1;
+          if (!mAsset && !mName && !mModel) return false;
+        }
+
+        return true;
+      });
+
+      // Update KPI Numbers
+      document.getElementById('kpiTotal').innerText = allEquipment.length;
+      document.getElementById('kpiChecked').innerText = checkedCount;
+      document.getElementById('kpiReady').innerText = readyCount;
+      document.getElementById('kpiAbnormal').innerText = abnormalCount;
+      document.getElementById('kpiPending').innerText = allEquipment.length - checkedCount;
+
+      document.getElementById('summaryCountBadge').innerText = filtered.length + ' เครื่อง';
+
+      renderSummaryTable(filtered, evalMapByDevice);
+    }
+
+    function renderSummaryTable(equipmentList, evalMap) {
+      var tbody = document.getElementById('summaryTableBody');
+      if (!tbody) return;
+
+      if (equipmentList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 36px; color: var(--text-light);">ไม่พบเครื่องมือแพทย์ที่ตรงกับตัวกรอง</td></tr>';
+        return;
+      }
+
+      var html = '';
+      equipmentList.forEach(function (eq) {
+        var ev = evalMap[eq.id];
+        var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+        var form = window.PPCH_STORE.getFormById(eq.formId);
+
+        var statusBadge = '<span class="badge-status badge-status-pending"><span class="material-icons-round" style="font-size: 14px;">schedule</span> รอตรวจวันนี้</span>';
+        var evalTime = '-';
+        var evaluator = '-';
+        var actions = '<a href="eval.html?formId=' + eq.formId + '&deviceId=' + eq.id + '" class="btn-action-eval" title="เปิดหน้าตรวจเช็ค"><span class="material-icons-round" style="font-size: 13px;">assignment</span><span>ตรวจ</span></a>';
+
+        if (ev) {
+          if (ev.result === 'normal') {
+            statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 14px;">check_circle</span> พร้อมใช้</span>';
+          } else {
+            statusBadge = '<span class="badge-status badge-status-abnormal" title="' + (ev.abnormalNote || '') + '"><span class="material-icons-round" style="font-size: 14px;">error</span> ข้อบกพร่อง</span>';
+          }
+          evalTime = (ev.evaluatedAt || '').slice(11, 16) + ' น.';
+          evaluator = ev.evaluatedBy || 'ไม่ระบุ';
+          actions += ' <button onclick="openSlipModal(\'' + ev.id + '\')" class="btn-action-slip" title="ดูสลิปผล"><span class="material-icons-round" style="font-size: 13px;">receipt_long</span><span>สลิป</span></button>';
+        }
+
+        html += '<tr>' +
+          '<td><span class="asset-code-clean">' + eq.assetCode + '</span></td>' +
+          '<td><div style="font-weight: 700; color: var(--text-main);">' + eq.name + '</div><div style="font-size: 11px; color: var(--text-muted);">รุ่น ' + (eq.model || '-') + '</div></td>' +
+          '<td><span style="font-weight: 500;">' + deptName + '</span>' + (eq.homeDept !== eq.currentDept ? ' <span style="font-size: 10px; color: #d97706;">(ยืม)</span>' : '') + '</td>' +
+          '<td><span style="color: var(--text-muted); font-size: 12px;">' + (form ? form.shortName : eq.formId) + '</span></td>' +
+          '<td>' + statusBadge + '</td>' +
+          '<td style="color: var(--text-muted); font-family: var(--font-mono); font-size: 11.5px;">' + evalTime + '</td>' +
+          '<td style="color: var(--text-body); font-size: 11.5px;">' + evaluator + '</td>' +
+          '<td class="btn-action-col no-print" style="text-align: center; white-space: nowrap;">' + actions + '</td>' +
+        '</tr>';
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    // ==================== RELOCATION VIEW ====================
+    function onRelocateDeviceSelected() {
+      var devId = document.getElementById('relocateDeviceSelect').value;
+      var eq = window.PPCH_STORE.getEquipmentById(devId);
+      if (eq) {
+        document.getElementById('relocateHomeDept').innerText = window.PPCH_STORE.getDepartmentName(eq.homeDept);
+        document.getElementById('relocateCurrentDept').innerText = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+        document.getElementById('relocateTargetDept').value = eq.currentDept;
+      } else {
+        document.getElementById('relocateHomeDept').innerText = '-';
+        document.getElementById('relocateCurrentDept').innerText = '-';
+      }
+    }
+
+    function handleRelocationSubmit(e) {
+      e.preventDefault();
+      var devId = document.getElementById('relocateDeviceSelect').value;
+      var targetDept = document.getElementById('relocateTargetDept').value;
+      var actor = document.getElementById('relocateActor').value;
+      var reason = document.getElementById('relocateReason').value;
+
+      if (!devId || !targetDept) {
+        alert('กรุณาเลือกเครื่องและแผนกปลายทาง');
+        return;
+      }
+
+      try {
+        var res = window.PPCH_STORE.transferEquipment(devId, targetDept, actor, reason);
+        showToast('มอบหมายแผนกและย้ายพิกัดเครื่องสำเร็จ!');
+        document.getElementById('relocateReason').value = '';
+        loadData();
+      } catch (err) {
+        alert('เกิดข้อผิดพลาด: ' + err.message);
+      }
+    }
+
+    function renderTransfers() {
+      var tbody = document.getElementById('transferHistoryBody');
+      if (!tbody) return;
+      var transfers = window.PPCH_STORE.getTransfers() || [];
+
+      if (transfers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: var(--text-light);">ยังไม่มีประวัติการโอนย้าย</td></tr>';
+        return;
+      }
+
+      var html = '';
+      transfers.slice(0, 15).forEach(function (tr) {
+        var fromName = window.PPCH_STORE.getDepartmentName(tr.fromDept);
+        var toName = window.PPCH_STORE.getDepartmentName(tr.toDept);
+        html += '<tr>' +
+          '<td style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">' + tr.transferredAt + '</td>' +
+          '<td><div style="font-weight: 600;">' + tr.deviceName + '</div><div class="asset-code-clean" style="font-size: 10px;">' + tr.deviceAsset + '</div></td>' +
+          '<td><span style="color: var(--text-muted);">' + fromName + '</span> → <strong style="color: var(--royal-blue);">' + toName + '</strong></td>' +
+          '<td style="font-size: 11.5px;">' + tr.transferredBy + '</td>' +
+        '</tr>';
+      });
+      tbody.innerHTML = html;
+    }
+
+    // ==================== DIRECTORY & QR CODES ====================
+    function renderDirectoryView() {
+      var grid = document.getElementById('directoryGrid');
+      if (!grid) return;
+      var search = (document.getElementById('directorySearch').value || '').trim().toLowerCase();
+
+      var filtered = allEquipment.filter(function (eq) {
+        if (!search) return true;
+        return (eq.assetCode || '').toLowerCase().indexOf(search) !== -1 ||
+               (eq.name || '').toLowerCase().indexOf(search) !== -1 ||
+               (eq.model || '').toLowerCase().indexOf(search) !== -1;
+      });
+
+      var html = '';
+      filtered.forEach(function (eq) {
+        var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
+        var form = window.PPCH_STORE.getFormById(eq.formId);
+
+        html += '<div class="equip-item-card">' +
+          '<div class="equip-top-row">' +
+            '<span class="asset-code-clean">' + eq.assetCode + '</span>' +
+            '<span style="font-size: 11px; font-weight: 600; color: var(--royal-blue);">' + (form ? form.shortName : eq.formId) + '</span>' +
+          '</div>' +
+          '<div class="equip-name">' + eq.name + '</div>' +
+          '<div class="equip-meta">รุ่น: ' + (eq.model || '-') + ' | S/N: ' + (eq.serialNo || '-') + '</div>' +
+          '<div style="font-size: 12px; color: var(--text-body); font-weight: 500;"><span class="material-icons-round" style="font-size: 14px; vertical-align: text-bottom; color: var(--text-muted);">place</span> ' + deptName + '</div>' +
+          '<div class="equip-card-actions">' +
+            '<a href="eval.html?formId=' + eq.formId + '&deviceId=' + eq.id + '" class="btn-tool btn-tool-primary" style="flex: 1; justify-content: center; text-decoration: none;">' +
+              '<span class="material-icons-round" style="font-size: 14px;">assignment</span><span>เปิดแบบตรวจ</span>' +
+            '</a>' +
+            '<button type="button" onclick="openQrModal(\'' + eq.id + '\')" class="btn-tool" title="ดู QR Code">' +
+              '<span class="material-icons-round" style="font-size: 15px; color: var(--royal-blue);">qr_code_2</span>' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      });
+
+      grid.innerHTML = html;
+    }
+
+    function openQrModal(deviceId) {
+      var eq = window.PPCH_STORE.getEquipmentById(deviceId);
+      if (!eq) return;
+
+      document.getElementById('qrDeviceTitle').innerText = eq.name;
+      document.getElementById('qrDeviceAsset').innerText = 'รหัสครุภัณฑ์: ' + eq.assetCode + ' • ' + window.PPCH_STORE.getDepartmentName(eq.currentDept);
+
+      var hostUrl = window.location.origin + window.location.pathname.replace('admin.html', '').replace('index.html', '');
+      if (!hostUrl.endsWith('/')) hostUrl += '/';
+      selectedQrUrl = hostUrl + 'eval.html?formId=' + eq.formId + '&deviceId=' + eq.id;
+      document.getElementById('qrLinkText').innerText = selectedQrUrl;
+
+      var qrContainer = document.getElementById('qrCanvas');
+      qrContainer.innerHTML = '';
+      if (window.QRCode) {
+        new QRCode(qrContainer, {
+          text: selectedQrUrl,
+          width: 180,
+          height: 180,
+          colorDark: "#002e6e",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+
+      document.getElementById('qrModal').classList.remove('hidden');
+    }
+
+    function closeQrModal() {
+      document.getElementById('qrModal').classList.add('hidden');
+    }
+
+    function copyQrLink() {
+      if (selectedQrUrl) {
+        navigator.clipboard.writeText(selectedQrUrl).then(function () {
+          showToast('คัดลอกลิงก์สำเร็จ!');
+        });
+      }
+    }
+
+    function printQrSticker() {
+      window.print();
+    }
+
+    // ==================== DETAIL SLIP MODAL ====================
+    function openSlipModal(evalId) {
+      var ev = allEvaluations.find(function (e) { return e.id === evalId; });
+      if (!ev) return;
+      var eq = window.PPCH_STORE.getEquipmentById(ev.deviceId);
+
+      var html = '<div style="font-size: 13px; line-height: 1.8;">' +
+        '<div><strong>เครื่องมือ:</strong> ' + (eq ? eq.name : ev.deviceName) + '</div>' +
+        '<div><strong>รหัสครุภัณฑ์:</strong> ' + (eq ? eq.assetCode : ev.deviceAsset) + '</div>' +
+        '<div><strong>แผนก:</strong> ' + window.PPCH_STORE.getDepartmentName(ev.department) + '</div>' +
+        '<div><strong>วันเวลาตรวจ:</strong> ' + ev.evaluatedAt + '</div>' +
+        '<div><strong>ผู้ตรวจเช็ค:</strong> ' + ev.evaluatedBy + '</div>' +
+        '<div><strong>ผลการตรวจ:</strong> ' + (ev.result === 'normal' ? '<span style="color: var(--green-ready); font-weight: 700;">พร้อมใช้งาน</span>' : '<span style="color: var(--red-abnormal); font-weight: 700;">พบข้อบกพร่อง</span>') + '</div>';
+
+      if (ev.abnormalNote) {
+        html += '<div style="background: #fef2f2; border: 1px solid #fecaca; padding: 8px; border-radius: 6px; margin-top: 6px; color: #991b1b;"><strong>ข้อบกพร่อง:</strong> ' + ev.abnormalNote + '</div>';
+      }
+
+      if (ev.upsBattery && ev.upsBattery.tested) {
+        html += '<div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 8px; border-radius: 6px; margin-top: 6px; color: #166534;">' +
+          '<strong>รอบตรวจ UPS:</strong> อยู่ได้ ' + (ev.upsBattery.runtimeFormatted || '-') + ' ชม. (รอบ ' + (ev.upsBattery.cycleDate || '-') + ')' +
+        '</div>';
+      }
+
+      html += '</div>';
+      document.getElementById('slipContent').innerHTML = html;
+      document.getElementById('slipModal').classList.remove('hidden');
+    }
+
+    function closeSlipModal() {
+      document.getElementById('slipModal').classList.add('hidden');
+    }
+
+    // ==================== UTILITIES ====================
+    function syncWithGas() {
+      var btn = document.getElementById('btnSync');
+      btn.disabled = true;
+      showToast('กำลังซิงค์ข้อมูลกับ Google Apps Script...');
+      if (window.PPCH_API && window.PPCH_API.isConfigured()) {
+        window.PPCH_API.fetchEvaluations(function (res) {
+          btn.disabled = false;
+          if (res && res.success && Array.isArray(res.data)) {
+            showToast('ซิงค์ข้อมูลสำเร็จ (' + res.data.length + ' รายการ)');
+            loadData();
+          } else {
+            showToast('เชื่อมต่อเสร็จสิ้น (ใช้ข้อมูลแคชท้องถิ่น)');
+          }
+        });
+      } else {
+        setTimeout(function () {
+          btn.disabled = false;
+          showToast('ระบบทำงานในโหมดออฟไลน์/แคชท้องถิ่น');
+        }, 600);
+      }
+    }
+
+    function exportCsv() {
+      var csv = 'AssetCode,Name,Department,Date,Status,Evaluator\n';
+      allEquipment.forEach(function (eq) {
+        csv += '"' + eq.assetCode + '","' + eq.name + '","' + window.PPCH_STORE.getDepartmentName(eq.currentDept) + '","' + (document.getElementById('filterDate').value) + '","' + eq.status + '",""\n';
+      });
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'PPCH_Med_Daily_' + document.getElementById('filterDate').value + '.csv';
+      link.click();
+    }
+
+    function showToast(msg) {
+      var t = document.getElementById('toastNotice');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.add('show');
+      setTimeout(function () { t.classList.remove('show'); }, 3000);
+    }
+  </script>
+</body>
+</html>
