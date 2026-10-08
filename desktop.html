@@ -13,22 +13,39 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css?v=20261005_1315">
   <style>
-    /* ==================== PRINC GROUP HEALTHCARE ENTERPRISE THEME ==================== */
+    /* ==================== PPCH DEEP ROYAL BLUE & CRISP WHITE THEME ==================== */
     :root {
-      --princ-blue: #0284c7;
-      --princ-navy: #1e3a8a;
-      --princ-primary: #1e40af;
-      --princ-bg: #f8fafc;
-      --princ-surface: #ffffff;
-      --princ-border: #e2e8f0;
-      --princ-border-subtle: #f1f5f9;
-      --princ-text-main: #0f172a;
-      --princ-text-muted: #475569;
-      --princ-text-sub: #64748b;
-      --princ-amber: #d97706;
-      --princ-gold: #f59e0b;
-      --princ-green: #059669;
-      --princ-red: #dc2626;
+      --royal-dark: #002e6e;
+      --royal-blue: #004b93;
+      --royal-hover: #003a73;
+      --royal-light: #0284c7;
+      --royal-subtle: #f0f7ff;
+      --royal-glow: rgba(0, 75, 147, 0.16);
+
+      --canvas-bg: #f4f7fb;
+      --surface-white: #ffffff;
+      --border-main: #e2e8f0;
+      --border-subtle: #edf2f7;
+      --border-focus: #004b93;
+      --border-blue-soft: #bfdbfe;
+
+      --text-main: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --green-ready: #059669;
+      --green-bg: #ecfdf5;
+      --green-border: #a7f3d0;
+
+      --amber-pending: #d97706;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+
+      --red-abnormal: #dc2626;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+
       --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'Inter', monospace;
     }
@@ -36,8 +53,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--princ-bg);
-      color: var(--princ-text-main);
+      background-color: var(--canvas-bg);
+      color: var(--text-main);
       font-family: var(--font-sans);
       font-size: 13px;
       line-height: 1.5;
@@ -45,18 +62,17 @@
       overflow-x: hidden;
     }
 
-    /* Overall Layout Wrapper */
-    .princ-app-wrapper {
+    .app-wrapper {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* ==================== 1. TOP HEADER (WHITE, 56PX, FULL WIDTH) ==================== */
-    .princ-topbar {
+    /* ==================== 1. TOP HEADER (CLEAN WHITE WITH DEEP ROYAL BLUE ACCENT) ==================== */
+    .app-topbar {
       height: 56px;
       background: #ffffff;
-      border-bottom: 1px solid var(--princ-border);
+      border-bottom: 2px solid var(--royal-blue);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -64,285 +80,170 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+      box-shadow: 0 2px 10px rgba(0, 46, 110, 0.05);
     }
 
-    .princ-topbar-left {
+    .topbar-left {
       display: flex;
       align-items: center;
       gap: 14px;
     }
 
-    .princ-logo-group {
+    .topbar-brand {
       display: flex;
       align-items: center;
       gap: 10px;
       text-decoration: none;
     }
 
-    /* 9-dot motif matching PRINC logo */
-    .princ-logo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 5px);
-      grid-template-rows: repeat(3, 5px);
-      gap: 3px;
-      padding: 2px;
-    }
-    .princ-logo-grid span {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #0284c7;
-    }
-    .princ-logo-grid span:nth-child(2),
-    .princ-logo-grid span:nth-child(4),
-    .princ-logo-grid span:nth-child(5),
-    .princ-logo-grid span:nth-child(6),
-    .princ-logo-grid span:nth-child(8) {
-      background: #1e40af;
+    .brand-logo-img {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      display: block;
     }
 
-    .princ-logo-titles {
-      display: flex;
-      flex-direction: column;
-    }
-    .princ-logo-main {
-      font-size: 15px;
-      font-weight: 800;
-      color: #0f172a;
-      letter-spacing: -0.01em;
-      line-height: 1.1;
-    }
-    .princ-logo-sub {
-      font-size: 10.5px;
-      font-weight: 600;
-      color: #64748b;
-      margin-top: 1px;
-    }
-
-    .princ-divider-v {
+    .brand-divider {
       width: 1px;
       height: 22px;
-      background: var(--princ-border);
+      background: var(--border-main);
     }
 
-    .princ-app-subtitle {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #475569;
+    .brand-badge-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      background: var(--royal-blue);
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0, 75, 147, 0.25);
     }
 
-    .princ-breadcrumbs {
+    .topbar-breadcrumbs {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12.5px;
-      color: var(--princ-text-muted);
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-left: 6px;
     }
-    .princ-bread-parent {
-      color: #64748b;
-    }
-    .princ-bread-arrow {
-      color: #94a3b8;
-      font-size: 12px;
-    }
-    .princ-bread-active {
-      font-weight: 600;
-      color: #0f172a;
-    }
+    .bread-parent { color: var(--text-muted); }
+    .bread-sep { color: var(--text-light); font-size: 12px; }
+    .bread-current { font-weight: 600; color: var(--royal-blue); }
 
-    /* Topbar Right Controls */
-    .princ-topbar-right {
+    .topbar-right {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .princ-scope-chip {
+    .status-realtime-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 5px 12px;
-      border: 1px solid var(--princ-border);
+      border: 1px solid var(--border-blue-soft);
+      background: var(--royal-subtle);
       border-radius: 9999px;
-      background: #ffffff;
       font-size: 12px;
       font-weight: 600;
-      color: #334155;
-      cursor: pointer;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-    }
-    .princ-scope-chip:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
+      color: var(--royal-blue);
     }
 
-    .princ-status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border: 1px solid #bae6fd;
-      background: #f0f9ff;
-      border-radius: 9999px;
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #0369a1;
-    }
-
-    .princ-pulse-dot {
+    .pulse-indicator-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #0284c7;
-      animation: pulsePrincLive 2s infinite;
+      background: var(--royal-light);
+      box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7);
+      animation: pulseDotLive 2s infinite;
     }
-    @keyframes pulsePrincLive {
+    @keyframes pulseDotLive {
       0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7); }
       70% { box-shadow: 0 0 0 6px rgba(2, 132, 199, 0); }
       100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
     }
 
-    /* User Profile Chip (Golden-Yellow Avatar like screenshot) */
-    .princ-user-chip {
+    .admin-profile-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 3px 12px 3px 4px;
-      border: 1px solid #fef08a;
-      background: #fefce8;
+      padding: 4px 10px 4px 5px;
+      border: 1px solid var(--border-main);
+      background: #ffffff;
       border-radius: 9999px;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .princ-user-chip:hover {
-      background: #fef9c3;
-      border-color: #fde047;
+    .admin-profile-pill:hover {
+      border-color: var(--royal-blue);
+      box-shadow: 0 2px 8px rgba(0, 75, 147, 0.1);
     }
 
-    .princ-avatar-circle {
-      width: 28px;
-      height: 28px;
+    .avatar-circle {
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      background: #eab308;
+      background: var(--royal-blue);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
     }
-
-    .princ-user-info {
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-    }
-    .princ-user-name {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #854d0e;
-      line-height: 1.1;
-    }
-    .princ-user-role {
-      font-size: 10px;
-      color: #a16207;
-      display: flex;
-      align-items: center;
-      gap: 2px;
+    .admin-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-body);
     }
 
-    /* ==================== 2. BODY LAYOUT (SIDEBAR + MAIN) ==================== */
-    .princ-layout-body {
+    /* ==================== 2. BODY LAYOUT ==================== */
+    .app-layout-body {
       display: flex;
       flex: 1;
     }
 
-    /* Left Sidebar (Solid White, 240px) */
-    .princ-sidebar {
-      width: 240px;
-      min-width: 240px;
+    /* Clean Left Sidebar (210px solid white, no clutter!) */
+    .app-sidebar {
+      width: 210px;
+      min-width: 210px;
       background: #ffffff;
-      border-right: 1px solid var(--princ-border);
+      border-right: 1px solid var(--border-main);
       display: flex;
       flex-direction: column;
       position: sticky;
       top: 56px;
       height: calc(100vh - 56px);
       overflow-y: auto;
-      padding: 12px 10px;
+      padding: 14px 10px;
       z-index: 40;
     }
 
-    /* Top Switcher Card (Matches screenshot's "ตั้งค่าระบบ Admin Portal ⇅") */
-    .princ-portal-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border: 1px solid var(--princ-border);
-      border-radius: 8px;
-      background: #f8fafc;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .princ-portal-box:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-    }
-
-    .princ-portal-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: #e0f2fe;
-      color: #0284c7;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    .princ-portal-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #0f172a;
-      line-height: 1.2;
-    }
-    .princ-portal-sub {
-      font-size: 10.5px;
-      color: #64748b;
-    }
-    .princ-portal-caret {
-      margin-left: auto;
-      color: #94a3b8;
-      font-size: 16px;
-    }
-
-    /* Nav Item Sections */
-    .princ-nav-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      margin-bottom: 12px;
-    }
-    .princ-section-label {
+    .sidebar-section-title {
       font-size: 10px;
       font-weight: 700;
-      color: #94a3b8;
+      color: var(--text-light);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 6px 10px 4px 6px;
+      padding: 6px 10px 4px;
     }
 
-    .princ-nav-link {
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .nav-btn {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 7.5px 10px;
-      border-radius: 6px;
-      color: #475569;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--text-body);
       font-size: 12.5px;
       font-weight: 500;
       text-decoration: none;
@@ -351,271 +252,320 @@
       width: 100%;
       text-align: left;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .princ-nav-link:hover {
-      background: #f1f5f9;
-      color: #0f172a;
+    .nav-btn:hover {
+      background: var(--royal-subtle);
+      color: var(--royal-blue);
+      transform: translateX(2px);
     }
-    .princ-nav-link.active {
-      background: #eff6ff !important;
-      color: #1d4ed8 !important;
-      font-weight: 700 !important;
+    .nav-btn.active {
+      background: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-light) 100%) !important;
+      color: #ffffff !important;
+      font-weight: 600 !important;
+      box-shadow: 0 4px 12px rgba(0, 75, 147, 0.25);
     }
-    .princ-nav-link .material-icons-round {
+    .nav-btn .material-icons-round {
       font-size: 18px;
-      color: #64748b;
+      color: var(--text-muted);
+      transition: color 0.15s;
     }
-    .princ-nav-link.active .material-icons-round {
-      color: #1d4ed8;
+    .nav-btn:hover .material-icons-round {
+      color: var(--royal-blue);
     }
-
-    /* Filter Items in Sidebar */
-    .princ-filter-item {
-      margin-bottom: 10px;
-    }
-    .princ-filter-item label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: #64748b;
-      margin-bottom: 4px;
-    }
-    .princ-input {
-      width: 100%;
-      padding: 7px 10px;
-      border: 1px solid var(--princ-border);
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      color: #0f172a;
-      background: #ffffff;
-      outline: none;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-    .princ-input:focus {
-      border-color: #0284c7;
-      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
-    }
-
-    .princ-quick-date-row {
-      display: flex;
-      gap: 4px;
-      margin-top: 5px;
-    }
-    .princ-quick-date-btn {
-      flex: 1;
-      padding: 4px 6px;
-      font-size: 11px;
-      font-weight: 600;
-      border: 1px solid var(--princ-border);
-      background: #f8fafc;
-      border-radius: 4px;
-      cursor: pointer;
-      color: #475569;
-      text-align: center;
-      transition: all 0.15s;
-    }
-    .princ-quick-date-btn:hover {
-      background: #f1f5f9;
-      color: #0f172a;
-    }
-    .princ-quick-date-btn.active {
-      background: #1e40af;
-      border-color: #1e40af;
+    .nav-btn.active .material-icons-round {
       color: #ffffff;
     }
 
-    /* Sidebar Footer Pinned */
-    .princ-sidebar-bottom {
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px solid var(--princ-border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .nav-btn-lab {
+      color: var(--royal-blue);
+      font-weight: 600;
     }
-    .princ-footer-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #dbeafe;
-      color: #1e40af;
-      font-weight: 700;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .princ-footer-name {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-    .princ-footer-sub {
-      font-size: 10px;
-      color: #64748b;
-    }
-    .princ-footer-exit {
+    .nav-ext-icon {
       margin-left: auto;
-      color: #94a3b8;
-      text-decoration: none;
-      padding: 4px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-    }
-    .princ-footer-exit:hover {
-      color: #ef4444;
-      background: #fef2f2;
+      font-size: 13px !important;
+      color: var(--text-light) !important;
     }
 
-    /* ==================== 3. MAIN WORKSTATION CONTENT ==================== */
-    .princ-main-content {
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 10px 4px;
+    }
+
+    .sidebar-bottom-status {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding-left: 6px;
+    }
+    .sync-dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green-ready);
+      flex-shrink: 0;
+    }
+
+    /* ==================== 3. MAIN WORKSTATION ==================== */
+    .app-main-content {
       flex: 1;
       padding: 16px 22px;
       overflow-y: auto;
-      max-width: calc(100% - 240px);
+      max-width: calc(100% - 210px);
     }
 
-    /* Multi-Tiered Action Toolbar (Matches screenshot's white rounded buttons) */
-    .princ-toolbar-box {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .princ-toolbar-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .princ-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: #ffffff;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: #374151;
-      cursor: pointer;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: all 0.15s;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
-    }
-    .princ-btn:hover {
-      background: #f9fafb;
-      border-color: #9ca3af;
-      color: #111827;
-    }
-    .princ-btn-primary {
-      background: #1e40af;
-      border-color: #1e40af;
-      color: #ffffff;
-      font-weight: 600;
-    }
-    .princ-btn-primary:hover {
-      background: #1d4ed8;
-      color: #ffffff;
-    }
-
-    .princ-toolbar-label {
-      font-size: 12px;
-      color: #6b7280;
-      margin-right: 2px;
-    }
-
-    /* Notice / Helper Banner (Matches screenshot's light gray banner) */
-    .princ-notice-banner {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 12px;
-      color: #4b5563;
-      margin-bottom: 14px;
-      line-height: 1.6;
-    }
-
-    /* Single-Row Executive KPI Strip */
-    .princ-kpi-strip {
+    /* Executive KPI Strip (Clickable, High-Impact) */
+    .kpi-strip-5 {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       width: 100%;
     }
-    @media (max-width: 1024px) {
-      .princ-kpi-strip {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+    @media (max-width: 1100px) {
+      .kpi-strip-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
     @media (max-width: 640px) {
-      .princ-kpi-strip {
-        grid-template-columns: 1fr;
-      }
+      .kpi-strip-5 { grid-template-columns: 1fr; }
     }
 
-    .princ-kpi-card {
+    .kpi-strip-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    @media (max-width: 1100px) {
+      .kpi-strip-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .kpi-strip-4 { grid-template-columns: 1fr; }
+    }
+
+    .kpi-card {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
       padding: 10px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
-      transition: all 0.15s;
+      box-shadow: 0 1px 3px rgba(0, 46, 110, 0.03);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .princ-kpi-card:hover {
-      border-color: #cbd5e1;
-      box-shadow: 0 3px 8px rgba(15, 23, 42, 0.05);
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: #93c5fd;
+      box-shadow: 0 6px 16px rgba(0, 75, 147, 0.08);
+    }
+    .kpi-card.active-kpi {
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 2px var(--royal-blue);
+      background: var(--royal-subtle);
     }
 
-    .princ-kpi-icon {
-      width: 36px;
-      height: 36px;
+    .kpi-icon-box {
+      width: 38px;
+      height: 38px;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 19px;
       flex-shrink: 0;
     }
-    .icon-blue { background: #eff6ff; color: #2563eb; }
-    .icon-teal { background: #f0fdfa; color: #0d9488; }
-    .icon-green { background: #ecfdf5; color: #059669; }
-    .icon-red { background: #fef2f2; color: #dc2626; }
-    .icon-amber { background: #fffbeb; color: #d97706; }
+    .kpi-icon-blue { background: #eff6ff; color: var(--royal-blue); }
+    .kpi-icon-teal { background: #f0fdfa; color: #0d9488; }
+    .kpi-icon-green { background: #ecfdf5; color: var(--green-ready); }
+    .kpi-icon-red { background: #fef2f2; color: var(--red-abnormal); }
+    .kpi-icon-amber { background: #fffbeb; color: var(--amber-pending); }
 
-    .princ-kpi-num {
+    .kpi-val {
       font-size: 19px;
       font-weight: 800;
-      color: #0f172a;
+      color: var(--text-main);
       line-height: 1.1;
       font-family: var(--font-mono);
     }
-    .princ-kpi-lbl {
+    .kpi-label {
       font-size: 11px;
       font-weight: 500;
-      color: #64748b;
+      color: var(--text-muted);
       margin-top: 2px;
     }
 
-    /* Ward Switcher Pills */
-    .ward-filter-bar {
+    /* ==================== 4. INTEGRATED FILTER & ACTION BAR ==================== */
+    .page-filter-bar {
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0, 46, 110, 0.02);
+      flex-wrap: wrap;
+    }
+
+    .filter-left-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .search-input-box {
       display: flex;
       align-items: center;
       gap: 6px;
+      background: #f8fafc;
+      border: 1px solid var(--border-main);
+      border-radius: 6px;
+      padding: 5px 10px;
+      min-width: 190px;
+      transition: all 0.15s;
+    }
+    .search-input-box:focus-within {
+      background: #ffffff;
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 2px rgba(0, 75, 147, 0.12);
+    }
+    .search-input-box .material-icons-round {
+      font-size: 16px;
+      color: var(--text-light);
+    }
+    .search-input-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--text-main);
+      width: 100%;
+    }
+
+    .filter-date-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-input {
+      padding: 5px 8px;
+      border: 1px solid var(--border-main);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+      background: #ffffff;
+      outline: none;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .filter-input:focus {
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 2px rgba(0, 75, 147, 0.12);
+    }
+
+    .btn-pill-date {
+      padding: 5px 9px;
+      border: 1px solid var(--border-main);
+      background: #f8fafc;
+      color: var(--text-body);
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-pill-date:hover {
+      background: var(--royal-subtle);
+      border-color: var(--border-blue-soft);
+      color: var(--royal-blue);
+    }
+    .btn-pill-date.active {
+      background: var(--royal-blue);
+      border-color: var(--royal-blue);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .btn-reset-ghost {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border-main);
+      background: #ffffff;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+    .btn-reset-ghost:hover {
+      color: var(--royal-blue);
+      border-color: var(--royal-blue);
+      background: var(--royal-subtle);
+    }
+
+    .filter-right-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-tool {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-body);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .btn-tool:hover {
+      background: var(--royal-subtle);
+      border-color: var(--border-blue-soft);
+      color: var(--royal-blue);
+    }
+    .btn-tool-primary {
+      background: var(--royal-blue);
+      border-color: var(--royal-blue);
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .btn-tool-primary:hover {
+      background: var(--royal-hover);
+      border-color: var(--royal-hover);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 75, 147, 0.25);
+    }
+
+    /* Compact Ward Filter Pills (Below Filter Bar) */
+    .ward-pill-strip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
       overflow-x: auto;
       padding: 2px 0 10px 0;
       margin-bottom: 6px;
@@ -624,50 +574,44 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 12px;
+      padding: 4px 11px;
       border-radius: 9999px;
       font-size: 12px;
       font-weight: 500;
-      color: #475569;
+      color: var(--text-body);
       background: #ffffff;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--border-main);
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s;
     }
     .ward-pill-btn:hover {
-      background: #f8fafc;
-      border-color: #9ca3af;
-      color: #0f172a;
+      background: var(--royal-subtle);
+      border-color: var(--border-blue-soft);
+      color: var(--royal-blue);
     }
     .ward-pill-btn.active {
-      background: #1e40af !important;
+      background: var(--royal-blue) !important;
       color: #ffffff !important;
-      border-color: #1e40af !important;
+      border-color: var(--royal-blue) !important;
+      font-weight: 600 !important;
+      box-shadow: 0 2px 8px rgba(0, 75, 147, 0.25);
     }
-    .ward-badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-    .dot-er { background: #ef4444; }
-    .dot-icu { background: #3b82f6; }
-    .dot-or { background: #10b981; }
 
-    /* Category Cards & Tables (PRINC High-Density Grid) */
+    /* ==================== 5. DATA TABLES & CATEGORY CARDS ==================== */
     .category-card {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      margin-bottom: 16px;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
+      margin-bottom: 14px;
       overflow: hidden;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+      box-shadow: 0 1px 3px rgba(0, 46, 110, 0.02);
     }
 
     .category-header {
-      padding: 10px 16px;
+      padding: 9px 14px;
       background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid var(--border-main);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -682,25 +626,25 @@
     }
 
     .category-avatar {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 17px;
       flex-shrink: 0;
     }
 
     .category-name {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--text-main);
       line-height: 1.2;
     }
     .category-desc {
       font-size: 11px;
-      color: #64748b;
+      color: var(--text-muted);
       margin-top: 1px;
       display: flex;
       align-items: center;
@@ -713,16 +657,24 @@
       gap: 8px;
     }
     .cat-progress-track {
-      width: 80px;
-      height: 6px;
+      width: 70px;
+      height: 5px;
       background: #e2e8f0;
       border-radius: 9999px;
       overflow: hidden;
     }
     .cat-progress-fill {
       height: 100%;
-      background: #059669;
+      background: var(--royal-blue);
       border-radius: 9999px;
+    }
+
+    .cat-pill-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border: 1px solid var(--border-main);
     }
 
     /* Device Table */
@@ -732,19 +684,19 @@
       text-align: left;
     }
     .device-table th {
-      background: #ffffff;
-      color: #475569;
+      background: #f8fafc;
+      color: var(--text-body);
       font-size: 11.5px;
       font-weight: 700;
-      padding: 10px 14px;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border-main);
       white-space: nowrap;
     }
     .device-table td {
-      padding: 11px 14px;
-      border-bottom: 1px solid #f1f5f9;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-subtle);
       font-size: 12.5px;
-      color: #1e293b;
+      color: var(--text-main);
       vertical-align: middle;
       transition: background 0.1s;
     }
@@ -758,34 +710,35 @@
     .asset-code-clean {
       display: inline-block;
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
-      color: #334155;
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
       padding: 2px 6px;
       border-radius: 4px;
     }
 
+    /* Clean Status Badges */
     .badge-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .badge-status-ready { color: #059669; }
-    .badge-status-pending { color: #d97706; }
-    .badge-status-abnormal { color: #dc2626; }
-
-    .btn-table-check {
       display: inline-flex;
       align-items: center;
       gap: 4px;
       font-size: 12px;
       font-weight: 600;
-      color: #2563eb;
+      white-space: nowrap;
+    }
+    .badge-status-ready { color: var(--green-ready); }
+    .badge-status-pending { color: var(--amber-pending); }
+    .badge-status-abnormal { color: var(--red-abnormal); }
+
+    .btn-table-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--royal-blue);
       text-decoration: none;
     }
     .btn-table-check:hover {
@@ -795,37 +748,56 @@
     .btn-table-slip {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
+      gap: 3px;
+      padding: 4px 9px;
       border-radius: 5px;
       font-size: 11.5px;
-      font-weight: 500;
-      color: #334155;
+      font-weight: 600;
+      color: var(--royal-blue);
       background: #ffffff;
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--border-main);
       cursor: pointer;
+      transition: all 0.15s;
     }
     .btn-table-slip:hover {
-      background: #f8fafc;
-      border-color: #94a3b8;
+      background: var(--royal-subtle);
+      border-color: var(--border-blue-soft);
+    }
+
+    .btn-table-eval {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 9px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--royal-blue);
+      background: var(--royal-subtle);
+      border: 1px solid var(--border-blue-soft);
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .btn-table-eval:hover {
+      background: #dbeafe;
     }
 
     /* Forms Grid */
     .forms-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
     }
 
     /* Print View */
     .print-only { display: none; }
     @media print {
       body { background: #ffffff !important; }
-      .no-print, .princ-topbar, .princ-sidebar, .css-loader-overlay, .modal-overlay, .btn-action-col {
+      .no-print, .app-topbar, .app-sidebar, .css-loader-overlay, .modal-overlay, .btn-action-col {
         display: none !important;
       }
-      .princ-layout-body { display: block !important; }
-      .princ-main-content { max-width: 100% !important; padding: 0 !important; }
+      .app-layout-body { display: block !important; }
+      .app-main-content { max-width: 100% !important; padding: 0 !important; }
       .print-only { display: block !important; margin-bottom: 12px; }
       .category-card { box-shadow: none !important; border: 1px solid #cbd5e1 !important; margin-bottom: 10px !important; }
     }
@@ -843,58 +815,39 @@
     <div class="loader-subtitle">กำลังโหลดหน้าควบคุมและรายงานเครื่องมือแพทย์...</div>
   </div>
 
-  <div class="princ-app-wrapper">
+  <div class="app-wrapper">
 
-    <!-- ==================== 1. TOP HEADER BAR (PRINC GROUP STYLE) ==================== -->
-    <header class="princ-topbar no-print">
-      <div class="princ-topbar-left">
-        <!-- Logo: 9-dot motif + PRINC GROUP -->
-        <a href="desktop.html" class="princ-logo-group">
-          <div class="princ-logo-grid">
-            <span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-          </div>
-          <div class="princ-logo-titles">
-            <span class="princ-logo-main">PRINC GROUP</span>
-            <span class="princ-logo-sub">โรงพยาบาลพิษณุเวช</span>
-          </div>
+    <!-- ==================== 1. TOP HEADER (CLEAN WHITE WITH DEEP ROYAL BLUE ACCENT) ==================== -->
+    <header class="app-topbar no-print">
+      <div class="topbar-left">
+        <!-- Logo: Real logo.png in top left as requested -->
+        <a href="desktop.html" class="topbar-brand" title="PPCH Medical Equipment Hub">
+          <img src="logo.png" alt="โรงพยาบาลพิษณุเวช" class="brand-logo-img">
+          <div class="brand-divider"></div>
+          <div class="brand-badge-pill">Med Track</div>
         </a>
 
-        <div class="princ-divider-v"></div>
-        <div class="princ-app-subtitle">Biomedical Equipment Track</div>
-
-        <div class="princ-divider-v"></div>
-        <!-- Breadcrumbs like "ตั้งค่าระบบ > assignment" in screenshot -->
-        <div class="princ-breadcrumbs">
-          <span class="princ-bread-parent">ระบบเครื่องมือแพทย์</span>
-          <span class="princ-bread-arrow">&gt;</span>
-          <span class="princ-bread-active" id="princBreadCurrent">รายงานความพร้อมใช้ประจำวัน (Daily Inspection)</span>
+        <!-- Breadcrumbs: Crisp and concise -->
+        <div class="topbar-breadcrumbs">
+          <span class="bread-parent">ระบบเครื่องมือแพทย์</span>
+          <span class="bread-sep">/</span>
+          <span class="bread-current" id="princBreadCurrent">ตรวจเช็คประจำวัน</span>
         </div>
       </div>
 
-      <div class="princ-topbar-right">
-        <!-- Scope pill like "PRINH ทั้งกลุ่ม 4,054 คน ⌄" in screenshot -->
-        <div class="princ-scope-chip" title="ขอบเขตหน่วยงานและจำนวนเครื่อง">
-          <span class="material-icons-round" style="font-size: 15px; color: #0284c7;">domain</span>
-          <span>PPCH พิษณุเวช (32 เครื่อง)</span>
-          <span class="material-icons-round" style="font-size: 16px; color: #9ca3af;">keyboard_arrow_down</span>
+      <div class="topbar-right">
+        <!-- Realtime status badge -->
+        <div class="status-realtime-badge">
+          <span class="pulse-indicator-dot"></span>
+          <span id="princTopStatusText">ตรวจประจำวัน • พร้อมใช้ 28/32</span>
         </div>
 
-        <!-- Realtime status cycle pill like "ประเมินประจำปี 2026..." in screenshot -->
-        <div class="princ-status-pill">
-          <span class="princ-pulse-dot"></span>
-          <span id="princTopStatusText">ตรวจเช็คประจำวัน 7 ต.ค. 2569 • รอบเวรปกติ</span>
-        </div>
-
-        <!-- User profile chip with golden-yellow avatar like screenshot -->
-        <div class="princ-user-chip" onclick="openAdminModal()" title="คลิกเพื่อเข้าสู่ระบบ Admin">
-          <div class="princ-avatar-circle">ชก</div>
-          <div class="princ-user-info">
-            <span class="princ-user-name">ทีมวิศวกรรมชีวการแพทย์</span>
-            <span class="princ-user-role"><span class="material-icons-round" style="font-size: 11px;">visibility</span> ผู้ดูแลระบบ ⌄</span>
-          </div>
-        </div>
+        <!-- Admin Profile Pill -->
+        <button type="button" class="admin-profile-pill" onclick="openAdminModal()" title="คลิกเพื่อเข้าสู่ระบบ Admin">
+          <div class="avatar-circle">ชก</div>
+          <span class="admin-label">ผู้ดูแลระบบ</span>
+          <span class="material-icons-round" style="font-size: 16px; color: #94a3b8;">expand_more</span>
+        </button>
       </div>
     </header>
 
@@ -904,356 +857,229 @@
     <span id="filteredCountBadge" style="display: none;">32 เครื่อง</span>
 
     <!-- ==================== 2. BODY LAYOUT (SIDEBAR + MAIN) ==================== -->
-    <div class="princ-layout-body">
+    <div class="app-layout-body">
 
-      <!-- ==================== LEFT SIDEBAR ==================== -->
-      <aside class="princ-sidebar no-print" id="appSidebar">
-        <!-- Top Switcher Card (Matches screenshot's "ตั้งค่าระบบ Admin Portal ⇅") -->
-        <div class="princ-portal-box" onclick="setViewMode('daily')" title="สลับพื้นที่ควบคุม">
-          <div class="princ-portal-icon">
-            <span class="material-icons-round">speed</span>
-          </div>
-          <div>
-            <div class="princ-portal-title">ศูนย์ควบคุมเครื่องมือ</div>
-            <div class="princ-portal-sub">Workstation Portal</div>
-          </div>
-          <span class="material-icons-round princ-portal-caret">unfold_more</span>
-        </div>
-
-        <!-- Section 1: เมนูหลัก -->
-        <div class="princ-nav-group">
-          <div class="princ-section-label">เมนูหลัก</div>
-          <button onclick="setViewMode('daily')" id="navView_daily" class="princ-nav-link active">
-            <span class="material-icons-round">home</span>
-            <span>หน้าแรก (Daily Hub)</span>
+      <!-- ==================== LEFT SIDEBAR (ONLY ESSENTIAL NAVIGATION) ==================== -->
+      <aside class="app-sidebar no-print" id="appSidebar">
+        <div class="sidebar-section-title">เมนูหลัก</div>
+        <nav class="sidebar-nav">
+          <button onclick="setViewMode('daily')" id="navView_daily" class="nav-btn active">
+            <span class="material-icons-round">today</span>
+            <span>ตรวจประจำวัน</span>
           </button>
-          <button onclick="setViewMode('battery')" id="navView_battery" class="princ-nav-link">
+          <button onclick="setViewMode('battery')" id="navView_battery" class="nav-btn">
             <span class="material-icons-round">battery_charging_full</span>
-            <span>ตรวจแบตเตอรี่ UPS (1 & 16)</span>
+            <span>ตรวจแบตเตอรี่ UPS</span>
           </button>
-          <button onclick="setViewMode('forms')" id="navView_forms" class="princ-nav-link">
+          <button onclick="setViewMode('forms')" id="navView_forms" class="nav-btn">
             <span class="material-icons-round">assignment</span>
-            <span>แบบตรวจตามหมวด (8 หมวด)</span>
+            <span>แบบตรวจ 8 หมวด</span>
           </button>
-          <button onclick="setViewMode('history')" id="navView_history" class="princ-nav-link">
+          <button onclick="setViewMode('history')" id="navView_history" class="nav-btn">
             <span class="material-icons-round">history</span>
-            <span>ประวัติการตรวจเช็ค</span>
+            <span>ประวัติย้อนหลัง</span>
           </button>
-          <button onclick="setViewMode('monthly')" id="navView_monthly" class="princ-nav-link">
+          <button onclick="setViewMode('monthly')" id="navView_monthly" class="nav-btn">
             <span class="material-icons-round">calendar_month</span>
             <span>รายงานประจำเดือน</span>
           </button>
-        </div>
+        </nav>
 
-        <!-- Section 2: ADMIN PORTAL -->
-        <div class="princ-nav-group">
-          <div class="princ-section-label">ADMIN PORTAL</div>
-          <a href="lab.html" target="_blank" class="princ-nav-link" style="color: #0284c7;" title="เปิดระบบติดตามและประเมินเครื่องมือแพทย์ แผนก Laboratory (ลิงก์แยกเฉพาะ)">
-            <span class="material-icons-round" style="color: #0284c7;">science</span>
-            <span style="font-weight: 600;">แผนก Laboratory (LAB)</span>
-            <span class="material-icons-round" style="font-size: 14px; margin-left: auto; color: #9ca3af;">open_in_new</span>
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-section-title">การจัดการ</div>
+        <nav class="sidebar-nav">
+          <a href="lab.html" target="_blank" class="nav-btn nav-btn-lab" title="เปิดระบบติดตามและประเมินเครื่องมือแพทย์ แผนก Laboratory (ลิงก์แยกเฉพาะ)">
+            <span class="material-icons-round">science</span>
+            <span>แผนก LAB</span>
+            <span class="material-icons-round nav-ext-icon">open_in_new</span>
           </a>
-          <button onclick="openRelocationModal()" class="princ-nav-link">
+          <button onclick="openRelocationModal()" class="nav-btn">
             <span class="material-icons-round">swap_horiz</span>
-            <span>ย้ายพิกัด / รับเครื่อง</span>
+            <span>ย้ายพิกัดเครื่อง</span>
           </button>
-          <button onclick="openAdminModal()" class="princ-nav-link">
+          <button onclick="openAdminModal()" class="nav-btn">
             <span class="material-icons-round">settings</span>
-            <span>ตั้งค่าระบบ (Admin PIN)</span>
+            <span>จัดการระบบ (Admin)</span>
           </button>
-          <button onclick="switchToMobile()" class="princ-nav-link">
+          <button onclick="switchToMobile()" class="nav-btn">
             <span class="material-icons-round">smartphone</span>
-            <span>มุมมองมือถือ (Mobile)</span>
+            <span>มุมมองมือถือ</span>
           </button>
-          <a href="https://docs.google.com/spreadsheets/d/1UuVtt0rxfXHI65Xd5C5V7LtePkemgEhYum3yw3mGiuM/edit" target="_blank" class="princ-nav-link">
+          <a href="https://docs.google.com/spreadsheets/d/1UuVtt0rxfXHI65Xd5C5V7LtePkemgEhYum3yw3mGiuM/edit" target="_blank" class="nav-btn">
             <span class="material-icons-round">table_chart</span>
-            <span>เปิด Google Sheet จริง</span>
+            <span>Google Sheet</span>
+            <span class="material-icons-round nav-ext-icon">open_in_new</span>
           </a>
-        </div>
+        </nav>
 
-        <!-- Section 3: ตัวกรองและเงื่อนไข -->
-        <div class="princ-nav-group" style="padding-top: 6px; border-top: 1px solid var(--princ-border-subtle);">
-          <div class="princ-section-label">ตัวกรอง & ค้นหา</div>
-
-          <!-- Date Selector -->
-          <div class="princ-filter-item" id="filterDailyDateGroup">
-            <label>
-              <span class="material-icons-round" style="font-size: 12px; vertical-align: text-bottom;">event</span>
-              วันที่ตรวจเช็ค
-            </label>
-            <input type="date" id="sidebarDateInput" class="princ-input" onchange="onDateChanged()">
-            <div class="princ-quick-date-row">
-              <button onclick="setQuickDate('today')" id="btnDateToday" class="princ-quick-date-btn active">วันนี้</button>
-              <button onclick="setQuickDate('yesterday')" id="btnDateYesterday" class="princ-quick-date-btn">เมื่อวาน</button>
-            </div>
-          </div>
-
-          <!-- History Range Selector -->
-          <div class="princ-filter-item" id="filterHistoryRangeGroup" style="display: none;">
-            <label>ช่วงเวลาประวัติ</label>
-            <div class="princ-quick-date-row" style="margin-bottom: 6px;">
-              <button type="button" onclick="setHistoryRangeMode('month')" id="btnHistModeMonth" class="princ-quick-date-btn active">ตามเดือน</button>
-              <button type="button" onclick="setHistoryRangeMode('range')" id="btnHistModeRange" class="princ-quick-date-btn">ระบุช่วง</button>
-              <button type="button" onclick="setHistoryRangeMode('all')" id="btnHistModeAll" class="princ-quick-date-btn">ทั้งหมด</button>
-            </div>
-            <div id="histMonthSubBlock">
-              <input type="month" id="historyMonthInput" class="princ-input" onchange="onHistoryFilterChanged()">
-            </div>
-            <div id="histRangeSubBlock" style="display: none; flex-direction: column; gap: 4px;">
-              <input type="date" id="historyStartDate" class="princ-input" onchange="onHistoryFilterChanged()">
-              <input type="date" id="historyEndDate" class="princ-input" onchange="onHistoryFilterChanged()">
-            </div>
-          </div>
-
-          <!-- Monthly Selector -->
-          <div class="princ-filter-item" id="filterMonthlyMonthGroup" style="display: none;">
-            <label>เลือกรอบเดือน</label>
-            <input type="month" id="monthlyMonthInput" class="princ-input" onchange="onMonthlyMonthChanged()">
-          </div>
-
-          <!-- Battery Cycle Selector -->
-          <div class="princ-filter-item" id="filterBatteryCycleGroup" style="display: none;">
-            <label>รอบตรวจ UPS (1 & 16)</label>
-            <select id="sidebarBatteryCycleSelect" class="princ-input" onchange="onBatteryFilterChanged()">
-              <option value="latest">รอบล่าสุด (1 ต.ค. 2569)</option>
-              <option value="2026-10-01">1 ต.ค. 2569</option>
-              <option value="2026-09-16">16 ก.ย. 2569</option>
-              <option value="all">ทุกรอบประวัติ</option>
-            </select>
-          </div>
-
-          <!-- Department Selector -->
-          <div class="princ-filter-item" id="filterDeptGroup">
-            <label>แผนกประจำการ</label>
-            <select id="sidebarDeptSelect" class="princ-input" onchange="applyFilters()">
-              <option value="all">ทุกแผนก (All Depts)</option>
-            </select>
-          </div>
-
-          <!-- Category Selector -->
-          <div class="princ-filter-item" id="filterCategoryGroup">
-            <label>ประเภทเครื่องมือ</label>
-            <select id="sidebarCategorySelect" class="princ-input" onchange="applyFilters()">
-              <option value="all">ทุกประเภท</option>
-            </select>
-          </div>
-
-          <!-- Daily Status Selector -->
-          <div class="princ-filter-item" id="filterDailyStatusGroup">
-            <label>สถานะความพร้อม</label>
-            <select id="sidebarStatusSelect" class="princ-input" onchange="applyFilters()">
-              <option value="all">ทั้งหมด</option>
-              <option value="ready">✅ ตรวจแล้ว - พร้อมใช้</option>
-              <option value="abnormal">⚠️ ตรวจแล้ว - มีข้อบกพร่อง</option>
-              <option value="pending">⏳ ยังไม่ตรวจเช็ค</option>
-            </select>
-          </div>
-
-          <!-- History Status Selector -->
-          <div class="princ-filter-item" id="filterHistoryStatusGroup" style="display: none;">
-            <label>ผลการตรวจ</label>
-            <select id="historyResultSelect" class="princ-input" onchange="onHistoryFilterChanged()">
-              <option value="all">ผลตรวจทั้งหมด</option>
-              <option value="ready">✅ พร้อมใช้งาน (ปกติ)</option>
-              <option value="abnormal">⚠️ พบข้อบกพร่อง</option>
-            </select>
-          </div>
-
-          <!-- Search Input -->
-          <div class="princ-filter-item" id="filterSearchGroup">
-            <label>ค้นหาด่วน</label>
-            <input type="text" id="sidebarSearchInput" class="princ-input" oninput="applyFilters()" placeholder="รหัส / ชื่อเครื่อง...">
-          </div>
-
-          <button onclick="resetFilters()" class="princ-quick-date-btn" style="width: 100%; padding: 6px; margin-top: 4px;">
-            <span class="material-icons-round" style="font-size: 13px; vertical-align: -2px;">restart_alt</span>
-            <span>รีเซ็ตตัวกรอง</span>
-          </button>
-        </div>
-
-        <!-- Connection Dot in Sidebar -->
-        <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 6px; padding: 6px 4px; margin-top: 4px;">
-          <span id="syncDot" style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; flex-shrink: 0;"></span>
-          <span id="syncStatusText">เชื่อมต่อ Google Sheet</span>
-        </div>
-
-        <!-- Bottom Pinned User Profile (Matches screenshot's user bar at bottom) -->
-        <div class="princ-sidebar-bottom">
-          <div class="princ-footer-avatar">PP</div>
-          <div style="display: flex; flex-direction: column;">
-            <div class="princ-footer-name">โรงพยาบาลพิษณุเวช</div>
-            <div class="princ-footer-sub">Biomedical Team</div>
-          </div>
-          <a href="index.html" class="princ-footer-exit" title="ออกจากระบบ Workstation">
-            <span class="material-icons-round" style="font-size: 18px;">logout</span>
-          </a>
+        <div class="sidebar-bottom-status">
+          <span class="sync-dot-live"></span>
+          <span id="syncStatusText">ระบบออนไลน์</span>
         </div>
       </aside>
 
       <!-- ==================== MAIN CONTENT AREA ==================== -->
-      <main class="princ-main-content">
+      <main class="app-main-content">
 
         <!-- Official Print Header -->
         <div class="print-only">
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <div>
-              <h1 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 0 0 4px;">โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital - PRINC GROUP)</h1>
-              <h2 style="font-size: 15px; font-weight: 700; color: #1e40af; margin: 0 0 4px;" id="printReportTitle">แบบรายงานผลการตรวจเช็คความพร้อมเครื่องมือแพทย์ประจำวัน</h2>
-              <p style="font-size: 11px; color: #64748b; margin: 0;" id="printDateSubtitle">ข้อมูล ณ วันที่: - | ฝ่ายวิศวกรรมชีวการแพทย์</p>
+              <h1 style="font-size: 18px; font-weight: 800; color: #004b93; margin: 0 0 4px;">โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital)</h1>
+              <h2 style="font-size: 14px; font-weight: 700; color: #0f172a; margin: 0 0 4px;" id="printReportTitle">รายงานผลการตรวจเช็คความพร้อมเครื่องมือแพทย์</h2>
+              <p style="font-size: 11px; color: #64748b; margin: 0;" id="printDateSubtitle">ฝ่ายวิศวกรรมชีวการแพทย์</p>
             </div>
             <div style="text-align: right; font-size: 11px; color: #64748b;">
               <div>วันที่พิมพ์: <strong id="printTimestamp"></strong></div>
-              <div>สถานะ: <strong>ข้อมูลประเมินทางการ</strong></div>
             </div>
           </div>
         </div>
 
-        <!-- Single-Row Executive KPI Strip -->
-        <div id="kpiStripContainer" class="princ-kpi-strip no-print">
+        <!-- Single-Row Executive KPI Strip (Clickable to Filter!) -->
+        <div id="kpiStripContainer" class="kpi-strip-5 no-print">
           <!-- 1: Total Devices -->
-          <div class="princ-kpi-card">
-            <div class="princ-kpi-icon icon-blue">
+          <div class="kpi-card" id="kpiCard_all" onclick="filterByKpi('all')" title="คลิกเพื่อดูทั้งหมด">
+            <div class="kpi-icon-box kpi-icon-blue">
               <span class="material-icons-round">medical_services</span>
             </div>
             <div>
-              <div class="princ-kpi-num" id="kpiTotalDevices">0</div>
-              <div class="princ-kpi-lbl">เครื่องมือแพทย์ทั้งหมด</div>
+              <div class="kpi-val" id="kpiTotalDevices">0</div>
+              <div class="kpi-label">ทั้งหมด</div>
             </div>
           </div>
 
           <!-- 2: Checked Today -->
-          <div class="princ-kpi-card">
-            <div class="princ-kpi-icon icon-teal">
+          <div class="kpi-card" id="kpiCard_checked" onclick="filterByKpi('all')" title="คลิกเพื่อดูรายการที่ตรวจแล้ว">
+            <div class="kpi-icon-box kpi-icon-teal">
               <span class="material-icons-round">fact_check</span>
             </div>
             <div>
-              <div class="princ-kpi-num" id="kpiCheckedDevices">0</div>
-              <div class="princ-kpi-lbl">ตรวจเช็คแล้ววันนี้</div>
+              <div class="kpi-val" id="kpiCheckedDevices">0</div>
+              <div class="kpi-label">ตรวจแล้ว</div>
             </div>
           </div>
 
           <!-- 3: Ready Devices -->
-          <div class="princ-kpi-card">
-            <div class="princ-kpi-icon icon-green">
+          <div class="kpi-card" id="kpiCard_ready" onclick="filterByKpi('ready')" title="คลิกเพื่อกรองเฉพาะเครื่องพร้อมใช้">
+            <div class="kpi-icon-box kpi-icon-green">
               <span class="material-icons-round">check_circle</span>
             </div>
             <div>
-              <div class="princ-kpi-num" id="kpiReadyDevices" style="color: #059669;">0</div>
-              <div class="princ-kpi-lbl">พร้อมใช้งานปกติ</div>
+              <div class="kpi-val" id="kpiReadyDevices" style="color: #059669;">0</div>
+              <div class="kpi-label">พร้อมใช้</div>
             </div>
           </div>
 
           <!-- 4: Abnormal Devices -->
-          <div class="princ-kpi-card" id="kpiCardAbnormal">
-            <div class="princ-kpi-icon icon-red">
+          <div class="kpi-card" id="kpiCard_abnormal" onclick="filterByKpi('abnormal')" title="คลิกเพื่อกรองเฉพาะเครื่องที่มีข้อบกพร่อง">
+            <div class="kpi-icon-box kpi-icon-red">
               <span class="material-icons-round">error</span>
             </div>
             <div>
-              <div class="princ-kpi-num" id="kpiAbnormalDevices" style="color: #dc2626;">0</div>
-              <div class="princ-kpi-lbl">พบข้อบกพร่อง/ชำรุด</div>
+              <div class="kpi-val" id="kpiAbnormalDevices" style="color: #dc2626;">0</div>
+              <div class="kpi-label">ข้อบกพร่อง</div>
             </div>
           </div>
 
           <!-- 5: Pending Devices -->
-          <div class="princ-kpi-card">
-            <div class="princ-kpi-icon icon-amber">
+          <div class="kpi-card" id="kpiCard_pending" onclick="filterByKpi('pending')" title="คลิกเพื่อกรองเฉพาะเครื่องที่รอตรวจ">
+            <div class="kpi-icon-box kpi-icon-amber">
               <span class="material-icons-round">schedule</span>
             </div>
             <div>
-              <div class="princ-kpi-num" id="kpiPendingDevices" style="color: #d97706;">0</div>
-              <div class="princ-kpi-lbl">ยังไม่ตรวจเช็ค</div>
+              <div class="kpi-val" id="kpiPendingDevices" style="color: #d97706;">0</div>
+              <div class="kpi-label">รอตรวจ</div>
             </div>
           </div>
         </div>
 
-        <!-- Multi-Tiered Action Toolbar (Matches screenshot's white rounded buttons) -->
-        <div class="princ-toolbar-box no-print">
-          <!-- Tier 1: Primary Operation Buttons (Like "🪄 เติมจากสายบังคับบัญชา..." in screenshot) -->
-          <div class="princ-toolbar-row">
-            <button onclick="document.getElementById('sidebarStatusSelect').value='ready'; applyFilters();" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 16px; color: #0284c7;">auto_fix_high</span>
-              <span>กรองเครื่องพร้อมใช้ทั้งหมด</span>
-            </button>
-            <button onclick="setViewMode('battery')" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 16px; color: #1e40af;">battery_charging_full</span>
-              <span>ตรวจสอบแบตเตอรี่ UPS (รอบ 1 & 16)</span>
-            </button>
-            <button onclick="window.print()" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 16px;">print</span>
-              <span>พิมพ์รายงาน A4</span>
+        <!-- Integrated Unified Filter & Action Bar (Clean and Concise) -->
+        <div class="page-filter-bar no-print" id="dailyFilterBar">
+          <div class="filter-left-controls">
+            <!-- Search Input -->
+            <div class="search-input-box" id="filterSearchGroup">
+              <span class="material-icons-round">search</span>
+              <input type="text" id="sidebarSearchInput" placeholder="ค้นหาเครื่อง, รหัส..." oninput="applyFilters()">
+            </div>
+
+            <!-- Date Picker + Quick Buttons -->
+            <div class="filter-date-group" id="filterDailyDateGroup">
+              <input type="date" id="sidebarDateInput" class="filter-input" onchange="onDateChanged()">
+              <button type="button" onclick="setQuickDate('today')" id="btnDateToday" class="btn-pill-date active">วันนี้</button>
+              <button type="button" onclick="setQuickDate('yesterday')" id="btnDateYesterday" class="btn-pill-date">เมื่อวาน</button>
+            </div>
+
+            <!-- Department Select -->
+            <div id="filterDeptGroup">
+              <select id="sidebarDeptSelect" class="filter-input" onchange="applyFilters()">
+                <option value="all">ทุกแผนก</option>
+              </select>
+            </div>
+
+            <!-- Category Select -->
+            <div id="filterCategoryGroup">
+              <select id="sidebarCategorySelect" class="filter-input" onchange="applyFilters()">
+                <option value="all">ทุกประเภท</option>
+              </select>
+            </div>
+
+            <!-- Status Select -->
+            <div id="filterDailyStatusGroup">
+              <select id="sidebarStatusSelect" class="filter-input" onchange="applyFilters()">
+                <option value="all">สถานะทั้งหมด</option>
+                <option value="ready">พร้อมใช้</option>
+                <option value="abnormal">ข้อบกพร่อง</option>
+                <option value="pending">รอตรวจ</option>
+              </select>
+            </div>
+
+            <!-- Reset Button -->
+            <button type="button" onclick="resetFilters()" class="btn-reset-ghost" title="รีเซ็ตตัวกรอง">
+              <span class="material-icons-round" style="font-size: 16px;">refresh</span>
             </button>
           </div>
 
-          <!-- Tier 2: Export & Extraction Buttons (Like "⬆ นำเข้าไฟล์", "📄 โหลดแม่แบบ", "📥 ดึงออก Excel" in screenshot) -->
-          <div class="princ-toolbar-row">
-            <button onclick="setViewMode('forms')" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 16px;">description</span>
-              <span>โหลดแม่แบบ (8 หมวด)</span>
+          <!-- Action Tools on Right -->
+          <div class="filter-right-tools">
+            <button type="button" onclick="window.print()" class="btn-tool" title="พิมพ์รายงาน">
+              <span class="material-icons-round" style="font-size: 15px;">print</span>
+              <span>พิมพ์</span>
             </button>
-            <button onclick="exportToCsv()" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 16px; color: #059669;">download</span>
-              <span>ดึงออก Excel / CSV</span>
+            <button type="button" onclick="exportToCsv()" class="btn-tool" title="ส่งออก CSV">
+              <span class="material-icons-round" style="font-size: 15px; color: #059669;">download</span>
+              <span>ส่งออก</span>
             </button>
-            <button onclick="document.getElementById('sidebarStatusSelect').value='pending'; applyFilters();" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 16px; color: #d97706;">person_search</span>
-              <span>ดึงเครื่องที่ยังไม่ตรวจ • ประจำวัน</span>
-            </button>
-            <button onclick="document.getElementById('sidebarStatusSelect').value='abnormal'; applyFilters();" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 16px; color: #dc2626;">warning</span>
-              <span>ดึงเครื่องที่พบข้อบกพร่อง</span>
-            </button>
-            <a href="lab.html" target="_blank" class="princ-btn" style="border-color: #bae6fd; background: #f0f9ff; color: #0284c7; text-decoration: none;">
-              <span class="material-icons-round" style="font-size: 16px;">science</span>
-              <span>เปิดระบบเฉพาะแผนก LAB ↗</span>
-            </a>
-          </div>
-
-          <!-- Tier 3: Batch Operations (Like "ซ่อมข้อมูลเป็นชุด..." in screenshot) -->
-          <div class="princ-toolbar-row">
-            <span class="princ-toolbar-label">การจัดการข้อมูลด่วน:</span>
-            <button onclick="resetFilters()" class="princ-btn">
-              <span class="material-icons-round" style="font-size: 15px;">cleaning_services</span>
-              <span>ล้างสถานะ / รีเซ็ตตัวกรอง</span>
-            </button>
-            <button onclick="refreshData()" class="princ-btn" id="btnSync">
+            <button type="button" onclick="refreshData()" class="btn-tool btn-tool-primary" id="btnSync" title="ซิงค์ข้อมูล Google Sheet">
               <span class="material-icons-round" style="font-size: 15px;">sync</span>
-              <span>ซิงค์ข้อมูลกับ Google Sheet</span>
-            </button>
-          </div>
-
-          <!-- Tier 4: Ward Switcher Pills -->
-          <div class="ward-filter-bar" id="wardFilterBar">
-            <button class="ward-pill-btn active" data-ward="all" onclick="selectWardFilter('all')">
-              <span class="material-icons-round" style="font-size: 14px;">apps</span>
-              <span>ทุกแผนก (32)</span>
-            </button>
-            <button class="ward-pill-btn" data-ward="ER" onclick="selectWardFilter('ER')">
-              <span class="ward-badge-dot dot-er"></span>
-              <span>🚨 แผนกอุบัติเหตุฉุกเฉิน (ER)</span>
-            </button>
-            <button class="ward-pill-btn" data-ward="ICU" onclick="selectWardFilter('ICU')">
-              <span class="ward-badge-dot dot-icu"></span>
-              <span>🩺 หอผู้ป่วยวิกฤต (ICU)</span>
-            </button>
-            <button class="ward-pill-btn" data-ward="OR" onclick="selectWardFilter('OR')">
-              <span class="ward-badge-dot dot-or"></span>
-              <span>🏥 ห้องผ่าตัด (OR)</span>
-            </button>
-            <button class="ward-pill-btn" data-ward="WARD23" onclick="selectWardFilter('WARD23')">
-              <span>🛏️ หอผู้ป่วย 2-3 (Ward 2-3)</span>
-            </button>
-            <button class="ward-pill-btn" data-ward="WARD45" onclick="selectWardFilter('WARD45')">
-              <span>🛏️ หอผู้ป่วย 4-5 (Ward 4-5)</span>
-            </button>
-            <button class="ward-pill-btn" data-ward="OPD" onclick="selectWardFilter('OPD')">
-              <span>🏢 แผนกผู้ป่วยนอก (OPD)</span>
+              <span>ซิงค์</span>
             </button>
           </div>
         </div>
 
-        <!-- Notice / Helper Banner (Matches screenshot's light gray banner) -->
-        <div class="princ-notice-banner no-print">
-          หนึ่งบรรทัดคือเครื่องมือแพทย์หนึ่งเครื่อง — ระบบติดตามความพร้อมใช้งานประจำวันตามมาตรฐาน HA & JCI • บันทึกผลผ่านปุ่มตรวจเช็คหรือสแกน QR Code ประจำเครื่อง • เครื่องที่พบข้อบกพร่องจะแจ้งเตือนฝ่ายซ่อมบำรุงทันที • ปรับเปลี่ยนแผนกถือครองผ่านเมนูย้ายพิกัด
+        <!-- Compact Ward Switcher Pills -->
+        <div class="ward-pill-strip no-print" id="wardFilterBar">
+          <button class="ward-pill-btn active" data-ward="all" onclick="selectWardFilter('all')">
+            <span>ทุกแผนก (32)</span>
+          </button>
+          <button class="ward-pill-btn" data-ward="ER" onclick="selectWardFilter('ER')">
+            <span>ER (4)</span>
+          </button>
+          <button class="ward-pill-btn" data-ward="ICU" onclick="selectWardFilter('ICU')">
+            <span>ICU (3)</span>
+          </button>
+          <button class="ward-pill-btn" data-ward="OR" onclick="selectWardFilter('OR')">
+            <span>OR (1)</span>
+          </button>
+          <button class="ward-pill-btn" data-ward="WARD23" onclick="selectWardFilter('WARD23')">
+            <span>Ward 2-3 (1)</span>
+          </button>
+          <button class="ward-pill-btn" data-ward="WARD45" onclick="selectWardFilter('WARD45')">
+            <span>Ward 4-5</span>
+          </button>
+          <button class="ward-pill-btn" data-ward="OPD" onclick="selectWardFilter('OPD')">
+            <span>OPD</span>
+          </button>
         </div>
 
         <!-- ==================== VIEW 1: DAILY INSPECTION REPORT (DEFAULT) ==================== -->
@@ -1271,23 +1097,58 @@
 
       <!-- ==================== VIEW 3: ALL HISTORY LOGS ==================== -->
       <div id="viewHistoryContainer" style="display: none;">
-        <div class="category-card glass-panel">
-          <div class="category-header glass-card">
-            <div style="font-weight: 700; font-size: 15px; color: #0f172a;">ประวัติการบันทึกผลการตรวจเช็คทั้งหมด (Historical Records)</div>
-            <span id="historyLogCount" class="badge-status glass-pill" style="font-size: 12px; color: #64748b;">-</span>
+        <!-- Dedicated History Filter Bar On Page -->
+        <div class="page-filter-bar no-print" style="margin-bottom: 12px;">
+          <div class="filter-left-controls">
+            <div class="filter-date-group" id="filterHistoryRangeGroup">
+              <button type="button" onclick="setHistoryRangeMode('month')" id="btnHistModeMonth" class="btn-pill-date active">ตามเดือน</button>
+              <button type="button" onclick="setHistoryRangeMode('range')" id="btnHistModeRange" class="btn-pill-date">ระบุช่วง</button>
+              <button type="button" onclick="setHistoryRangeMode('all')" id="btnHistModeAll" class="btn-pill-date">ทั้งหมด</button>
+              <div id="histMonthSubBlock" style="margin-left: 4px;">
+                <input type="month" id="historyMonthInput" class="filter-input" onchange="onHistoryFilterChanged()">
+              </div>
+              <div id="histRangeSubBlock" style="display: none; margin-left: 4px; gap: 4px;">
+                <input type="date" id="historyStartDate" class="filter-input" onchange="onHistoryFilterChanged()">
+                <input type="date" id="historyEndDate" class="filter-input" onchange="onHistoryFilterChanged()">
+              </div>
+            </div>
+            <div id="filterHistoryStatusGroup">
+              <select id="historyResultSelect" class="filter-input" onchange="onHistoryFilterChanged()">
+                <option value="all">ผลตรวจทั้งหมด</option>
+                <option value="ready">พร้อมใช้</option>
+                <option value="abnormal">ข้อบกพร่อง</option>
+              </select>
+            </div>
+          </div>
+          <div class="filter-right-tools">
+            <button type="button" onclick="window.print()" class="btn-tool" title="พิมพ์รายงาน">
+              <span class="material-icons-round" style="font-size: 15px;">print</span>
+              <span>พิมพ์</span>
+            </button>
+            <button type="button" onclick="exportToCsv()" class="btn-tool" title="ส่งออก CSV">
+              <span class="material-icons-round" style="font-size: 15px; color: #059669;">download</span>
+              <span>ส่งออก</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-header">
+            <div style="font-weight: 700; font-size: 14px; color: var(--text-main);">ประวัติการตรวจเช็คย้อนหลัง</div>
+            <span id="historyLogCount" class="cat-pill-badge" style="color: var(--text-muted);">-</span>
           </div>
           <div style="overflow-x: auto;">
             <table class="device-table">
               <thead>
                 <tr>
-                  <th>วัน-เวลาตรวจเช็ค</th>
-                  <th>รหัสครุภัณฑ์</th>
-                  <th>ชื่อเครื่องมือแพทย์</th>
-                  <th>แผนก</th>
-                  <th style="text-align: center;">สถานะ</th>
+                  <th style="width: 140px;">วัน-เวลาตรวจ</th>
+                  <th style="width: 130px;">รหัสครุภัณฑ์</th>
+                  <th>เครื่องมือแพทย์</th>
+                  <th style="width: 140px;">แผนก</th>
+                  <th style="width: 110px; text-align: center;">สถานะ</th>
                   <th>ผลตรวจ / ข้อบกพร่อง</th>
-                  <th>ผู้ตรวจเช็ค</th>
-                  <th class="btn-action-col no-print" style="text-align: center;">สลิป</th>
+                  <th style="width: 120px;">ผู้ตรวจ</th>
+                  <th class="btn-action-col no-print" style="width: 80px; text-align: center;">สลิป</th>
                 </tr>
               </thead>
               <tbody id="historyTableBody">
@@ -1300,23 +1161,41 @@
 
       <!-- ==================== VIEW 4: MONTHLY REPORT ==================== -->
       <div id="viewMonthlyContainer" style="display: none;">
-        <div class="category-card glass-panel">
-          <div class="category-header glass-card">
-            <div style="font-weight: 700; font-size: 15px; color: #0f172a;">รายงานสรุปผลการประเมินประจำเดือน (Monthly Compliance)</div>
-            <span id="monthlySubtitle" class="badge-status glass-pill" style="font-size: 12px; color: #64748b;">-</span>
+        <!-- Dedicated Monthly Filter Bar On Page -->
+        <div class="page-filter-bar no-print" style="margin-bottom: 12px;" id="filterMonthlyMonthGroup">
+          <div class="filter-left-controls">
+            <span style="font-weight: 600; color: #334155; font-size: 12.5px;">เลือกรอบเดือน:</span>
+            <input type="month" id="monthlyMonthInput" class="filter-input" onchange="onMonthlyMonthChanged()">
+          </div>
+          <div class="filter-right-tools">
+            <button type="button" onclick="window.print()" class="btn-tool">
+              <span class="material-icons-round" style="font-size: 15px;">print</span>
+              <span>พิมพ์</span>
+            </button>
+            <button type="button" onclick="exportToCsv()" class="btn-tool">
+              <span class="material-icons-round" style="font-size: 15px; color: #059669;">download</span>
+              <span>ส่งออก</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-header">
+            <div style="font-weight: 700; font-size: 14px; color: var(--text-main);">รายงานสรุปผลประจำเดือน</div>
+            <span id="monthlySubtitle" class="cat-pill-badge" style="color: var(--text-muted);">-</span>
           </div>
           <div style="overflow-x: auto;">
             <table class="device-table">
               <thead>
                 <tr>
-                  <th style="width: 125px; white-space: nowrap;">รหัสครุภัณฑ์</th>
-                  <th>ชื่อเครื่องมือแพทย์ & รุ่น</th>
-                  <th style="width: 110px; white-space: nowrap;">ประเภท</th>
-                  <th style="width: 130px; white-space: nowrap;">แผนก</th>
-                  <th style="width: 95px; text-align: center; white-space: nowrap;">ตรวจเดือนนี้</th>
-                  <th style="width: 110px; text-align: center; white-space: nowrap;">สถานะล่าสุด</th>
-                  <th style="width: 130px; white-space: nowrap;">ประเมินล่าสุด</th>
-                  <th style="width: 85px; white-space: nowrap;">ผู้ประเมิน</th>
+                  <th style="width: 130px;">รหัสครุภัณฑ์</th>
+                  <th>เครื่องมือแพทย์ & รุ่น</th>
+                  <th style="width: 120px;">ประเภท</th>
+                  <th style="width: 130px;">แผนก</th>
+                  <th style="width: 90px; text-align: center;">ตรวจเดือนนี้</th>
+                  <th style="width: 110px; text-align: center;">สถานะล่าสุด</th>
+                  <th style="width: 130px;">ประเมินล่าสุด</th>
+                  <th style="width: 90px;">ผู้ประเมิน</th>
                 </tr>
               </thead>
               <tbody id="monthlyTableBody">
@@ -1327,83 +1206,78 @@
         </div>
       </div>
 
-      <!-- ==================== VIEW 5: UPS BATTERY INSPECTION REPORT (DEDICATED) ==================== -->
+      <!-- ==================== VIEW 5: UPS BATTERY INSPECTION REPORT ==================== -->
       <div id="viewBatteryContainer" style="display: none;">
-        <!-- Banner Info Card -->
-        <div class="glass-panel no-print" style="background: linear-gradient(135deg, rgba(30, 64, 175, 0.92) 0%, rgba(30, 58, 138, 0.96) 100%); color: #ffffff; border-radius: 16px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 8px 32px 0 rgba(30, 64, 175, 0.25); border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div class="squircle-icon" style="width: 48px; height: 48px; border-radius: 14px; background: rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-              <span class="material-icons-round" style="font-size: 28px; color: #93c5fd;">battery_charging_full</span>
-            </div>
-            <div>
-              <div style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span>การตรวจสอบแบตเตอรี่สำรอง / UPS เครื่องมือแพทย์</span>
-                <span class="glass-pill" style="font-size: 11px; background: #fbbf24; color: #78350f; padding: 3px 10px; border-radius: 9999px; font-weight: 800; border: 1px solid rgba(245, 158, 11, 0.3);">รอบวันที่ 1 & 16 ของเดือน</span>
-              </div>
-              <div style="font-size: 12.5px; opacity: 0.92; margin-top: 4px;">
-                บังคับตรวจสอบทุกๆ วันที่ 1 และ 16 ของเดือน ทุกเครื่อง (วันอื่นๆ ไม่ต้องตรวจ) • บันทึกระยะเวลาใช้งานจริง (ชั่วโมง : นาที)
-              </div>
-            </div>
+        <!-- Dedicated Battery Filter Bar On Page -->
+        <div class="page-filter-bar no-print" style="margin-bottom: 12px;" id="filterBatteryCycleGroup">
+          <div class="filter-left-controls">
+            <span style="font-weight: 600; color: #334155; font-size: 12.5px;">รอบตรวจ UPS:</span>
+            <select id="sidebarBatteryCycleSelect" class="filter-input" onchange="onBatteryFilterChanged()">
+              <option value="latest">รอบล่าสุด (1 ต.ค. 2569)</option>
+              <option value="2026-10-01">1 ต.ค. 2569</option>
+              <option value="2026-09-16">16 ก.ย. 2569</option>
+              <option value="all">ทุกรอบประวัติ</option>
+            </select>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <a href="eval.html?batteryCheck=1" class="btn-ppch btn-glass-secondary" style="background: rgba(255, 255, 255, 0.95); color: #1e40af; font-size: 12.5px; font-weight: 800; padding: 9px 18px; text-decoration: none; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.12); border: 1px solid rgba(255, 255, 255, 0.8);">
-              <span class="material-icons-round" style="font-size: 16px;">add_circle</span>
-              <span>ประเมินรอบตรวจแบตเตอรี่</span>
+          <div class="filter-right-tools">
+            <a href="eval.html?batteryCheck=1" class="btn-tool btn-tool-primary" style="text-decoration: none;">
+              <span class="material-icons-round" style="font-size: 15px;">bolt</span>
+              <span>ประเมินรอบตรวจ UPS</span>
             </a>
           </div>
         </div>
 
         <!-- Dedicated Battery KPIs Strip -->
-        <div class="kpi-strip kpi-grid-4 no-print" style="margin-bottom: 20px;">
-          <div class="kpi-mini-card glass-card">
-            <div class="kpi-mini-icon squircle-icon icon-blue">
+        <div class="kpi-strip-4 no-print">
+          <div class="kpi-card">
+            <div class="kpi-icon-box kpi-icon-blue">
               <span class="material-icons-round">medical_services</span>
             </div>
             <div>
-              <div class="kpi-mini-num" id="kpiBatTotal">0</div>
-              <div class="kpi-mini-lbl">เครื่องมือแพทย์ทั้งหมด</div>
+              <div class="kpi-val" id="kpiBatTotal">0</div>
+              <div class="kpi-label">เครื่องทั้งหมด</div>
             </div>
           </div>
 
-          <div class="kpi-mini-card glass-card">
-            <div class="kpi-mini-icon squircle-icon icon-green">
+          <div class="kpi-card">
+            <div class="kpi-icon-box kpi-icon-green">
               <span class="material-icons-round">battery_charging_full</span>
             </div>
             <div>
-              <div class="kpi-mini-num" id="kpiBatChecked" style="color: #059669;">0</div>
-              <div class="kpi-mini-lbl">ตรวจในรอบแล้ว</div>
+              <div class="kpi-val" id="kpiBatChecked" style="color: var(--green-ready);">0</div>
+              <div class="kpi-label">ตรวจในรอบแล้ว</div>
             </div>
           </div>
 
-          <div class="kpi-mini-card glass-card">
-            <div class="kpi-mini-icon squircle-icon icon-amber">
+          <div class="kpi-card">
+            <div class="kpi-icon-box kpi-icon-amber">
               <span class="material-icons-round">hourglass_empty</span>
             </div>
             <div>
-              <div class="kpi-mini-num" id="kpiBatPending" style="color: #d97706;">0</div>
-              <div class="kpi-mini-lbl">ยังไม่ตรวจในรอบ</div>
+              <div class="kpi-val" id="kpiBatPending" style="color: var(--amber-pending);">0</div>
+              <div class="kpi-label">ยังไม่ตรวจในรอบ</div>
             </div>
           </div>
 
-          <div class="kpi-mini-card glass-card">
-            <div class="kpi-mini-icon squircle-icon icon-teal">
+          <div class="kpi-card">
+            <div class="kpi-icon-box kpi-icon-teal">
               <span class="material-icons-round">timer</span>
             </div>
             <div>
-              <div class="kpi-mini-num" id="kpiBatAvgRuntime" style="color: #0d9488;">-- : --</div>
-              <div class="kpi-mini-lbl">เวลาสำรองไฟเฉลี่ย</div>
+              <div class="kpi-val" id="kpiBatAvgRuntime" style="color: #0d9488;">-- : --</div>
+              <div class="kpi-label">เวลาสำรองไฟเฉลี่ย</div>
             </div>
           </div>
         </div>
 
         <!-- Battery Data Table -->
-        <div class="category-card glass-panel">
-          <div class="category-header glass-card">
+        <div class="category-card">
+          <div class="category-header">
             <div>
-              <div style="font-weight: 700; font-size: 15px; color: #0f172a;">ตารางสรุปผลการตรวจสอบระยะเวลาใช้งานจริงแบตเตอรี่ UPS (รอบวันที่ 1 & 16)</div>
-              <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;" id="batteryTableSubtitle">รอบการประเมิน: ล่าสุด • โรงพยาบาลพิษณุเวช</div>
+              <div style="font-weight: 700; font-size: 14px; color: var(--text-main);">ผลการตรวจระยะเวลาสำรองไฟ UPS (รอบ 1 & 16)</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;" id="batteryTableSubtitle">รอบการประเมิน: ล่าสุด • โรงพยาบาลพิษณุเวช</div>
             </div>
-            <span id="batteryRowCountBadge" class="badge-status glass-pill" style="font-size: 12px; color: #64748b;">-</span>
+            <span id="batteryRowCountBadge" class="cat-pill-badge" style="color: var(--text-muted);">-</span>
           </div>
           <div style="overflow-x: auto;">
             <table class="device-table">
@@ -1875,35 +1749,26 @@
     }
 
     // Toggle contextual filter groups in sidebar
+    function filterByKpi(status) {
+      var sel = document.getElementById('sidebarStatusSelect');
+      if (!sel) return;
+      if (status === 'all' || status === 'checked') sel.value = 'all';
+      else sel.value = status;
+      applyFilters();
+
+      document.querySelectorAll('.kpi-card').forEach(function (c) { c.classList.remove('active-kpi'); });
+      var card = document.getElementById('kpiCard_' + status);
+      if (card) card.classList.add('active-kpi');
+    }
+
     function updateFilterVisibility(mode) {
-      var dailyDateGrp = document.getElementById('filterDailyDateGroup');
-      if (dailyDateGrp) dailyDateGrp.style.display = (mode === 'daily') ? 'block' : 'none';
+      var dailyBar = document.getElementById('dailyFilterBar');
+      if (dailyBar) dailyBar.style.display = (mode === 'daily') ? 'flex' : 'none';
 
-      var histRangeGrp = document.getElementById('filterHistoryRangeGroup');
-      if (histRangeGrp) histRangeGrp.style.display = (mode === 'history') ? 'block' : 'none';
+      var wardBar = document.getElementById('wardFilterBar');
+      if (wardBar) wardBar.style.display = (mode === 'daily') ? 'flex' : 'none';
 
-      var monthlyMonthGrp = document.getElementById('filterMonthlyMonthGroup');
-      if (monthlyMonthGrp) monthlyMonthGrp.style.display = (mode === 'monthly') ? 'block' : 'none';
-
-      var deptGrp = document.getElementById('filterDeptGroup');
-      if (deptGrp) deptGrp.style.display = (mode === 'forms') ? 'none' : 'block';
-
-      var catGrp = document.getElementById('filterCategoryGroup');
-      if (catGrp) catGrp.style.display = 'block';
-
-      var dailyStatusGrp = document.getElementById('filterDailyStatusGroup');
-      if (dailyStatusGrp) dailyStatusGrp.style.display = (mode === 'daily') ? 'block' : 'none';
-
-      var histStatusGrp = document.getElementById('filterHistoryStatusGroup');
-      if (histStatusGrp) histStatusGrp.style.display = (mode === 'history') ? 'block' : 'none';
-
-      var batCycleGrp = document.getElementById('filterBatteryCycleGroup');
-      if (batCycleGrp) batCycleGrp.style.display = (mode === 'battery') ? 'block' : 'none';
-
-      var searchGrp = document.getElementById('filterSearchGroup');
-      if (searchGrp) searchGrp.style.display = 'block';
-
-      var kpiBlock = document.getElementById('kpiStripContainer') || document.querySelector('.kpi-strip');
+      var kpiBlock = document.getElementById('kpiStripContainer');
       if (kpiBlock) kpiBlock.style.display = (mode === 'daily') ? 'grid' : 'none';
     }
 
@@ -1912,11 +1777,11 @@
       var bread = document.getElementById('princBreadCurrent');
       if (bread) {
         var breadMap = {
-          daily: 'รายงานความพร้อมใช้ประจำวัน (Daily Inspection)',
-          battery: 'สรุปผลตรวจเช็คแบตเตอรี่ UPS (รอบวันที่ 1 & 16)',
-          forms: 'แบบประเมินความพร้อมใช้งานตามหมวด (8 หมวด)',
-          history: 'ประวัติการบันทึกผลการตรวจเช็คทั้งหมด',
-          monthly: 'รายงานสรุปผลการประเมินประจำเดือน (Monthly Compliance)'
+          daily: 'ตรวจเช็คประจำวัน',
+          battery: 'ตรวจแบตเตอรี่ UPS',
+          forms: 'แบบตรวจ 8 หมวด',
+          history: 'ประวัติการตรวจเช็ค',
+          monthly: 'รายงานประจำเดือน'
         };
         bread.innerText = breadMap[mode] || mode;
       }
@@ -2216,18 +2081,18 @@
         var badgePillText = 'ตรวจแล้ว ' + catChecked + '/' + devicesInCategory.length + ' เครื่อง (' + catPct + '%)';
         if (catAbnormal > 0) badgePillText += ' (⚠️ ผิดปกติ ' + catAbnormal + ')';
 
-        html += '<div class="category-card glass-panel">' +
-          '<div class="category-header glass-card">' +
+        html += '<div class="category-card">' +
+          '<div class="category-header">' +
             '<div class="category-title-wrap">' +
-              '<div class="category-avatar squircle-icon" style="background: ' + meta.bg + '; color: ' + meta.color + ';">' +
+              '<div class="category-avatar" style="background: ' + meta.bg + '; color: ' + meta.color + ';">' +
                 '<span class="material-icons-round">' + meta.icon + '</span>' +
               '</div>' +
               '<div>' +
                 '<div class="category-name">' + (fIdx + 1) + '. ' + f.name + '</div>' +
                 '<div class="category-desc">' +
-                  '<span>' + f.category + '</span>' +
+                  '<span>' + f.shortName + '</span>' +
                   '<span>•</span>' +
-                  '<span>' + (f.frequency === 'daily' ? 'รอบตรวจทุกวัน' : 'รอบตรวจประจำเดือน') + '</span>' +
+                  '<span>' + (f.frequency === 'daily' ? 'ตรวจทุกวัน' : 'ตรวจประจำเดือน') + '</span>' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -2235,18 +2100,18 @@
               '<div class="cat-progress-track" title="ความคืบหน้า ' + catPct + '%">' +
                 '<div class="cat-progress-fill" style="width: ' + catPct + '%;"></div>' +
               '</div>' +
-              '<span class="badge-status glass-pill" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : (catPct === 100 ? '#ecfdf5' : 'rgba(255, 255, 255, 0.9)')) + '; color: ' + (catAbnormal > 0 ? '#b91c1c' : (catPct === 100 ? '#047857' : '#334155')) + '; border: 1px solid ' + (catAbnormal > 0 ? '#fca5a5' : (catPct === 100 ? '#a7f3d0' : '#e2e8f0')) + ';">' + badgePillText + '</span>' +
+              '<span class="cat-pill-badge" style="background: ' + (catAbnormal > 0 ? '#fef2f2' : (catPct === 100 ? '#ecfdf5' : '#ffffff')) + '; color: ' + (catAbnormal > 0 ? '#dc2626' : (catPct === 100 ? '#059669' : '#475569')) + '; border-color: ' + (catAbnormal > 0 ? '#fecaca' : (catPct === 100 ? '#a7f3d0' : '#e2e8f0')) + ';">' + badgePillText + '</span>' +
             '</div>' +
           '</div>' +
           '<div style="overflow-x: auto;">' +
             '<table class="device-table">' +
               '<thead>' +
                 '<tr>' +
-                  '<th style="width: 270px;">ผู้ถูกประเมิน (ชื่อเครื่อง & รหัสครุภัณฑ์)</th>' +
-                  '<th style="width: 220px;">แผนก • ตำแหน่งประจำการ</th>' +
-                  '<th style="width: 200px;">ประเภท • รอบการตรวจ</th>' +
-                  '<th>ผู้ประเมิน • สถานะความพร้อมวันนี้</th>' +
-                  '<th class="btn-action-col no-print" style="width: 100px; text-align: center;">การจัดการ</th>' +
+                  '<th style="width: 270px;">เครื่องมือแพทย์ / รหัสครุภัณฑ์</th>' +
+                  '<th style="width: 200px;">แผนก / ที่ตั้ง</th>' +
+                  '<th style="width: 150px;">ประเภท</th>' +
+                  '<th>สถานะวันนี้</th>' +
+                  '<th class="btn-action-col no-print" style="width: 85px; text-align: center;">จัดการ</th>' +
                 '</tr>' +
               '</thead>' +
               '<tbody>';
@@ -2262,42 +2127,40 @@
             var timeOnly = formatTimeOnly(ev.evaluatedAt);
             if (ev.result === 'abnormal') {
               evalCell = '<div>' +
-                '<div style="color: #dc2626; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 5px;">' +
-                  '<span class="material-icons-round" style="font-size: 15px;">warning</span> พบข้อบกพร่อง/ชำรุด' +
+                '<div style="display: flex; align-items: center; gap: 6px;">' +
+                  '<span class="badge-status badge-status-abnormal"><span class="material-icons-round" style="font-size: 14px;">warning</span> ข้อบกพร่อง</span>' +
+                  '<span style="font-size: 11px; color: var(--red-abnormal); font-family: var(--font-mono);">' + timeOnly + ' น.</span>' +
                 '</div>' +
-                '<span style="font-size: 11px; color: #b91c1c; background: #fef2f2; padding: 2px 6px; border-radius: 4px; border: 1px solid #fecaca; margin-left: 8px; font-family: var(--font-mono);">' + timeOnly + ' น.</span>' +
-                '<div style="font-size: 11.5px; color: #dc2626; margin-top: 2px;">' +
-                  '⚠️ ' + (ev.abnormalNote || 'พบความผิดปกติ') + ' • โดย <strong style="color: #991b1b;">' + (ev.evaluatedBy || '-') + '</strong>' +
+                '<div style="font-size: 11px; color: var(--red-abnormal); margin-top: 1px; font-weight: 500;">' +
+                  '⚠️ ' + (ev.abnormalNote || 'ชำรุด') + ' • โดย ' + (ev.evaluatedBy || '-') +
                 '</div>' +
               '</div>';
             } else {
               evalCell = '<div>' +
-                '<div style="display: flex; align-items: center; gap: 8px;">' +
-                  '<div style="color: #059669; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 4px;">' +
-                    '<span class="material-icons-round" style="font-size: 15px;">check_circle</span> พร้อมใช้งานปกติ' +
-                  '</div>' +
-                  '<span style="font-size: 11px; color: #475569; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; border: 1px solid #e2e8f0; font-family: var(--font-mono);">' + timeOnly + ' น.</span>' +
+                '<div style="display: flex; align-items: center; gap: 6px;">' +
+                  '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 14px;">check_circle</span> พร้อมใช้งาน</span>' +
+                  '<span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">' + timeOnly + ' น.</span>' +
                 '</div>' +
-                '<div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">' +
-                  'ผู้ประเมิน: <strong style="color: #334155;">' + (ev.evaluatedBy || 'เจ้าหน้าที่ประจำเวร') + '</strong>' +
+                '<div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">' +
+                  'ผู้ตรวจ: <strong style="color: var(--text-body);">' + (ev.evaluatedBy || 'เจ้าหน้าที่') + '</strong>' +
                 '</div>' +
               '</div>';
             }
             actionBtn = '<button onclick="openDetailSlip(\'' + (ev.id || '') + '\', \'' + eq.id + '\')" class="btn-table-slip" title="ดูสลิปผลประเมิน">' +
-              '<span class="material-icons-round" style="font-size: 14px; color: #1e40af;">receipt_long</span><span>สลิป</span>' +
+              '<span class="material-icons-round" style="font-size: 14px;">receipt_long</span><span>สลิป</span>' +
             '</button>';
           } else {
-            // Pending State (Matches screenshot's "ยังไม่มีผู้ประเมิน" in amber + "+ เพิ่มผู้ประเมิน" in blue link)
+            // Pending State: Clean & concise
             evalCell = '<div>' +
-              '<div style="color: #d97706; font-weight: 600; font-size: 13px;">ยังไม่มีผลตรวจวันนี้</div>' +
+              '<div style="color: var(--amber-pending); font-weight: 600; font-size: 12.5px;">รอตรวจวันนี้</div>' +
               '<div style="margin-top: 2px;">' +
-                '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" style="color: #2563eb; font-weight: 600; font-size: 12.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 3px;">' +
-                  '<span class="material-icons-round" style="font-size: 14px;">add</span> ตรวจเช็คเครื่องนี้' +
+                '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" class="btn-table-check">' +
+                  '<span class="material-icons-round" style="font-size: 14px;">add</span> ตรวจเช็ค' +
                 '</a>' +
               '</div>' +
             '</div>';
-            actionBtn = '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" class="btn-table-slip" style="text-decoration: none; color: #2563eb; border-color: #bfdbfe; background: #eff6ff;" title="เปิดแบบประเมิน">' +
-              '<span class="material-icons-round" style="font-size: 14px;">assignment</span><span>ตรวจ</span>' +
+            actionBtn = '<a href="eval.html?formId=' + f.id + '&deviceId=' + eq.id + '" class="btn-table-eval" title="เปิดแบบประเมิน">' +
+              '<span class="material-icons-round" style="font-size: 14px;">edit_note</span><span>ตรวจ</span>' +
             '</a>';
           }
 
@@ -2305,19 +2168,18 @@
 
           html += '<tr class="' + rowClass + '">' +
             '<td>' +
-              '<div style="font-weight: 700; color: #0f172a; font-size: 13.5px; line-height: 1.3;">' + eq.name + '</div>' +
-              '<div style="display: flex; align-items: center; gap: 6px; margin-top: 3px;">' +
+              '<div style="font-weight: 700; color: var(--text-main); font-size: 13px; line-height: 1.3;">' + eq.name + '</div>' +
+              '<div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">' +
                 '<span class="asset-code-clean">' + eq.assetCode + '</span>' +
-                '<span style="font-size: 11.5px; color: #64748b;">รุ่น ' + (eq.model || '-') + '</span>' +
+                '<span style="font-size: 11px; color: var(--text-muted);">รุ่น ' + (eq.model || '-') + '</span>' +
               '</div>' +
             '</td>' +
             '<td>' +
-              '<div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">' + deptName + '</div>' +
-              '<div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">' + (eq.location || 'ประจำจุดบริการ') + '</div>' +
+              '<div style="font-weight: 600; color: var(--text-body); font-size: 12.5px;">' + deptName + '</div>' +
+              '<div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">' + (eq.location || 'จุดบริการ') + '</div>' +
             '</td>' +
             '<td>' +
-              '<div style="font-weight: 500; color: #334155; font-size: 12.5px;">' + (f.shortName || f.name) + '</div>' +
-              '<div style="font-size: 11px; color: #64748b; margin-top: 1px;">' + (f.frequency === 'daily' ? 'รอบตรวจทุกวัน' : 'รอบตรวจประจำเดือน') + '</div>' +
+              '<div style="font-weight: 500; color: var(--text-body); font-size: 12px;">' + (f.shortName || f.name) + '</div>' +
             '</td>' +
             '<td>' + evalCell + '</td>' +
             '<td class="btn-action-col no-print" style="text-align: center; white-space: nowrap;">' + actionBtn + '</td>' +
