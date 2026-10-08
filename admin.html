@@ -1256,66 +1256,93 @@
     var selectedQrUrl = '';
 
     document.addEventListener('DOMContentLoaded', function () {
-      initApp();
+      try {
+        initApp();
+      } catch (err) {
+        console.error('initApp error:', err);
+      } finally {
+        setTimeout(hidePageLoader, 350);
+      }
       window.addEventListener('ppch:data-updated', function () {
         loadData();
       });
     });
 
+    // Safety fallback: Ensure loader is always dismissed even if DOM events delay
+    window.addEventListener('load', function () {
+      setTimeout(hidePageLoader, 400);
+    });
+    setTimeout(hidePageLoader, 1500);
+
     function hidePageLoader() {
       var loader = document.getElementById('pageLoader');
-      if (loader) loader.classList.add('hidden');
+      if (loader && !loader.classList.contains('hidden')) {
+        loader.classList.add('hidden');
+      }
     }
 
     function initApp() {
       // 1. Set default date to today
       var todayStr = new Date().toISOString().slice(0, 10);
-      document.getElementById('filterDate').value = todayStr;
+      var dateInput = document.getElementById('filterDate');
+      if (dateInput) dateInput.value = todayStr;
 
       // 2. Populate departments in filter
       var deptSel = document.getElementById('filterDept');
       var relocateSel = document.getElementById('relocateTargetDept');
-      (window.PPCH_CONFIG.departments || []).forEach(function (dp) {
-        var opt = document.createElement('option');
-        opt.value = dp.id;
-        opt.innerText = dp.name;
-        deptSel.appendChild(opt);
-
-        var opt2 = document.createElement('option');
-        opt2.value = dp.id;
-        opt2.innerText = dp.name;
-        relocateSel.appendChild(opt2);
-      });
+      if (window.PPCH_CONFIG && window.PPCH_CONFIG.departments) {
+        window.PPCH_CONFIG.departments.forEach(function (dp) {
+          if (deptSel) {
+            var opt = document.createElement('option');
+            opt.value = dp.id;
+            opt.innerText = dp.name;
+            deptSel.appendChild(opt);
+          }
+          if (relocateSel) {
+            var opt2 = document.createElement('option');
+            opt2.value = dp.id;
+            opt2.innerText = dp.name;
+            relocateSel.appendChild(opt2);
+          }
+        });
+      }
 
       // 3. Populate categories in filter
       var catSel = document.getElementById('filterCategory');
-      (window.PPCH_CONFIG.forms || []).forEach(function (f) {
-        var opt = document.createElement('option');
-        opt.value = f.id;
-        opt.innerText = f.shortName || f.name;
-        catSel.appendChild(opt);
-      });
+      if (catSel && window.PPCH_CONFIG && window.PPCH_CONFIG.forms) {
+        window.PPCH_CONFIG.forms.forEach(function (f) {
+          var opt = document.createElement('option');
+          opt.value = f.id;
+          opt.innerText = f.shortName || f.name;
+          catSel.appendChild(opt);
+        });
+      }
 
       // 4. Load Data
       loadData();
-
-      // 5. Hide Loader after smooth delay
-      setTimeout(hidePageLoader, 350);
     }
 
     function loadData() {
-      allEquipment = window.PPCH_STORE.getEquipment() || [];
-      allEvaluations = window.PPCH_STORE.getEvaluations() || [];
+      if (window.PPCH_STORE) {
+        allEquipment = (window.PPCH_STORE.getEquipment ? window.PPCH_STORE.getEquipment() : []) || [];
+        allEvaluations = (window.PPCH_STORE.getEvaluations ? window.PPCH_STORE.getEvaluations() : []) || [];
+      } else {
+        allEquipment = [];
+        allEvaluations = [];
+      }
 
       // Populate relocation device dropdown
       var devSel = document.getElementById('relocateDeviceSelect');
-      devSel.innerHTML = '<option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>';
-      allEquipment.forEach(function (eq) {
-        var opt = document.createElement('option');
-        opt.value = eq.id;
-        opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + window.PPCH_STORE.getDepartmentName(eq.currentDept) + ']';
-        devSel.appendChild(opt);
-      });
+      if (devSel) {
+        devSel.innerHTML = '<option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>';
+        allEquipment.forEach(function (eq) {
+          var opt = document.createElement('option');
+          opt.value = eq.id;
+          var deptName = window.PPCH_STORE ? window.PPCH_STORE.getDepartmentName(eq.currentDept) : eq.currentDept;
+          opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + deptName + ']';
+          devSel.appendChild(opt);
+        });
+      }
 
       applyFilters();
       renderTransfers();

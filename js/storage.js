@@ -236,11 +236,19 @@
     },
 
     getEquipment: function () {
-      return loadData().equipment;
+      return loadData().equipment || [];
+    },
+
+    getEvaluations: function () {
+      return loadData().evaluations || [];
+    },
+
+    getTransfers: function () {
+      return loadData().transfers || [];
     },
 
     getEquipmentById: function (id) {
-      var list = loadData().equipment;
+      var list = loadData().equipment || [];
       for (var i = 0; i < list.length; i++) {
         if (list[i].id === id || list[i].assetCode === id) {
           return list[i];
@@ -250,7 +258,7 @@
     },
 
     getDepartmentName: function (deptId) {
-      var depts = window.PPCH_CONFIG.departments;
+      var depts = window.PPCH_CONFIG.departments || [];
       for (var i = 0; i < depts.length; i++) {
         if (depts[i].id === deptId) return depts[i].name;
       }
@@ -258,11 +266,16 @@
     },
 
     getFormById: function (formId) {
-      var forms = window.PPCH_CONFIG.forms;
+      var forms = window.PPCH_CONFIG.forms || [];
       for (var i = 0; i < forms.length; i++) {
         if (forms[i].id === formId) return forms[i];
       }
       return null;
+    },
+
+    // Record an Evaluation (submitEvaluation alias)
+    recordEvaluation: function (evalPayload) {
+      return this.submitEvaluation(evalPayload);
     },
 
     // Record an Evaluation

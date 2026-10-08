@@ -610,19 +610,34 @@
     var isUpsRuntimeValid = false;
 
     document.addEventListener('DOMContentLoaded', function () {
-      initEvalPage();
+      try {
+        initEvalPage();
+      } catch (err) {
+        console.error('initEvalPage error:', err);
+      } finally {
+        setTimeout(hidePageLoader, 350);
+      }
     });
+
+    // Safety fallback: Ensure loader is always dismissed even if DOM events delay
+    window.addEventListener('load', function () {
+      setTimeout(hidePageLoader, 400);
+    });
+    setTimeout(hidePageLoader, 1500);
 
     function hidePageLoader() {
       var loader = document.getElementById('pageLoader');
-      if (loader) loader.classList.add('hidden');
+      if (loader && !loader.classList.contains('hidden')) {
+        loader.classList.add('hidden');
+      }
     }
 
     function initEvalPage() {
       // 1. Set current timestamp
       var now = new Date();
       var timeStr = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
-      document.getElementById('evalTimeDisplay').innerText = timeStr;
+      var timeEl = document.getElementById('evalTimeDisplay');
+      if (timeEl) timeEl.innerText = timeStr;
 
       // 2. Populate devices
       var urlParams = new URLSearchParams(window.location.search);
@@ -630,38 +645,39 @@
       var preselectedFormId = urlParams.get('formId');
 
       var select = document.getElementById('evalDeviceSelect');
-      var allEq = window.PPCH_STORE.getEquipment() || [];
+      var allEq = (window.PPCH_STORE && window.PPCH_STORE.getEquipment ? window.PPCH_STORE.getEquipment() : []) || [];
 
-      allEq.forEach(function (eq) {
-        var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
-        var opt = document.createElement('option');
-        opt.value = eq.id;
-        opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + deptName + ']';
-        if (preselectedDeviceId && (eq.id === preselectedDeviceId || eq.assetCode === preselectedDeviceId)) {
-          opt.selected = true;
-        }
-        select.appendChild(opt);
-      });
+      if (select) {
+        allEq.forEach(function (eq) {
+          var deptName = window.PPCH_STORE ? window.PPCH_STORE.getDepartmentName(eq.currentDept) : eq.currentDept;
+          var opt = document.createElement('option');
+          opt.value = eq.id;
+          opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + deptName + ']';
+          if (preselectedDeviceId && (eq.id === preselectedDeviceId || eq.assetCode === preselectedDeviceId)) {
+            opt.selected = true;
+          }
+          select.appendChild(opt);
+        });
+      }
 
       // 3. Check if today is 1st or 16th of the month
       var day = now.getDate();
       isUpsEnforced = (day === 1 || day === 16);
       if (urlParams.get('batteryCheck') === '1') {
         isUpsEnforced = true;
-        document.getElementById('chkSimulateCycle').checked = true;
+        var simChk = document.getElementById('chkSimulateCycle');
+        if (simChk) simChk.checked = true;
       }
 
       // If preselected, trigger selection
-      if (select.value) {
+      if (select && select.value) {
         onDeviceSelected();
-      } else if (allEq.length > 0) {
+      } else if (select && allEq.length > 0) {
         select.value = allEq[0].id;
         onDeviceSelected();
       }
 
       updateUpsMode();
-
-      setTimeout(hidePageLoader, 350);
     }
 
     function onDeviceSelected() {
