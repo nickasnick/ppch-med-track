@@ -1858,14 +1858,28 @@
       try {
         var res = window.PPCH_STORE.resolveDefect(deviceId, techName, actionTaken, formattedDt, testNote);
         if (window.PPCH_API && window.PPCH_API.postToGas) {
-          window.PPCH_API.postToGas({
-            action: 'resolveDefect',
-            deviceId: deviceId,
-            deviceAsset: res.equipment ? res.equipment.assetCode : '',
-            techName: techName,
-            actionTaken: actionTaken,
-            resolvedDt: formattedDt,
-            testNote: testNote
+          var eq = res.equipment;
+          var resolutionPayload = {
+            action: 'submitEvaluation',
+            id: 'FIX-' + Date.now(),
+            deviceId: eq.id,
+            deviceAsset: eq.assetCode,
+            deviceName: eq.name,
+            formId: eq.formId,
+            department: eq.currentDept,
+            evaluatedBy: techName + ' (ซ่อมเสร็จ: ' + actionTaken + ')',
+            evaluatedAt: formattedDt || new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' '),
+            result: 'normal',
+            abnormalNote: 'แก้ไขเรียบร้อย: ' + actionTaken + (testNote ? ' | ' + testNote : '')
+          };
+          window.PPCH_API.postToGas(resolutionPayload, function () {
+            // Re-fetch overview in background to ensure all clients have fresh sheet status
+            window.PPCH_API.fetchOverview(function (res2) {
+              if (res2 && res2.success && res2.data) {
+                window.PPCH_STORE.initFromCloud(res2.data);
+                loadData();
+              }
+            });
           });
         }
         closeResolveModal();
@@ -1936,8 +1950,24 @@
       // Filter machines
       var filtered = allEquipment.filter(function (eq) {
         var ev = evalMapByDevice[eq.id] || evalMapByDevice[eq.assetCode];
+        var isUnderFix = (eq.status === 'in_progress' || eq.repairStatus === 'in_progress');
+        var isCurrentlyDefective = (eq.status === 'abnormal' || eq.repairStatus === 'reported');
         var status = 'pending';
-        if (ev) {
+
+        if (isUnderFix) {
+          status = 'abnormal';
+          checkedCount++;
+          abnormalCount++;
+        } else if (isCurrentlyDefective) {
+          status = 'abnormal';
+          checkedCount++;
+          abnormalCount++;
+        } else if (eq.status === 'ready' && (ev || (eq.lastEvaluatedAt && eq.lastEvaluatedAt.indexOf(dateVal) === 0))) {
+          // Device has been tested or repaired ready today
+          status = 'ready';
+          checkedCount++;
+          readyCount++;
+        } else if (ev) {
           status = (ev.result === 'normal') ? 'ready' : 'abnormal';
           checkedCount++;
           if (status === 'ready') readyCount++;
@@ -2020,6 +2050,16 @@
         } else if (isDefective) {
           statusBadge = '<span class="badge-status badge-status-abnormal" title="' + (eq.abnormalReason || (ev && ev.abnormalNote) || '') + '"><span class="material-icons-round" style="font-size: 14px;">error</span> ข้อบกพร่อง</span>';
           actions = '<button onclick="switchView(\'defective\')" class="btn-action-slip" title="พบข้อบกพร่อง คลิกเพื่อรับทราบงานซ่อม" style="color: var(--red-abnormal); border-color: var(--red-border);"><span class="material-icons-round" style="font-size: 13px;">build_circle</span><span>จัดการซ่อม</span></button>';
+          if (ev) {
+            actions += ' <button onclick="openSlipModal(\'' + ev.id + '\')" class="btn-action-slip" title="ดูสลิปผล"><span class="material-icons-round" style="font-size: 13px;">receipt_long</span><span>สลิป</span></button>';
+          }
+        } else if (eq.status === 'ready' && evaluatedToday) {
+          var wasRepaired = (ev && ev.result === 'abnormal') || (ev && ev.isRepairResolution) || (eq.repairReportedAt && eq.repairReportedAt.indexOf(filterDateVal) === 0);
+          if (wasRepaired) {
+            statusBadge = '<span class="badge-status badge-status-ready" style="color: #047857; background: #ecfdf5; border-color: #a7f3d0;"><span class="material-icons-round" style="font-size: 14px;">task_alt</span> พร้อมใช้ (ซ่อมเสร็จ)</span>';
+          } else {
+            statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 14px;">check_circle</span> พร้อมใช้</span>';
+          }
           if (ev) {
             actions += ' <button onclick="openSlipModal(\'' + ev.id + '\')" class="btn-action-slip" title="ดูสลิปผล"><span class="material-icons-round" style="font-size: 13px;">receipt_long</span><span>สลิป</span></button>';
           }

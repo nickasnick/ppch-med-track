@@ -856,7 +856,7 @@
           return (b.evaluatedAt || '').localeCompare(a.evaluatedAt || '');
         });
         var latestEv = evalsOnDate[0];
-        var isNormal = latestEv.result === 'normal';
+        var isNormal = (currentDevice.status === 'ready' || latestEv.result === 'normal');
         var timeOnly = (latestEv.evaluatedAt || '').slice(11, 16);
 
         var titleEl = document.getElementById('reCheckTitle');
@@ -867,13 +867,24 @@
           titleEl.innerText = 'เครื่องนี้มีการตรวจเช็คในวันที่ ' + selectedDateStr + ' แล้ว (' + evalsOnDate.length + ' ครั้ง)';
         }
         if (badgeEl) {
-          badgeEl.innerText = isNormal ? 'รอบล่าสุด (' + timeOnly + ' น.): พร้อมใช้งาน' : 'รอบล่าสุด (' + timeOnly + ' น.): พบข้อบกพร่อง';
-          badgeEl.style.background = isNormal ? '#ecfdf5' : '#fef2f2';
-          badgeEl.style.color = isNormal ? '#059669' : '#dc2626';
-          badgeEl.style.borderColor = isNormal ? '#a7f3d0' : '#fecaca';
+          if (currentDevice.status === 'ready' && latestEv.result === 'abnormal') {
+            badgeEl.innerText = 'รอบล่าสุด: แก้ไขเสร็จสิ้น & พร้อมใช้งานแล้ว';
+            badgeEl.style.background = '#ecfdf5';
+            badgeEl.style.color = '#059669';
+            badgeEl.style.borderColor = '#a7f3d0';
+          } else {
+            badgeEl.innerText = isNormal ? 'รอบล่าสุด (' + timeOnly + ' น.): พร้อมใช้งาน' : 'รอบล่าสุด (' + timeOnly + ' น.): พบข้อบกพร่อง';
+            badgeEl.style.background = isNormal ? '#ecfdf5' : '#fef2f2';
+            badgeEl.style.color = isNormal ? '#059669' : '#dc2626';
+            badgeEl.style.borderColor = isNormal ? '#a7f3d0' : '#fecaca';
+          }
         }
         if (descEl) {
-          descEl.innerText = 'ผู้ตรวจล่าสุด: ' + (latestEv.evaluatedBy || 'ไม่ระบุ') + ' (เวลา ' + timeOnly + ' น.)' + (latestEv.abnormalNote ? ' | ปัญหา: ' + latestEv.abnormalNote : '');
+          if (currentDevice.status === 'ready' && latestEv.result === 'abnormal') {
+            descEl.innerText = 'เจ้าหน้าที่ได้ทำการแก้ไขเสร็จสิ้นและปลดล็อกเครื่องแล้ว สามารถตรวจเช็คความพร้อมใช้ได้ตามปกติ';
+          } else {
+            descEl.innerText = 'ผู้ตรวจล่าสุด: ' + (latestEv.evaluatedBy || 'ไม่ระบุ') + ' (เวลา ' + timeOnly + ' น.)' + (latestEv.abnormalNote ? ' | ปัญหา: ' + latestEv.abnormalNote : '');
+          }
         }
 
         banner.style.display = 'block';
@@ -901,8 +912,11 @@
       document.getElementById('badgeCategoryPill').innerText = currentForm.category;
       document.getElementById('evalDeptDisplay').innerText = window.PPCH_STORE.getDepartmentName(currentDevice.currentDept);
 
-      // Check repair lock status
+      // Check repair lock status: ONLY lock if device is actually currently defective or in repair
       var underRepair = (currentDevice.status === 'abnormal' || currentDevice.status === 'in_progress' || currentDevice.repairStatus === 'reported' || currentDevice.repairStatus === 'in_progress');
+      if (currentDevice.status === 'ready') {
+        underRepair = false;
+      }
       applyRepairLock(underRepair);
 
       checkExistingEvaluationOnDate();

@@ -36,23 +36,39 @@
       }
       if (Array.isArray(cloudData.evaluations)) {
         inMemoryData.evaluations = cloudData.evaluations;
+
+        // Group latest evaluation per device
+        var latestEvalMap = {};
         cloudData.evaluations.forEach(function (ev) {
-          if (!ev) return;
-          for (var i = 0; i < inMemoryData.equipment.length; i++) {
-            var item = inMemoryData.equipment[i];
-            if ((ev.deviceId && item.id === ev.deviceId) || (ev.deviceAsset && item.assetCode === ev.deviceAsset)) {
-              if (ev.result === 'abnormal') {
-                item.status = 'abnormal';
-                item.abnormalReason = ev.abnormalNote || item.abnormalReason || 'พบข้อบกพร่องจากการตรวจเช็ค';
-                item.repairStatus = item.repairStatus || 'reported';
-                item.repairReportedAt = item.repairReportedAt || ev.evaluatedAt;
-                item.repairReportedBy = item.repairReportedBy || ev.evaluatedBy;
-              }
-              if (!item.lastEvaluatedAt || ev.evaluatedAt > item.lastEvaluatedAt) {
-                item.lastEvaluatedAt = ev.evaluatedAt;
-                item.lastEvaluatedBy = ev.evaluatedBy;
-              }
-              break;
+          if (!ev || !ev.evaluatedAt) return;
+          var k1 = ev.deviceId;
+          var k2 = ev.deviceAsset;
+          if (k1 && (!latestEvalMap[k1] || ev.evaluatedAt > latestEvalMap[k1].evaluatedAt)) {
+            latestEvalMap[k1] = ev;
+          }
+          if (k2 && (!latestEvalMap[k2] || ev.evaluatedAt > latestEvalMap[k2].evaluatedAt)) {
+            latestEvalMap[k2] = ev;
+          }
+        });
+
+        // Update equipment status based on backend equipment status AND latest evaluation
+        inMemoryData.equipment.forEach(function (item) {
+          var latestEv = latestEvalMap[item.id] || latestEvalMap[item.assetCode];
+          if (latestEv) {
+            if (!item.lastEvaluatedAt || latestEv.evaluatedAt >= item.lastEvaluatedAt) {
+              item.lastEvaluatedAt = latestEv.evaluatedAt;
+              item.lastEvaluatedBy = latestEv.evaluatedBy;
+            }
+            if (item.status === 'ready' || latestEv.result === 'normal') {
+              item.status = 'ready';
+              item.repairStatus = 'ready';
+              item.abnormalReason = '';
+            } else if (latestEv.result === 'abnormal') {
+              item.status = 'abnormal';
+              item.repairStatus = item.repairStatus || 'reported';
+              item.abnormalReason = latestEv.abnormalNote || item.abnormalReason || 'พบข้อบกพร่องจากการตรวจเช็ค';
+              item.repairReportedAt = item.repairReportedAt || latestEv.evaluatedAt;
+              item.repairReportedBy = item.repairReportedBy || latestEv.evaluatedBy;
             }
           }
         });
@@ -72,28 +88,41 @@
     syncCloudEvaluations: function (cloudEvals) {
       if (!Array.isArray(cloudEvals)) return inMemoryData.evaluations;
       inMemoryData.evaluations = cloudEvals;
+
+      var latestEvalMap = {};
       cloudEvals.forEach(function (ev) {
-        if (!ev) return;
-        for (var i = 0; i < inMemoryData.equipment.length; i++) {
-          var eq = inMemoryData.equipment[i];
-          if ((ev.deviceId && eq.id === ev.deviceId) || (ev.deviceAsset && eq.assetCode === ev.deviceAsset)) {
-            if (ev.result === 'abnormal') {
-              eq.status = 'abnormal';
-              eq.abnormalReason = ev.abnormalNote || 'พบข้อบกพร่องจากการตรวจเช็ค';
-              eq.repairStatus = 'reported';
-              eq.repairReportedAt = ev.evaluatedAt;
-              eq.repairReportedBy = ev.evaluatedBy;
-            } else if (eq.status !== 'in_progress' && eq.status !== 'abnormal') {
-              eq.status = 'ready';
-            }
-            if (!eq.lastEvaluatedAt || ev.evaluatedAt > eq.lastEvaluatedAt) {
-              eq.lastEvaluatedAt = ev.evaluatedAt;
-              eq.lastEvaluatedBy = ev.evaluatedBy;
-            }
-            break;
+        if (!ev || !ev.evaluatedAt) return;
+        var k1 = ev.deviceId;
+        var k2 = ev.deviceAsset;
+        if (k1 && (!latestEvalMap[k1] || ev.evaluatedAt > latestEvalMap[k1].evaluatedAt)) {
+          latestEvalMap[k1] = ev;
+        }
+        if (k2 && (!latestEvalMap[k2] || ev.evaluatedAt > latestEvalMap[k2].evaluatedAt)) {
+          latestEvalMap[k2] = ev;
+        }
+      });
+
+      inMemoryData.equipment.forEach(function (eq) {
+        var latestEv = latestEvalMap[eq.id] || latestEvalMap[eq.assetCode];
+        if (latestEv) {
+          if (!eq.lastEvaluatedAt || latestEv.evaluatedAt >= eq.lastEvaluatedAt) {
+            eq.lastEvaluatedAt = latestEv.evaluatedAt;
+            eq.lastEvaluatedBy = latestEv.evaluatedBy;
+          }
+          if (eq.status === 'ready' || latestEv.result === 'normal') {
+            eq.status = 'ready';
+            eq.repairStatus = 'ready';
+            eq.abnormalReason = '';
+          } else if (latestEv.result === 'abnormal') {
+            eq.status = 'abnormal';
+            eq.repairStatus = eq.repairStatus || 'reported';
+            eq.abnormalReason = latestEv.abnormalNote || eq.abnormalReason || 'พบข้อบกพร่องจากการตรวจเช็ค';
+            eq.repairReportedAt = eq.repairReportedAt || latestEv.evaluatedAt;
+            eq.repairReportedBy = eq.repairReportedBy || latestEv.evaluatedBy;
           }
         }
       });
+
       notifyUpdated();
       return inMemoryData.evaluations;
     },
@@ -287,10 +316,29 @@
       eq.status = 'ready';
       eq.repairStatus = 'ready';
       eq.abnormalReason = '';
+      eq.lastEvaluatedAt = nowStr;
+      eq.lastEvaluatedBy = techName;
+      eq.lastEvaluatedStatus = 'normal';
 
+      var resEval = {
+        id: 'EV-' + Date.now(),
+        deviceId: eq.id,
+        deviceAsset: eq.assetCode,
+        deviceName: eq.name,
+        formId: eq.formId,
+        department: eq.currentDept,
+        evaluatedBy: techName + ' (ซ่อมเสร็จ: ' + actionTaken + ')',
+        evaluatedAt: nowStr,
+        result: 'normal',
+        abnormalNote: 'แก้ไขเรียบร้อย: ' + actionTaken + (testNote ? ' | ' + testNote : ''),
+        checklist: {},
+        isRepairResolution: true
+      };
+
+      inMemoryData.evaluations.unshift(resEval);
       inMemoryData.repairs.unshift(defectLog);
       notifyUpdated();
-      return { success: true, equipment: eq, repairRecord: defectLog };
+      return { success: true, equipment: eq, repairRecord: defectLog, resolutionEval: resEval };
     },
 
     getDefectiveEquipment: function () {
