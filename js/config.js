@@ -8,6 +8,8 @@ window.PPCH_CONFIG = {
   hospitalName: 'โรงพยาบาลพิษณุเวช (Phitsanuvej Hospital)',
   storageKey: 'ppch_med_track_v1',
   adminPin: 'ppch1234',
+  supabaseUrl: 'https://jauxlzjmhtnncrwrloyr.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphdXhsemptaHRubmNyd3Jsb3lyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NDUxMDksImV4cCI6MjEwNzAyMTEwOX0.IFKN8_nv0U_UKNgeP4A-gcZ3u_EjDQhhvcyyW9P-Yw0',
   defaultGasUrl: 'https://script.google.com/macros/s/AKfycbz8oIgnJWUcji2DaPI8CSBrPd22BFjL9A9Ui9mhamLCkRV7FVYGNWBKYJvZbjq31KE36g/exec',
   todayDate: '2026-09-30', // Contextual date
   

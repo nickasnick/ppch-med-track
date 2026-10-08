@@ -1511,6 +1511,7 @@
   </div>
 
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/api.js"></script>
@@ -1582,7 +1583,7 @@
         });
       }
 
-      // 4. Fetch live data directly from Google Sheets (Single source of truth)
+      // 4. Fetch live data directly from Supabase Cloud (Single source of truth)
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
         window.PPCH_API.fetchOverview(function (res) {
           if (res && res.success && res.data) {
@@ -1591,6 +1592,18 @@
           loadData();
           hidePageLoader();
         });
+
+        // 5. Initialize Supabase Real-time Subscription for instant live updates across all devices
+        if (window.PPCH_API.initRealtime) {
+          window.PPCH_API.initRealtime(function () {
+            window.PPCH_API.fetchOverview(function (res2) {
+              if (res2 && res2.success && res2.data) {
+                window.PPCH_STORE.initFromCloud(res2.data);
+                loadData();
+              }
+            });
+          });
+        }
       } else {
         loadData();
         hidePageLoader();
@@ -1794,13 +1807,8 @@
       var eq = window.PPCH_STORE.getEquipmentById(deviceId);
       try {
         window.PPCH_STORE.acknowledgeDefect(deviceId, officerName);
-        if (window.PPCH_API && window.PPCH_API.postToGas) {
-          window.PPCH_API.postToGas({
-            action: 'acknowledgeDefect',
-            deviceId: deviceId,
-            deviceAsset: eq ? eq.assetCode : '',
-            officerName: officerName
-          });
+        if (window.PPCH_API && window.PPCH_API.acknowledgeDefect) {
+          window.PPCH_API.acknowledgeDefect(deviceId, officerName, function () {});
         }
         closeAcknowledgeModal();
         showToast('รับทราบรายการ ' + (eq ? eq.assetCode : deviceId) + ' เรียบร้อย! เปลี่ยนสถานะเป็น "กำลังดำเนินการแก้ไข"');
@@ -1857,29 +1865,16 @@
 
       try {
         var res = window.PPCH_STORE.resolveDefect(deviceId, techName, actionTaken, formattedDt, testNote);
-        if (window.PPCH_API && window.PPCH_API.postToGas) {
-          var eq = res.equipment;
-          var resolutionPayload = {
-            action: 'submitEvaluation',
-            id: 'FIX-' + Date.now(),
-            deviceId: eq.id,
-            deviceAsset: eq.assetCode,
-            deviceName: eq.name,
-            formId: eq.formId,
-            department: eq.currentDept,
-            evaluatedBy: techName + ' (ซ่อมเสร็จ: ' + actionTaken + ')',
-            evaluatedAt: formattedDt || new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 16).replace('T', ' '),
-            result: 'normal',
-            abnormalNote: 'แก้ไขเรียบร้อย: ' + actionTaken + (testNote ? ' | ' + testNote : '')
-          };
-          window.PPCH_API.postToGas(resolutionPayload, function () {
-            // Re-fetch overview in background to ensure all clients have fresh sheet status
-            window.PPCH_API.fetchOverview(function (res2) {
-              if (res2 && res2.success && res2.data) {
-                window.PPCH_STORE.initFromCloud(res2.data);
-                loadData();
-              }
-            });
+        if (window.PPCH_API && window.PPCH_API.resolveDefect) {
+          window.PPCH_API.resolveDefect(deviceId, techName, actionTaken, formattedDt, testNote, function (apiRes) {
+            if (apiRes && apiRes.success) {
+              window.PPCH_API.fetchOverview(function (res2) {
+                if (res2 && res2.success && res2.data) {
+                  window.PPCH_STORE.initFromCloud(res2.data);
+                  loadData();
+                }
+              });
+            }
           });
         }
         closeResolveModal();
@@ -2343,7 +2338,7 @@
     function syncWithGas(silent) {
       var btn = document.getElementById('btnSync');
       if (btn) btn.disabled = true;
-      if (!silent) showToast('กำลังซิงค์ข้อมูลสดกับ Google Sheets...');
+      if (!silent) showToast('กำลังซิงค์ข้อมูลสดกับ Supabase Cloud...');
 
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
         window.PPCH_API.fetchOverview(function (res) {
@@ -2352,11 +2347,11 @@
             window.PPCH_STORE.initFromCloud(res.data);
             if (!silent) {
               var count = res.data.evaluations ? res.data.evaluations.length : 0;
-              showToast('ซิงค์ข้อมูลตรงกับฐานข้อมูล Google Sheets สำเร็จ (' + count + ' รายการ)');
+              showToast('ซิงค์ข้อมูลตรงกับฐานข้อมูล Supabase Cloud สำเร็จ (' + count + ' รายการ)');
             }
             loadData();
           } else {
-            if (!silent) showToast('เกิดข้อผิดพลาดในการเชื่อมต่อ Google Sheets');
+            if (!silent) showToast('เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล');
           }
         });
       } else {

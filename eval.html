@@ -714,6 +714,7 @@
   </div>
 
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/api.js"></script>
@@ -801,7 +802,7 @@
         updateUpsMode();
       }
 
-      // 2. Fetch live data directly from Google Sheets
+      // 2. Fetch live data directly from Supabase Cloud
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
         window.PPCH_API.fetchOverview(function (res) {
           if (res && res.success && res.data) {
@@ -810,6 +811,17 @@
           setupDropdownAndDevice();
           hidePageLoader();
         });
+
+        if (window.PPCH_API.initRealtime) {
+          window.PPCH_API.initRealtime(function () {
+            window.PPCH_API.fetchOverview(function (res2) {
+              if (res2 && res2.success && res2.data) {
+                window.PPCH_STORE.initFromCloud(res2.data);
+                setupDropdownAndDevice();
+              }
+            });
+          });
+        }
       } else {
         setupDropdownAndDevice();
         hidePageLoader();
@@ -1241,7 +1253,7 @@
       var btnSubmit = document.getElementById('btnSubmitEval');
       if (btnSubmit) {
         btnSubmit.disabled = true;
-        btnSubmit.innerHTML = '<span class="material-icons-round">sync</span><span>กำลังบันทึกลง Google Sheets...</span>';
+        btnSubmit.innerHTML = '<span class="material-icons-round">sync</span><span>กำลังบันทึกข้อมูล...</span>';
       }
 
       function onSavedSuccess() {
@@ -1250,7 +1262,7 @@
           btnSubmit.innerHTML = '<span class="material-icons-round">check_circle</span><span>บันทึกผลการตรวจเช็ค</span>';
         }
         window.PPCH_STORE.recordEvaluation(record);
-        document.getElementById('successModalSub').innerText = 'บันทึก ' + currentDevice.name + ' (' + currentDevice.assetCode + ') ลงฐานข้อมูล Google Sheets สำเร็จ!\nสถานะ: ' + (record.result === 'normal' ? 'พร้อมใช้งาน' : 'พบข้อบกพร่อง (ส่งแจ้งซ่อม)');
+        document.getElementById('successModalSub').innerText = 'บันทึก ' + currentDevice.name + ' (' + currentDevice.assetCode + ') ลงฐานข้อมูล Supabase สำเร็จ!\n(ระบบกำลังซิงค์สำรองข้อมูลลง Google Sheets ในเบื้องหลัง)\nสถานะ: ' + (record.result === 'normal' ? 'พร้อมใช้งาน' : 'พบข้อบกพร่อง (ส่งแจ้งซ่อม)');
         document.getElementById('successModal').classList.remove('hidden');
       }
 
