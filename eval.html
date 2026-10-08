@@ -733,16 +733,12 @@
         initEvalPage();
       } catch (err) {
         console.error('initEvalPage error:', err);
-      } finally {
-        setTimeout(hidePageLoader, 350);
+        hidePageLoader();
       }
     });
 
-    // Safety fallback: Ensure loader is always dismissed even if DOM events delay
-    window.addEventListener('load', function () {
-      setTimeout(hidePageLoader, 400);
-    });
-    setTimeout(hidePageLoader, 1500);
+    // Safety fallback: Ensure loader is always dismissed even if offline
+    setTimeout(hidePageLoader, 6000);
 
     function hidePageLoader() {
       var loader = document.getElementById('pageLoader');
@@ -764,61 +760,59 @@
         dtInput.value = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
       }
 
-      // 2. Populate devices
       var urlParams = new URLSearchParams(window.location.search);
       var preselectedDeviceId = urlParams.get('deviceId');
       var preselectedFormId = urlParams.get('formId');
 
-      var select = document.getElementById('evalDeviceSelect');
-      var allEq = (window.PPCH_STORE && window.PPCH_STORE.getEquipment ? window.PPCH_STORE.getEquipment() : []) || [];
-
-      if (select) {
-        select.innerHTML = '<option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>';
-        allEq.forEach(function (eq) {
-          var deptName = window.PPCH_STORE ? window.PPCH_STORE.getDepartmentName(eq.currentDept) : eq.currentDept;
-          var opt = document.createElement('option');
-          opt.value = eq.id;
-          var statusTag = '';
-          if (eq.status === 'abnormal' || eq.status === 'in_progress') {
-            statusTag = eq.status === 'in_progress' ? ' [🔧 กำลังซ่อม]' : ' [⛔ มีข้อบกพร่อง]';
-          }
-          opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + deptName + ']' + statusTag;
-          if (preselectedDeviceId && (eq.id === preselectedDeviceId || eq.assetCode === preselectedDeviceId)) {
-            opt.selected = true;
-          }
-          select.appendChild(opt);
-        });
-      }
-
-      // 3. Check if today is 1st or 16th of the month
       isRealUpsDay = (now.getDate() === 1 || now.getDate() === 16);
       if (urlParams.get('batteryCheck') === '1') {
         isSimulateActive = true;
       }
 
-      // If preselected, trigger selection
-      if (select && select.value) {
-        onDeviceSelected();
-      } else if (select && allEq.length > 0) {
-        select.value = allEq[0].id;
-        onDeviceSelected();
+      function setupDropdownAndDevice() {
+        var select = document.getElementById('evalDeviceSelect');
+        var allEq = (window.PPCH_STORE && window.PPCH_STORE.getEquipment ? window.PPCH_STORE.getEquipment() : []) || [];
+
+        if (select) {
+          select.innerHTML = '<option value="">-- กรุณาเลือกเครื่องมือแพทย์ --</option>';
+          allEq.forEach(function (eq) {
+            var deptName = window.PPCH_STORE ? window.PPCH_STORE.getDepartmentName(eq.currentDept) : eq.currentDept;
+            var opt = document.createElement('option');
+            opt.value = eq.id;
+            var statusTag = '';
+            if (eq.status === 'abnormal' || eq.status === 'in_progress') {
+              statusTag = eq.status === 'in_progress' ? ' [🔧 กำลังซ่อม]' : ' [⛔ มีข้อบกพร่อง]';
+            }
+            opt.innerText = eq.assetCode + ' - ' + eq.name + ' [' + deptName + ']' + statusTag;
+            if (preselectedDeviceId && (eq.id === preselectedDeviceId || eq.assetCode === preselectedDeviceId)) {
+              opt.selected = true;
+            }
+            select.appendChild(opt);
+          });
+        }
+
+        if (select && select.value) {
+          onDeviceSelected();
+        } else if (select && allEq.length > 0) {
+          select.value = allEq[0].id;
+          onDeviceSelected();
+        }
+
+        updateUpsMode();
       }
 
-      updateUpsMode();
-
-      // 4. Background sync with Google Sheets to keep evaluations up to date
-      if (window.PPCH_API && window.PPCH_API.isConfigured() && window.PPCH_STORE && window.PPCH_STORE.syncCloudEvaluations) {
-        window.PPCH_API.fetchEvaluations(function (res) {
-          if (res && res.success && Array.isArray(res.data)) {
-            window.PPCH_STORE.syncCloudEvaluations(res.data);
-            if (currentDevice) {
-              currentDevice = window.PPCH_STORE.getEquipmentById(currentDevice.id);
-              var underRepair = currentDevice && (currentDevice.status === 'abnormal' || currentDevice.status === 'in_progress');
-              applyRepairLock(underRepair);
-              checkExistingEvaluationOnDate();
-            }
+      // 2. Fetch live data directly from Google Sheets
+      if (window.PPCH_API && window.PPCH_API.isConfigured()) {
+        window.PPCH_API.fetchOverview(function (res) {
+          if (res && res.success && res.data) {
+            window.PPCH_STORE.initFromCloud(res.data);
           }
+          setupDropdownAndDevice();
+          hidePageLoader();
         });
+      } else {
+        setupDropdownAndDevice();
+        hidePageLoader();
       }
     }
 
@@ -1230,12 +1224,28 @@
         upsBattery: upsObj
       };
 
-      try {
+      var btnSubmit = document.getElementById('btnSubmitEval');
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<span class="material-icons-round">sync</span><span>กำลังบันทึกลง Google Sheets...</span>';
+      }
+
+      function onSavedSuccess() {
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.innerHTML = '<span class="material-icons-round">check_circle</span><span>บันทึกผลการตรวจเช็ค</span>';
+        }
         window.PPCH_STORE.recordEvaluation(record);
-        document.getElementById('successModalSub').innerText = 'บันทึก ' + currentDevice.name + ' (' + currentDevice.assetCode + ') สถานะ: ' + (record.result === 'normal' ? 'พร้อมใช้งาน' : 'พบข้อบกพร่อง (ส่งแจ้งซ่อม)');
+        document.getElementById('successModalSub').innerText = 'บันทึก ' + currentDevice.name + ' (' + currentDevice.assetCode + ') ลงฐานข้อมูล Google Sheets สำเร็จ!\nสถานะ: ' + (record.result === 'normal' ? 'พร้อมใช้งาน' : 'พบข้อบกพร่อง (ส่งแจ้งซ่อม)');
         document.getElementById('successModal').classList.remove('hidden');
-      } catch (err) {
-        alert('เกิดข้อผิดพลาดในการบันทึก: ' + err.message);
+      }
+
+      if (window.PPCH_API && window.PPCH_API.submitEvaluation) {
+        window.PPCH_API.submitEvaluation(record, function (res) {
+          onSavedSuccess();
+        });
+      } else {
+        onSavedSuccess();
       }
     }
 

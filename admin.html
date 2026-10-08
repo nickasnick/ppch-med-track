@@ -1528,19 +1528,15 @@
         initApp();
       } catch (err) {
         console.error('initApp error:', err);
-      } finally {
-        setTimeout(hidePageLoader, 350);
+        hidePageLoader();
       }
       window.addEventListener('ppch:data-updated', function () {
         loadData();
       });
     });
 
-    // Safety fallback: Ensure loader is always dismissed even if DOM events delay
-    window.addEventListener('load', function () {
-      setTimeout(hidePageLoader, 400);
-    });
-    setTimeout(hidePageLoader, 1500);
+    // Safety fallback: Ensure loader is always dismissed even if network times out
+    setTimeout(hidePageLoader, 6000);
 
     function hidePageLoader() {
       var loader = document.getElementById('pageLoader');
@@ -1586,12 +1582,18 @@
         });
       }
 
-      // 4. Load Data (Immediate render from local cache)
-      loadData();
-
-      // 5. Auto background sync with Google Sheets (Single source of truth)
+      // 4. Fetch live data directly from Google Sheets (Single source of truth)
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
-        syncWithGas(true);
+        window.PPCH_API.fetchOverview(function (res) {
+          if (res && res.success && res.data) {
+            window.PPCH_STORE.initFromCloud(res.data);
+          }
+          loadData();
+          hidePageLoader();
+        });
+      } else {
+        loadData();
+        hidePageLoader();
       }
     }
 
@@ -1792,6 +1794,14 @@
       var eq = window.PPCH_STORE.getEquipmentById(deviceId);
       try {
         window.PPCH_STORE.acknowledgeDefect(deviceId, officerName);
+        if (window.PPCH_API && window.PPCH_API.postToGas) {
+          window.PPCH_API.postToGas({
+            action: 'acknowledgeDefect',
+            deviceId: deviceId,
+            deviceAsset: eq ? eq.assetCode : '',
+            officerName: officerName
+          });
+        }
         closeAcknowledgeModal();
         showToast('รับทราบรายการ ' + (eq ? eq.assetCode : deviceId) + ' เรียบร้อย! เปลี่ยนสถานะเป็น "กำลังดำเนินการแก้ไข"');
         loadData();
@@ -1847,6 +1857,17 @@
 
       try {
         var res = window.PPCH_STORE.resolveDefect(deviceId, techName, actionTaken, formattedDt, testNote);
+        if (window.PPCH_API && window.PPCH_API.postToGas) {
+          window.PPCH_API.postToGas({
+            action: 'resolveDefect',
+            deviceId: deviceId,
+            deviceAsset: res.equipment ? res.equipment.assetCode : '',
+            techName: techName,
+            actionTaken: actionTaken,
+            resolvedDt: formattedDt,
+            testNote: testNote
+          });
+        }
         closeResolveModal();
         showToast('บันทึกการแก้ไข ' + res.equipment.assetCode + ' เสร็จสิ้น! ปลดล็อกเครื่องพร้อมใช้งานแล้ว');
         loadData();
@@ -1898,8 +1919,13 @@
       });
       var evalMapByDevice = {};
       evalsOnDate.forEach(function (ev) {
-        if (!evalMapByDevice[ev.deviceId] || ev.evaluatedAt > evalMapByDevice[ev.deviceId].evaluatedAt) {
-          evalMapByDevice[ev.deviceId] = ev;
+        var k1 = ev.deviceId;
+        var k2 = ev.deviceAsset;
+        if (k1 && (!evalMapByDevice[k1] || ev.evaluatedAt > evalMapByDevice[k1].evaluatedAt)) {
+          evalMapByDevice[k1] = ev;
+        }
+        if (k2 && (!evalMapByDevice[k2] || ev.evaluatedAt > evalMapByDevice[k2].evaluatedAt)) {
+          evalMapByDevice[k2] = ev;
         }
       });
 
@@ -1909,10 +1935,15 @@
 
       // Filter machines
       var filtered = allEquipment.filter(function (eq) {
-        var ev = evalMapByDevice[eq.id];
+        var ev = evalMapByDevice[eq.id] || evalMapByDevice[eq.assetCode];
         var status = 'pending';
         if (ev) {
           status = (ev.result === 'normal') ? 'ready' : 'abnormal';
+          checkedCount++;
+          if (status === 'ready') readyCount++;
+          if (status === 'abnormal') abnormalCount++;
+        } else if (eq.lastEvaluatedAt && eq.lastEvaluatedAt.indexOf(dateVal) === 0) {
+          status = (eq.status === 'abnormal' || eq.lastEvaluatedStatus === 'abnormal') ? 'abnormal' : 'ready';
           checkedCount++;
           if (status === 'ready') readyCount++;
           if (status === 'abnormal') abnormalCount++;
@@ -1942,7 +1973,7 @@
       document.getElementById('kpiChecked').innerText = checkedCount;
       document.getElementById('kpiReady').innerText = readyCount;
       document.getElementById('kpiAbnormal').innerText = abnormalCount;
-      document.getElementById('kpiPending').innerText = allEquipment.length - checkedCount;
+      document.getElementById('kpiPending').innerText = Math.max(0, allEquipment.length - checkedCount);
 
       document.getElementById('summaryCountBadge').innerText = filtered.length + ' เครื่อง';
 
@@ -1960,33 +1991,47 @@
 
       var html = '';
       equipmentList.forEach(function (eq) {
-        var ev = evalMap[eq.id];
+        var ev = evalMap[eq.id] || evalMap[eq.assetCode];
         var deptName = window.PPCH_STORE.getDepartmentName(eq.currentDept);
         var form = window.PPCH_STORE.getFormById(eq.formId);
 
         var isUnderFix = (eq.status === 'in_progress' || eq.repairStatus === 'in_progress');
         var isDefective = (eq.status === 'abnormal' || eq.repairStatus === 'reported');
 
-        var statusBadge = '<span class="badge-status badge-status-pending"><span class="material-icons-round" style="font-size: 14px;">schedule</span> รอตรวจวันนี้</span>';
+        var filterDateVal = document.getElementById('filterDate').value;
+        var evaluatedToday = (ev && ev.evaluatedAt) || (eq.lastEvaluatedAt && eq.lastEvaluatedAt.indexOf(filterDateVal) === 0);
         var evalTime = '-';
         var evaluator = '-';
+
+        if (ev && ev.evaluatedAt) {
+          evalTime = ev.evaluatedAt.slice(11, 16) + ' น.';
+          evaluator = ev.evaluatedBy || 'ไม่ระบุ';
+        } else if (eq.lastEvaluatedAt && eq.lastEvaluatedAt.indexOf(filterDateVal) === 0) {
+          evalTime = eq.lastEvaluatedAt.slice(11, 16) + ' น.';
+          evaluator = eq.lastEvaluatedBy || 'ไม่ระบุ';
+        }
+
+        var statusBadge = '<span class="badge-status badge-status-pending"><span class="material-icons-round" style="font-size: 14px;">schedule</span> รอตรวจวันนี้</span>';
         var actions = '<a href="eval.html?formId=' + eq.formId + '&deviceId=' + eq.id + '" class="btn-action-eval" title="เปิดหน้าตรวจเช็ค"><span class="material-icons-round" style="font-size: 13px;">assignment</span><span>ตรวจ</span></a>';
 
         if (isUnderFix) {
           statusBadge = '<span class="badge-status" style="color: var(--amber-pending);"><span class="material-icons-round" style="font-size: 14px;">build</span> กำลังซ่อมบำรุง</span>';
           actions = '<button onclick="switchView(\'defective\')" class="btn-action-slip" title="เครื่องอยู่ระหว่างซ่อมบำรุง คลิกเพื่อดู/บันทึกการแก้ไข" style="color: var(--amber-pending); border-color: var(--amber-border);"><span class="material-icons-round" style="font-size: 13px;">build</span><span>งานซ่อม</span></button>';
         } else if (isDefective) {
-          statusBadge = '<span class="badge-status badge-status-abnormal" title="' + (eq.abnormalReason || '') + '"><span class="material-icons-round" style="font-size: 14px;">error</span> ข้อบกพร่อง</span>';
+          statusBadge = '<span class="badge-status badge-status-abnormal" title="' + (eq.abnormalReason || (ev && ev.abnormalNote) || '') + '"><span class="material-icons-round" style="font-size: 14px;">error</span> ข้อบกพร่อง</span>';
           actions = '<button onclick="switchView(\'defective\')" class="btn-action-slip" title="พบข้อบกพร่อง คลิกเพื่อรับทราบงานซ่อม" style="color: var(--red-abnormal); border-color: var(--red-border);"><span class="material-icons-round" style="font-size: 13px;">build_circle</span><span>จัดการซ่อม</span></button>';
+          if (ev) {
+            actions += ' <button onclick="openSlipModal(\'' + ev.id + '\')" class="btn-action-slip" title="ดูสลิปผล"><span class="material-icons-round" style="font-size: 13px;">receipt_long</span><span>สลิป</span></button>';
+          }
         } else if (ev) {
           if (ev.result === 'normal') {
             statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 14px;">check_circle</span> พร้อมใช้</span>';
           } else {
             statusBadge = '<span class="badge-status badge-status-abnormal" title="' + (ev.abnormalNote || '') + '"><span class="material-icons-round" style="font-size: 14px;">error</span> ข้อบกพร่อง</span>';
           }
-          evalTime = (ev.evaluatedAt || '').slice(11, 16) + ' น.';
-          evaluator = ev.evaluatedBy || 'ไม่ระบุ';
           actions += ' <button onclick="openSlipModal(\'' + ev.id + '\')" class="btn-action-slip" title="ดูสลิปผล"><span class="material-icons-round" style="font-size: 13px;">receipt_long</span><span>สลิป</span></button>';
+        } else if (evaluatedToday) {
+          statusBadge = '<span class="badge-status badge-status-ready"><span class="material-icons-round" style="font-size: 14px;">check_circle</span> พร้อมใช้</span>';
         }
 
         html += '<tr>' +
@@ -2032,6 +2077,9 @@
 
       try {
         var res = window.PPCH_STORE.transferEquipment(devId, targetDept, actor, reason);
+        if (window.PPCH_API && window.PPCH_API.transferEquipment) {
+          window.PPCH_API.transferEquipment(res.transfer, function () {});
+        }
         showToast('มอบหมายแผนกและย้ายพิกัดเครื่องสำเร็จ!');
         document.getElementById('relocateReason').value = '';
         loadData();
@@ -2255,28 +2303,26 @@
     function syncWithGas(silent) {
       var btn = document.getElementById('btnSync');
       if (btn) btn.disabled = true;
-      if (!silent) showToast('กำลังซิงค์ข้อมูลกับ Google Sheets...');
+      if (!silent) showToast('กำลังซิงค์ข้อมูลสดกับ Google Sheets...');
 
       if (window.PPCH_API && window.PPCH_API.isConfigured()) {
-        window.PPCH_API.fetchEvaluations(function (res) {
+        window.PPCH_API.fetchOverview(function (res) {
           if (btn) btn.disabled = false;
-          if (res && res.success && Array.isArray(res.data)) {
-            // Synchronize cloud evaluations directly into PPCH_STORE
-            if (window.PPCH_STORE && window.PPCH_STORE.syncCloudEvaluations) {
-              window.PPCH_STORE.syncCloudEvaluations(res.data);
-            }
+          if (res && res.success && res.data) {
+            window.PPCH_STORE.initFromCloud(res.data);
             if (!silent) {
-              showToast('ซิงค์ข้อมูลตรงกับ Google Sheets เรียบร้อย (' + res.data.length + ' รายการ)');
+              var count = res.data.evaluations ? res.data.evaluations.length : 0;
+              showToast('ซิงค์ข้อมูลตรงกับฐานข้อมูล Google Sheets สำเร็จ (' + count + ' รายการ)');
             }
             loadData();
           } else {
-            if (!silent) showToast('เชื่อมต่อเสร็จสิ้น (ใช้ข้อมูลแคชท้องถิ่น)');
+            if (!silent) showToast('เกิดข้อผิดพลาดในการเชื่อมต่อ Google Sheets');
           }
         });
       } else {
         setTimeout(function () {
           if (btn) btn.disabled = false;
-          if (!silent) showToast('ระบบทำงานในโหมดออฟไลน์/แคชท้องถิ่น');
+          if (!silent) showToast('ระบบทำงานในโหมดออฟไลน์');
         }, 500);
       }
     }
