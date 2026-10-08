@@ -157,22 +157,30 @@
       border-radius: 4px;
     }
 
-    .btn-nav-back {
+    .btn-dev-sim {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 12.5px;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 11.5px;
       font-weight: 600;
-      color: var(--royal-blue);
-      background: var(--royal-subtle);
-      border: 1px solid var(--border-blue-soft);
-      text-decoration: none;
-      transition: all 0.15s;
+      color: #92400e;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
     }
-    .btn-nav-back:hover {
-      background: #dbeafe;
+    .btn-dev-sim:hover {
+      background: #fde68a;
+      color: #78350f;
+    }
+    .btn-dev-sim.active {
+      background: #d97706;
+      color: #ffffff;
+      border-color: #b45309;
+      box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
     }
 
     /* Main Container */
@@ -428,19 +436,19 @@
   <!-- Top Bar -->
   <header class="app-topbar">
     <div style="display: flex; align-items: center; gap: 12px;">
-      <a href="admin.html" class="topbar-brand">
+      <div class="topbar-brand">
         <img src="logo.png" alt="โรงพยาบาลพิษณุเวช" class="brand-logo-img">
         <div class="brand-divider"></div>
         <div class="brand-badge-pill">Med Track</div>
-      </a>
+      </div>
       <span style="font-size: 12.5px; color: var(--text-muted); margin-left: 6px;">ระบบเครื่องมือแพทย์ / กรอกแบบตรวจเช็ค</span>
     </div>
 
     <div>
-      <a href="admin.html" class="btn-nav-back">
-        <span class="material-icons-round" style="font-size: 16px;">arrow_back</span>
-        <span>กลับหน้า Admin</span>
-      </a>
+      <button type="button" id="btnDevSimUps" onclick="toggleSimulateUpsCycle()" class="btn-dev-sim" title="เปิด/ปิด การจำลองรอบบังคับตรวจ UPS วันที่ 1 & 16 สำหรับทดสอบ">
+        <span class="material-icons-round" style="font-size: 15px;">bolt</span>
+        <span id="btnDevSimUpsText">จำลองรอบ UPS (Dev)</span>
+      </button>
     </div>
   </header>
 
@@ -477,17 +485,16 @@
       </div>
     </section>
 
-    <!-- Card 2: UPS Battery Check (Mandatory on 1st & 16th of Month) -->
-    <section class="eval-card" id="cardUpsBattery">
+    <!-- Card 2: UPS Battery Check (Shown ONLY on 1st & 16th of Month or when Dev Simulation is ON) -->
+    <section class="eval-card" id="cardUpsBattery" style="display: none;">
       <div class="eval-card-header">
         <div class="eval-card-title">
           <span class="material-icons-round" style="color: #d97706; font-size: 18px;">battery_charging_full</span>
           <span>การตรวจสอบระยะเวลาใช้งานแบตเตอรี่ UPS (รอบวันที่ 1 & 16)</span>
         </div>
-        <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text-body); cursor: pointer;">
-          <input type="checkbox" id="chkSimulateCycle" onchange="toggleSimulateCycle()">
-          <span>จำลองรอบตรวจ (1 หรือ 16)</span>
-        </label>
+        <span style="font-size: 11px; font-weight: 700; color: #b45309; background: #fef3c7; border: 1px solid #fde68a; padding: 2px 8px; border-radius: 4px;">
+          รอบบังคับตรวจ
+        </span>
       </div>
 
       <div class="eval-card-body">
@@ -587,11 +594,11 @@
       </div>
 
       <div style="display: flex; gap: 8px; justify-content: center;">
-        <button type="button" onclick="window.location.href='admin.html'" class="btn-check-choice" style="background: var(--royal-blue); color: #ffffff; border-color: var(--royal-blue); padding: 8px 16px;">
-          กลับหน้า Admin
+        <button type="button" onclick="resetFormForNext()" class="btn-check-choice" style="background: var(--royal-blue); color: #ffffff; border-color: var(--royal-blue); padding: 8px 18px;">
+          <span class="material-icons-round" style="font-size: 16px; vertical-align: middle;">arrow_forward</span> ตรวจเครื่องอื่นต่อ
         </button>
-        <button type="button" onclick="resetFormForNext()" class="btn-check-choice" style="padding: 8px 16px;">
-          ตรวจเครื่องอื่นต่อ
+        <button type="button" onclick="closeSuccessModal()" class="btn-check-choice" style="padding: 8px 16px;">
+          ปิด
         </button>
       </div>
     </div>
@@ -606,6 +613,8 @@
     var currentDevice = null;
     var currentForm = null;
     var checklistState = {};
+    var isSimulateActive = false;
+    var isRealUpsDay = false;
     var isUpsEnforced = false;
     var isUpsRuntimeValid = false;
 
@@ -662,11 +671,9 @@
 
       // 3. Check if today is 1st or 16th of the month
       var day = now.getDate();
-      isUpsEnforced = (day === 1 || day === 16);
+      isRealUpsDay = (day === 1 || day === 16);
       if (urlParams.get('batteryCheck') === '1') {
-        isUpsEnforced = true;
-        var simChk = document.getElementById('chkSimulateCycle');
-        if (simChk) simChk.checked = true;
+        isSimulateActive = true;
       }
 
       // If preselected, trigger selection
@@ -697,28 +704,44 @@
       renderChecklist(currentForm.items || []);
     }
 
-    function toggleSimulateCycle() {
-      var chk = document.getElementById('chkSimulateCycle');
-      var day = new Date().getDate();
-      isUpsEnforced = chk.checked || (day === 1 || day === 16);
+    function toggleSimulateUpsCycle() {
+      if (isRealUpsDay) {
+        alert('วันนี้เป็นรอบตรวจจริง (วันที่ 1 หรือ 16 ของเดือน) ระบบเปิดการตรวจ UPS อัตโนมัติอยู่แล้วครับ');
+        return;
+      }
+      isSimulateActive = !isSimulateActive;
       updateUpsMode();
+
+      if (isSimulateActive) {
+        var card = document.getElementById('cardUpsBattery');
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
     }
 
     function updateUpsMode() {
-      var notice = document.getElementById('upsCycleNotice');
+      isUpsEnforced = isRealUpsDay || isSimulateActive;
+      var cardUps = document.getElementById('cardUpsBattery');
+      var btnDev = document.getElementById('btnDevSimUps');
+      var btnDevText = document.getElementById('btnDevSimUpsText');
       var lockOverlay = document.getElementById('checklistLockOverlay');
-      var feedback = document.getElementById('upsStatusFeedback');
 
       if (isUpsEnforced) {
-        notice.className = 'ups-banner-enforced';
-        document.getElementById('upsNoticeTitle').innerHTML = '⚡ รอบบังคับตรวจสอบแบตเตอรี่สำรอง UPS (ทุกวันที่ 1 และ 16 ของเดือน)';
+        if (cardUps) cardUps.style.display = 'block';
+        if (btnDev) btnDev.classList.add('active');
+        if (btnDevText) {
+          btnDevText.innerText = isRealUpsDay ? 'วันตรวจ UPS (1 & 16)' : 'จำลอง UPS: เปิดอยู่ (1 & 16)';
+        }
         validateUpsRuntime();
       } else {
-        notice.className = 'ups-banner-normal';
-        document.getElementById('upsNoticeTitle').innerHTML = 'รอบปกติ (ตรวจ UPS เฉพาะวันที่ 1 และ 16 ของเดือน)';
-        lockOverlay.style.display = 'none';
-        feedback.innerText = 'รอบปกติ ไม่จำเป็นต้องถอดปลั๊ก UPS (สามารถกรอกหรือไม่กรอกก็ได้)';
-        feedback.style.color = 'var(--text-muted)';
+        if (cardUps) cardUps.style.display = 'none';
+        if (btnDev) btnDev.classList.remove('active');
+        if (btnDevText) {
+          btnDevText.innerText = 'จำลองรอบ UPS (Dev)';
+        }
+        if (lockOverlay) lockOverlay.style.display = 'none';
+        isUpsRuntimeValid = true;
       }
     }
 
@@ -740,7 +763,8 @@
     function validateUpsRuntime() {
       if (!isUpsEnforced) {
         isUpsRuntimeValid = true;
-        document.getElementById('checklistLockOverlay').style.display = 'none';
+        var lockOverlay = document.getElementById('checklistLockOverlay');
+        if (lockOverlay) lockOverlay.style.display = 'none';
         return;
       }
 
@@ -755,7 +779,7 @@
         var totalMinutes = (h * 60) + m;
 
         isUpsRuntimeValid = true;
-        lockOverlay.style.display = 'none';
+        if (lockOverlay) lockOverlay.style.display = 'none';
 
         if (totalMinutes >= 60) {
           feedback.innerHTML = '<span style="color: var(--green-ready);">✓ สำรองไฟ ' + h + ' ชม. ' + m + ' นาที (พร้อมใช้งาน ≥ 1 ชม.) - ปลดล็อกแล้ว</span>';
@@ -764,7 +788,7 @@
         }
       } else {
         isUpsRuntimeValid = false;
-        lockOverlay.style.display = 'flex';
+        if (lockOverlay) lockOverlay.style.display = 'flex';
         feedback.innerText = 'กรุณากรอกระยะเวลาสำรองไฟ _ _ : _ _ ให้ครบถ้วนเพื่อปลดล็อก';
         feedback.style.color = 'var(--amber-pending)';
       }
